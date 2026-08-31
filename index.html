@@ -184,6 +184,20 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   border-radius:10px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
 .acctrow .act:active{transform:translateY(1px)}
 .homefoot{padding:34px 20px 30px;text-align:center}
+.finishwrap{justify-content:flex-start;padding:0;min-height:100dvh}
+.finishinner{flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:34px 24px 20px;text-align:center;max-width:460px;margin:0 auto;width:100%;box-sizing:border-box}
+.finishwrap .gfoot{width:100%;max-width:460px;margin:0 auto;box-sizing:border-box}
+.fnstamp{display:inline-block;background:var(--shu);color:#fff;font-family:"Noto Serif JP",serif;
+  font-size:26px;line-height:1;padding:16px 14px;border-radius:16px;box-shadow:0 5px 0 var(--shu-2);
+  letter-spacing:.08em;writing-mode:horizontal-tb}
+.fntitle{font-size:24px;margin:22px 0 0;letter-spacing:-.4px}
+.fnsub{color:var(--ink-2);font-size:14px;line-height:1.7;margin:10px 0 0}
+.fnstats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:26px 0 0}
+.fnstat{border:1.5px solid var(--line);border-radius:14px;padding:13px 10px;background:var(--paper-2)}
+.fnstat .k{color:var(--ink-3);font-size:11.5px}
+.fnstat .v{font-size:21px;font-weight:800;margin-top:4px;color:var(--ink)}
+.fnnote{color:var(--ink-3);font-size:12.5px;line-height:1.7;margin:22px 0 0}
 .bklink{background:none;border:none;color:var(--ink-3);font:inherit;font-size:12.5px;
   text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
 .gfoot{padding:14px 20px calc(20px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--paper)}
@@ -1447,7 +1461,7 @@ const ALL_SENT=UNITS.flatMap(u=>u.s);
 
 /* ---------------- 2. STATE ---------------- */
 const KEY='nihongo-dojo-v1';
-let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKana:false, theme:null, sfxOn:true, bgmOn:false};
+let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKana:false, doneAt:{}, firstDay:null, theme:null, sfxOn:true, bgmOn:false};
 try{ const r=localStorage.getItem(KEY); if(r) S=Object.assign(S, JSON.parse(r)); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
@@ -1899,7 +1913,13 @@ function renderHome(){
     h+=`</div>`;
   });
   h+=`</div>`;
-  h+=`<div class="homefoot"><button class="bklink" id="bkOpen">진행 상황 백업 · 불러오기</button></div>`;
+  const learnedN=Object.keys(S.srs).length;
+  h+=`<div class="homefoot">`;
+  if(learnedN>=4)
+    h+=`<button class="cta ghost" id="freeBtn" style="margin-bottom:14px">자유 복습 — 익힌 것 중에서 무작위로</button>`;
+  if(S.doneAt && (S.doneAt.all || S.doneAt.kana || S.doneAt.main))
+    h+=`<button class="bklink" id="fnAgain" style="display:block;margin:0 auto 6px">완주 기록 다시 보기</button>`;
+  h+=`<button class="bklink" id="bkOpen">진행 상황 백업 · 불러오기</button></div>`;
   if(S.mistakes.length){
     h+=`<div style="padding:0 20px 40px"><button class="cta ghost" id="reviewBtn">틀린 표현 복습하기 (${S.mistakes.length})</button></div>`;
   }
@@ -1924,6 +1944,9 @@ function renderHome(){
   const rb=$('#reviewBtn'); if(rb) rb.onclick=startReview;
   const sb=$('#srsBtn'); if(sb) sb.onclick=startSrs;
   const bk=$('#bkOpen'); if(bk) bk.onclick=()=>{ sfx('tap'); renderBackup(); };
+  const fb=$('#freeBtn'); if(fb) fb.onclick=()=>{ sfx('tap'); startFree(); };
+  const fa=$('#fnAgain'); if(fa) fa.onclick=()=>{ sfx('tap');
+    renderFinish(S.doneAt.all ? 'all' : (S.doneAt.main ? 'main' : 'kana')); };
   const kh=$('#kanaHide'); if(kh) kh.onclick=()=>{ sfx('tap'); S.hideKana=true; save(); renderHome();
     setTimeout(()=>{ const el=document.querySelectorAll('.trackhead')[1]; if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },60); };
   const ks=$('#kanaShow'); if(ks) ks.onclick=()=>{ sfx('tap'); S.hideKana=false; save(); renderHome(); };
@@ -2088,6 +2111,89 @@ const SYNC_TEXT = {
   loading:['연결 중…',''], off:['',''], out:['진도가 이 브라우저에만 저장돼요','로그인'],
   sync:['진도를 맞추는 중…',''], in:['진도가 저장되고 있어요',''], err:['서버에 닿지 못했어요 — 학습은 그대로 계속돼요','다시 시도']
 };
+
+
+/* ===== 완주 =====
+   트랙 하나를 끝냈을 때와 전부 끝냈을 때, 그냥 홈으로 돌려보내지 않습니다. */
+const TRACK_NAME = {kana:'문자', main:'단어와 문장'};
+function trackDone(t){
+  const ls=TRACKS[t]||[];
+  return ls.length>0 && ls.every(l=>S.done[l.id]);
+}
+function allDone(){ return Object.keys(TRACKS).every(trackDone); }
+
+/* 방금 끝낸 레슨으로 새로 완주된 것이 있으면 그 이름을 돌려줍니다. */
+function newlyFinished(){
+  if(allDone() && !S.doneAt.all){ S.doneAt.all=Date.now(); save(); return 'all'; }
+  for(const t of Object.keys(TRACKS))
+    if(trackDone(t) && !S.doneAt[t]){ S.doneAt[t]=Date.now(); save(); return t; }
+  return null;
+}
+
+function daysSince(){
+  if(!S.firstDay) return null;
+  const a=S.firstDay.split('-').map(Number);
+  const d=Math.round((Date.now()-new Date(a[0],a[1]-1,a[2]).getTime())/864e5);
+  return d<1?1:d;
+}
+
+function renderFinish(what){
+  const all = what==='all';
+  const lessons = all ? LESSONS.length : (TRACKS[what]||[]).length;
+  const words = all ? ALL_WORDS.length
+                    : UNITS.filter(u=>u.track===what).reduce((n,u)=>n+u.w.length,0);
+  const d = daysSince();
+  const stamp = all ? '免許皆伝' : (what==='kana' ? '文字' : '言葉');
+  app.innerHTML = `
+  <div class="center-screen finishwrap">
+    <div class="finishinner">
+      <div class="fnstamp jp">${stamp}</div>
+      <h2 class="fntitle">${all ? '전부 끝냈습니다' : esc(TRACK_NAME[what]||'')+' 트랙 완주'}</h2>
+      <p class="fnsub">${all
+        ? 'にほんご道場의 모든 과정을 마쳤습니다. 여기까지 온 사람은 많지 않아요.'
+        : '이 트랙의 레슨을 하나도 남기지 않고 끝냈습니다.'}</p>
+      <div class="fnstats">
+        <div class="fnstat"><div class="k">레슨</div><div class="v mono">${lessons}</div></div>
+        <div class="fnstat"><div class="k">익힌 항목</div><div class="v mono">${words}</div></div>
+        <div class="fnstat"><div class="k">최고 연속</div><div class="v mono">${S.streak|0}일</div></div>
+        ${d?`<div class="fnstat"><div class="k">함께한 날</div><div class="v mono">${d}일</div></div>`:''}
+      </div>
+      <p class="fnnote">${all
+        ? '이제부터는 잊지 않는 것이 공부입니다. 복습이 뜨면 챙기고, 생각날 때 자유 복습을 눌러 보세요.'
+        : '다른 트랙도 기다리고 있습니다.'}</p>
+    </div>
+    <div class="gfoot"><button class="cta" id="fnGo">계속하기</button></div>
+  </div>`;
+  $('#fnGo').onclick=()=>{ sfx('tap'); renderHome(); };
+  setTimeout(()=>burst(innerWidth*.5, innerHeight*.4, 60, 1.6), 150);
+  setTimeout(()=>burst(innerWidth*.25, innerHeight*.5, 40, 1.3), 420);
+  setTimeout(()=>burst(innerWidth*.75, innerHeight*.5, 40, 1.3), 660);
+}
+
+/* ===== 자유 복습 =====
+   복습할 때가 아니어도 언제든 익힌 것을 다시 꺼내 봅니다.
+   맞혀도 다음 복습을 앞당기지 않습니다 — 눌러서 일정을 지워버리는 일을 막습니다.
+   틀리면 다시 복습 대상으로 되돌립니다.                                    */
+let FREE_MODE = false;
+function learnedItems(){
+  const out=[];
+  for(const k in S.srs){ const it=srsLookup(k); if(it) out.push(it); }
+  return out;
+}
+function startFree(){
+  const pool=learnedItems();
+  if(pool.length<4) return renderHome();
+  const items=pick(pool, Math.min(20, pool.length));
+  const ex=[];
+  items.forEach((it,i)=>{
+    if(it.t){ ex.push(i%2 ? assembleEx(it) : sentMcq(it, ALL_SENT)); return; }
+    const P=poolFor(it), kn=isKana(it);
+    ex.push(i%2 ? mcqWord(it,P,kn) : mcqMeaning(it,P,kn));
+  });
+  FREE_MODE = true;
+  G=newGame({id:'__free', title:'자유 복습', isReview:true}, shuffle(ex));
+  renderExercise();
+}
 
 /* ===== 계정 · 동기화 =====
    브라우저 저장이 주 저장소이고, 서버는 그 위에 얹는 동기화 계층입니다.
@@ -2576,9 +2682,11 @@ function judge(ok, correct, missCount){
     burst(innerWidth/2, innerHeight-130, G.combo>=5?46:28, G.combo>=5?1.25:1);
     xpPop(gain);
     if(e.audio) speak(e.audio); else if(e.item&&e.item.k) speak(e.item.k);
-    if(e.item) srsTouch(e.item, true);
-    if(e.kind==='match' && e.pairs) e.pairs.forEach(p=>srsTouch(p, true));
-    if(e.item || e.pairs) save();
+    if(!FREE_MODE){                       // 자유 복습은 일정을 앞당기지 않습니다
+      if(e.item) srsTouch(e.item, true);
+      if(e.kind==='match' && e.pairs) e.pairs.forEach(p=>srsTouch(p, true));
+      if(e.item || e.pairs) save();
+    }
   } else {
     G.combo=0;
     sfx('wrong'); setTimeout(()=>sfx('heart'),160);
@@ -2645,7 +2753,9 @@ function renderResult(){
     const asked=new Set(G.queue.map(q=>q.item&&q.item.j).filter(Boolean));
     S.mistakes=S.mistakes.filter(j=>!asked.has(j)||stillWrong.has(j));
   }
+  if(!S.firstDay) S.firstDay=dayKey(new Date());
   bumpStreak(); save(); CLOUD.queue();
+  const fin = G.lesson.isReview ? null : newlyFinished();
   if(!G.lesson.isReview) JUST_DONE=G.lesson.id;
   sfx('complete');
   setTimeout(()=>{ burst(innerWidth*.25, innerHeight*.45, 40, 1.3); }, 120);
@@ -2669,7 +2779,7 @@ function renderResult(){
     <button class="linkbtn" id="againBtn">이 레슨 다시 하기</button>
   </div>`;
   petalsOn();
-  $('#homeBtn').onclick=()=>{ sfx('tap'); renderHome(); };
+  $('#homeBtn').onclick=()=>{ sfx('tap'); if(fin) renderFinish(fin); else renderHome(); };
   $('#againBtn').onclick=replay;
   window.scrollTo(0,0);
 }
@@ -2692,7 +2802,12 @@ function renderFail(){
   window.scrollTo(0,0);
 }
 function replay(){
-  if(G.lesson.isReview){ if(G.lesson.id==='__srs') startSrs(); else startReview(); }
+  if(G.lesson.isReview){
+    FREE_MODE=false;
+    if(G.lesson.id==='__srs') startSrs();
+    else if(G.lesson.id==='__free') startFree();
+    else startReview();
+  }
   else startLesson(LESSONS.find(l=>l.id===G.lesson.id));
 }
 
