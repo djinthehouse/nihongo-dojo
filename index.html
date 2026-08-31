@@ -173,6 +173,16 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .bkbtn.danger{border-color:var(--shu);color:var(--shu)}
 .bkmsg{color:var(--ink-3);font-size:12px;margin-top:8px;line-height:1.55}
 .bkmsg.bad{color:var(--shu)}
+.authwarn{margin-top:22px;padding:13px 15px;border-radius:13px;border:1.5px solid var(--shu);
+  background:var(--shu-soft);color:var(--ink);font-size:12.5px;line-height:1.65}
+.acctrow{display:flex;align-items:center;gap:10px;margin:4px 0 2px;padding:12px 14px;
+  border:1.5px solid var(--line);border-radius:14px;background:var(--paper-2)}
+.acctrow .who{flex:1;min-width:0}
+.acctrow .nm{font-weight:800;font-size:13.5px;color:var(--ink)}
+.acctrow .st{color:var(--ink-3);font-size:11.5px;margin-top:2px;line-height:1.45}
+.acctrow .act{flex:none;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);
+  border-radius:10px;padding:7px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.acctrow .act:active{transform:translateY(1px)}
 .homefoot{padding:34px 20px 30px;text-align:center}
 .bklink{background:none;border:none;color:var(--ink-3);font:inherit;font-size:12.5px;
   text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px}
@@ -1815,6 +1825,19 @@ function renderHome(){
   </div>
   <div class="path">`;
 
+  if(CLOUD.status!=='off' && CLOUD.status!=='loading'){
+    const signedIn = !!CLOUD.user;
+    const [txt, act] = SYNC_TEXT[CLOUD.status] || ['',''];
+    h+=`<div class="acctrow">
+      <div class="who">
+        <div class="nm">${signedIn ? esc(CLOUD.nameOf())+' 님' : '로그인하지 않음'}</div>
+        <div class="st">${esc(txt)}</div>
+      </div>
+      ${signedIn ? `<button class="act" id="acOut">로그아웃</button>`
+                 : (act ? `<button class="act" id="acIn">${esc(act)}</button>` : '')}
+    </div>`;
+  }
+
   const dueN=srsDue().length, nextIn=srsNextInDays(), learned=Object.keys(S.srs).length;
   if(dueN || learned){
     h+=`<div class="srscard${dueN?' due':''}">
@@ -1882,6 +1905,11 @@ function renderHome(){
   const rb=$('#reviewBtn'); if(rb) rb.onclick=startReview;
   const sb=$('#srsBtn'); if(sb) sb.onclick=startSrs;
   const bk=$('#bkOpen'); if(bk) bk.onclick=()=>{ sfx('tap'); renderBackup(); };
+  const ai=$('#acIn'); if(ai) ai.onclick=()=>{ sfx('tap');
+    if(CLOUD.status==='err'){ CLOUD.pull(); } else { AUTH_MODE='in'; renderAuth(); } };
+  const ao=$('#acOut'); if(ao) ao.onclick=()=>{ sfx('tap');
+    openSheet('로그아웃할까요?','이 기기의 진도는 그대로 남아요. 다시 로그인하면 서버의 진도와 합쳐집니다.',
+      '로그아웃', async()=>{ await CLOUD.signOut(); renderHome(); }, '취소', ()=>{}); };
   window.scrollTo(0,0);
 }
 
@@ -1920,6 +1948,238 @@ function showGrammar(unit, onNext){
   });
   g.ex.forEach((e,i)=>{ const el=app.querySelectorAll('.gex')[i]; if(el) el.dataset.k=e.k; });
 }
+
+/* ===== 진도 병합 =====
+   두 기기에서 각각 학습한 결과를 합칩니다. 덮어쓰기가 아니라 합치기입니다.
+   원칙: 어느 쪽에서든 한 번 이룬 진전은 사라지지 않는다. */
+
+function dayNum(k){                       // 'YYYY-M-D' → 비교 가능한 숫자
+  if(!k || typeof k!=='string') return -1;
+  const p=k.split('-').map(Number);
+  if(p.length!==3 || p.some(isNaN)) return -1;
+  return p[0]*10000 + p[1]*100 + p[2];
+}
+
+function mergeProgress(a, b){
+  if(!a) return b ? JSON.parse(JSON.stringify(b)) : null;
+  if(!b) return JSON.parse(JSON.stringify(a));
+  const out = {};
+
+  // XP: 누적값이라 더하면 이중 계산이 됩니다. 더 많이 쌓인 쪽을 씁니다.
+  out.xp = Math.max(a.xp|0, b.xp|0);
+
+  // 레슨: 같은 레슨이면 별점이 높은 쪽
+  out.done = Object.assign({}, a.done||{});
+  const bd = b.done||{};
+  for(const k in bd) out.done[k] = Math.max(out.done[k]|0, bd[k]|0);
+
+  // 복습 일정: 항목별로 더 많이 익힌 쪽(상자가 높은 쪽).
+  // 상자가 같으면 다음 복습이 더 뒤인 쪽 = 더 최근에 푼 쪽.
+  out.srs = {};
+  const as=a.srs||{}, bs=b.srs||{};
+  for(const k of new Set([...Object.keys(as), ...Object.keys(bs)])){
+    const x=as[k], y=bs[k];
+    if(!x){ out.srs[k]=y; continue; }
+    if(!y){ out.srs[k]=x; continue; }
+    if((y.b|0) > (x.b|0)) out.srs[k]=y;
+    else if((y.b|0) < (x.b|0)) out.srs[k]=x;
+    else out.srs[k] = ((y.d|0) > (x.d|0)) ? y : x;
+  }
+
+  // 오답 노트: 합집합. 한쪽에서 틀렸으면 여전히 복습 대상입니다.
+  out.mistakes = [...new Set([...(a.mistakes||[]), ...(b.mistakes||[])])];
+
+  // 이미 본 문법 카드: 합집합
+  out.seenG = Object.assign({}, a.seenG||{}, b.seenG||{});
+
+  // 연속 학습일: 마지막 학습일이 더 뒤인 쪽의 기록을 따릅니다.
+  // 같은 날이면 더 긴 쪽.
+  const da=dayNum(a.last), db=dayNum(b.last);
+  if(db > da){ out.last=b.last; out.streak=b.streak|0; }
+  else if(da > db){ out.last=a.last; out.streak=a.streak|0; }
+  else { out.last=a.last||b.last||null; out.streak=Math.max(a.streak|0, b.streak|0); }
+
+  return out;
+}
+
+
+/* 로그인 / 가입 화면 — 이메일 없이 아이디와 비밀번호만 받습니다. */
+let AUTH_MODE = 'in';
+function renderAuth(){
+  const signup = AUTH_MODE==='up';
+  app.innerHTML = `
+  <div class="gwrap">
+    <div class="gtop">
+      <div class="gkicker mono">${signup?'SIGN UP':'SIGN IN'}</div>
+      <h2 class="gtitle">${signup?'계정 만들기':'로그인'}</h2>
+      <p class="gbody">${signup
+        ? '아이디와 비밀번호만 있으면 됩니다. 이메일은 받지 않습니다. 계정을 만들면 진도가 서버에 저장돼서 다른 기기에서도 이어서 할 수 있어요.'
+        : '만들어 둔 아이디로 들어오면 진도가 이 기기로 따라옵니다.'}</p>
+
+      <div class="bksec">
+        <label class="bklab" for="auId">아이디</label>
+        <input class="bkbox mono" id="auId" type="text" autocomplete="username"
+               autocapitalize="none" autocorrect="off" spellcheck="false"
+               placeholder="영문 소문자·숫자 3~20자" style="height:auto">
+        <label class="bklab" for="auPw" style="display:block;margin-top:16px">비밀번호</label>
+        <input class="bkbox mono" id="auPw" type="password"
+               autocomplete="${signup?'new-password':'current-password'}"
+               placeholder="6자 이상" style="height:auto">
+        <div class="bkmsg" id="auMsg"></div>
+      </div>
+
+      ${signup ? `<div class="authwarn">
+        <b>비밀번호를 잊으면 되찾을 수 없습니다.</b> 이메일을 받지 않기 때문입니다.
+        잊었을 때를 위해, 홈 화면 아래 <b>진행 상황 백업</b>에서 코드를 뽑아 따로 보관해 두세요.
+      </div>` : ''}
+    </div>
+    <div class="gfoot">
+      <button class="cta" id="auGo">${signup?'가입하고 시작하기':'로그인'}</button>
+      <button class="bklink" id="auSwap" style="display:block;margin:12px auto 0">
+        ${signup?'이미 계정이 있어요 — 로그인':'계정이 없어요 — 만들기'}</button>
+      <button class="bklink" id="auBack" style="display:block;margin:2px auto 0">나중에 하기</button>
+    </div>
+  </div>`;
+
+  const msg=$('#auMsg'), idEl=$('#auId'), pwEl=$('#auPw'), go=$('#auGo');
+  const fail=(t)=>{ msg.textContent=t; msg.classList.add('bad'); sfx('wrong'); };
+
+  $('#auBack').onclick=()=>{ sfx('tap'); renderHome(); };
+  $('#auSwap').onclick=()=>{ sfx('tap'); AUTH_MODE = signup?'in':'up'; renderAuth(); };
+
+  go.onclick=async()=>{
+    const id=(idEl.value||'').trim().toLowerCase(), pw=pwEl.value||'';
+    msg.classList.remove('bad');
+    if(!/^[a-z0-9_]{3,20}$/.test(id)) return fail('아이디는 영문 소문자·숫자·밑줄 3~20자로 지어 주세요.');
+    if(pw.length<6) return fail('비밀번호는 6자 이상이어야 해요.');
+    go.disabled=true; msg.textContent = signup?'계정을 만드는 중…':'들어가는 중…';
+    try{
+      if(signup) await CLOUD.signUp(id,pw); else await CLOUD.signIn(id,pw);
+      await CLOUD.pull();
+      sfx('complete'); renderHome();
+    }catch(e){ go.disabled=false; fail(authMsg(e)); }
+  };
+  [idEl,pwEl].forEach(el=>el.addEventListener('keydown',e=>{ if(e.key==='Enter') go.click(); }));
+}
+
+const SYNC_TEXT = {
+  loading:['연결 중…',''], off:['',''], out:['진도가 이 브라우저에만 저장돼요','로그인'],
+  sync:['진도를 맞추는 중…',''], in:['진도가 저장되고 있어요',''], err:['서버에 닿지 못했어요 — 학습은 그대로 계속돼요','다시 시도']
+};
+
+/* ===== 계정 · 동기화 =====
+   브라우저 저장이 주 저장소이고, 서버는 그 위에 얹는 동기화 계층입니다.
+   로그인하지 않아도, 인터넷이 없어도 학습은 그대로 동작합니다.        */
+const FB_CFG = {
+  apiKey: "AIzaSyBm1yS1j2rj_4z8q3pfJLxpWOMqZD_bAOg",
+  authDomain: "nihongo-dojo-6be10.firebaseapp.com",
+  projectId: "nihongo-dojo-6be10",
+  appId: "1:523895442535:web:dfb7766601d0d1c77dd8c2"
+};
+const ID_DOMAIN = '@dojo.local';          // 아이디를 내부 이메일로 바꿀 때 쓰는 꼬리표
+const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
+
+const CLOUD = {
+  ready:false, user:null, api:null, status:'off', pending:null, timer:null,
+  listeners:[],
+  on(fn){ this.listeners.push(fn); },
+  emit(){ this.listeners.forEach(f=>{ try{ f(); }catch(e){} }); },
+  set(st){ this.status=st; this.emit(); },
+
+  /* 아티팩트처럼 외부 통신이 막힌 환경에서는 조용히 꺼진 채로 둡니다. */
+  async init(){
+    if(this.ready || this.status==='loading') return;
+    this.status='loading';
+    try{
+      const [{initializeApp}, auth, fs] = await Promise.all([
+        import(SDK+'firebase-app.js'),
+        import(SDK+'firebase-auth.js'),
+        import(SDK+'firebase-firestore.js')
+      ]);
+      const app = initializeApp(FB_CFG);
+      this.api = { auth: auth.getAuth(app), fs: fs.getFirestore(app), a: auth, f: fs };
+      this.ready = true;
+      this.set('out');
+      this.api.a.onAuthStateChanged(this.api.auth, async (u)=>{
+        this.user = u;
+        if(u){ await this.pull(); } else { this.set('out'); }
+      });
+    }catch(e){
+      this.ready=false; this.set('off');       // 통신 불가 — 로컬 전용으로 계속
+    }
+  },
+
+  idToEmail(id){ return String(id).trim().toLowerCase() + ID_DOMAIN; },
+  nameOf(){ const e=this.user&&this.user.email||''; return e.replace(ID_DOMAIN,''); },
+
+  async signUp(id, pw){
+    const {createUserWithEmailAndPassword}=this.api.a;
+    await createUserWithEmailAndPassword(this.api.auth, this.idToEmail(id), pw);
+  },
+  async signIn(id, pw){
+    const {signInWithEmailAndPassword}=this.api.a;
+    await signInWithEmailAndPassword(this.api.auth, this.idToEmail(id), pw);
+  },
+  async signOut(){
+    try{ await this.api.a.signOut(this.api.auth); }catch(e){}
+    this.user=null; this.set('out');
+  },
+
+  doc(){ return this.api.f.doc(this.api.fs, 'progress', this.user.uid); },
+
+  /* 서버 진도를 가져와 지금 것과 합칩니다. 어느 쪽 진전도 잃지 않습니다. */
+  async pull(){
+    if(!this.user) return;
+    this.set('sync');
+    try{
+      const snap = await this.api.f.getDoc(this.doc());
+      const remote = snap.exists() ? (snap.data().data || null) : null;
+      const merged = mergeProgress(snapshotOf(S), remote);
+      if(merged) applyProgress(merged);
+      await this.push(true);
+      this.set('in');
+    }catch(e){ this.set('err'); }
+  },
+
+  /* 저장은 몰아서 보냅니다 — 문제 하나 풀 때마다 보내지 않습니다. */
+  queue(){
+    if(!this.user || !this.ready) return;
+    clearTimeout(this.timer);
+    this.timer = setTimeout(()=>this.push(), 1500);
+  },
+  async push(quiet){
+    if(!this.user || !this.ready) return;
+    if(!quiet) this.set('sync');
+    try{
+      await this.api.f.setDoc(this.doc(), { data: snapshotOf(S), at: Date.now() });
+      if(!quiet) this.set('in');
+    }catch(e){ this.set('err'); }
+  }
+};
+
+/* 서버에 올리고 내리는 것은 진도뿐입니다 — 테마·소리 설정은 기기별로 둡니다. */
+function snapshotOf(s){
+  return { xp:s.xp|0, streak:s.streak|0, last:s.last||null,
+           done:s.done||{}, mistakes:s.mistakes||[], srs:s.srs||{}, seenG:s.seenG||{} };
+}
+function applyProgress(p){
+  S.xp=p.xp|0; S.streak=p.streak|0; S.last=p.last||null;
+  S.done=p.done||{}; S.mistakes=p.mistakes||[]; S.srs=p.srs||{}; S.seenG=p.seenG||{};
+  save();
+}
+
+const AUTH_ERR = {
+  'auth/email-already-in-use':'이미 있는 아이디예요. 다른 아이디를 써 주세요.',
+  'auth/invalid-credential':'아이디나 비밀번호가 맞지 않아요.',
+  'auth/wrong-password':'아이디나 비밀번호가 맞지 않아요.',
+  'auth/user-not-found':'아이디나 비밀번호가 맞지 않아요.',
+  'auth/invalid-email':'아이디에 쓸 수 없는 글자가 있어요.',
+  'auth/weak-password':'비밀번호는 6자 이상이어야 해요.',
+  'auth/network-request-failed':'인터넷 연결을 확인해 주세요.',
+  'auth/too-many-requests':'시도가 많았어요. 잠시 뒤에 다시 해주세요.'
+};
+const authMsg = e => AUTH_ERR[e && e.code] || '잘 되지 않았어요. 잠시 뒤에 다시 해주세요.';
+
 
 /* ---------------- 진행 상황 백업 ----------------
    기기 간 자동 동기화는 이 환경에서 제공되지 않습니다.
@@ -2363,7 +2623,7 @@ function renderResult(){
     const asked=new Set(G.queue.map(q=>q.item&&q.item.j).filter(Boolean));
     S.mistakes=S.mistakes.filter(j=>!asked.has(j)||stillWrong.has(j));
   }
-  bumpStreak(); save();
+  bumpStreak(); save(); CLOUD.queue();
   if(!G.lesson.isReview) JUST_DONE=G.lesson.id;
   sfx('complete');
   setTimeout(()=>{ burst(innerWidth*.25, innerHeight*.45, 40, 1.3); }, 120);
@@ -2435,6 +2695,8 @@ function closeSheet(){
 }
 
 /* ---------------- 10. START ---------------- */
+CLOUD.on(()=>{ if(document.querySelector('.path')) renderHome(); });
+CLOUD.init();
 initCanvases();
 renderHome();
 /* browsers require a gesture before audio; unlock on the first tap */
