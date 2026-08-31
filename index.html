@@ -456,6 +456,11 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .srsbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--shu-2)}
 .trackhead .tt{color:var(--ink)}
 .trackhead{margin:26px 0 10px;padding:0 2px}
+.trackhead .thtop{display:flex;align-items:flex-start;gap:10px}
+.trackhead .thl{flex:1;min-width:0}
+.trackbtn{flex:none;margin-top:2px;border:1.5px solid var(--line);background:var(--paper-2);color:var(--ink);
+  border-radius:11px;padding:8px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;line-height:1.2}
+.trackbtn:active{transform:translateY(1px)}
 .trackhead .tt{font-weight:800;font-size:18px;letter-spacing:-.2px}
 .trackhead .ts{color:var(--ink-2);font-size:12.5px;margin-top:3px;line-height:1.45}
 .trackhead .tp{color:var(--ink-3);font-size:11.5px;margin-top:6px;letter-spacing:.06em}
@@ -1442,7 +1447,7 @@ const ALL_SENT=UNITS.flatMap(u=>u.s);
 
 /* ---------------- 2. STATE ---------------- */
 const KEY='nihongo-dojo-v1';
-let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, theme:null, sfxOn:true, bgmOn:false};
+let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKana:false, theme:null, sfxOn:true, bgmOn:false};
 try{ const r=localStorage.getItem(KEY); if(r) S=Object.assign(S, JSON.parse(r)); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
@@ -1852,16 +1857,30 @@ function renderHome(){
     </div>`;
   }
 
-  let curTrack=null;
+  let curTrack=null, skipping=false;
   UNITS.forEach(u=>{
     if(u.track!==curTrack){
       curTrack=u.track;
       const done=(TRACKS[curTrack]||[]).filter(l=>S.done[l.id]).length, tot=(TRACKS[curTrack]||[]).length;
-      const meta = curTrack==='kana'
-        ? {t:'문자 익히기', s:'히라가나 · 가타카나 — 이미 아신다면 건너뛰어도 됩니다'}
-        : {t:'단어와 문장', s:'JLPT N5 어휘 · 문법 — 문자를 몰라도 바로 시작할 수 있습니다'};
-      h+=`<div class="trackhead"><div class="tt">${meta.t}</div><div class="ts">${meta.s}</div><div class="tp mono">${done} / ${tot}</div></div>`;
+      const isKana = curTrack==='kana';
+      skipping = isKana && S.hideKana;          // 접었으면 이 트랙의 유닛은 그리지 않습니다
+      const meta = isKana
+        ? {t:'문자 익히기', s:'히라가나 · 가타카나부터 차근차근'}
+        : {t:'단어와 문장', s:'JLPT N5 어휘 · 문법'};
+      const btn = isKana
+        ? (S.hideKana
+            ? `<button class="trackbtn" id="kanaShow">문자부터 배울래요</button>`
+            : `<button class="trackbtn" id="kanaHide">가나는 이미 알아요 — 접기</button>`)
+        : '';
+      h+=`<div class="trackhead">
+            <div class="thtop">
+              <div class="thl"><div class="tt">${meta.t}</div><div class="ts">${esc(meta.s)}</div></div>
+              ${btn}
+            </div>
+            <div class="tp mono">${done} / ${tot}${isKana && S.hideKana ? ' · 접힘' : ''}</div>
+          </div>`;
     }
+    if(skipping) return;
     h+=`<div class="unitband"><div class="num jp">${u.kanji}</div><div class="ub-t"><div class="t">${esc(u.title)}</div><div class="s">${esc(u.sub)}</div></div>${u.grammar?`<button class="gbtn" data-grammar="${u.id}" aria-label="${esc(u.title)} 문법 설명">문법</button>`:''}</div><div class="lessons">`;
     u.lessons.forEach((l,i)=>{
       const off=[0,46,0,-46][i%4];
@@ -1905,6 +1924,9 @@ function renderHome(){
   const rb=$('#reviewBtn'); if(rb) rb.onclick=startReview;
   const sb=$('#srsBtn'); if(sb) sb.onclick=startSrs;
   const bk=$('#bkOpen'); if(bk) bk.onclick=()=>{ sfx('tap'); renderBackup(); };
+  const kh=$('#kanaHide'); if(kh) kh.onclick=()=>{ sfx('tap'); S.hideKana=true; save(); renderHome();
+    setTimeout(()=>{ const el=document.querySelectorAll('.trackhead')[1]; if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); },60); };
+  const ks=$('#kanaShow'); if(ks) ks.onclick=()=>{ sfx('tap'); S.hideKana=false; save(); renderHome(); };
   const ai=$('#acIn'); if(ai) ai.onclick=()=>{ sfx('tap');
     if(CLOUD.status==='err'){ CLOUD.pull(); } else { AUTH_MODE='in'; renderAuth(); } };
   const ao=$('#acOut'); if(ao) ao.onclick=()=>{ sfx('tap');
