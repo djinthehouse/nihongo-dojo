@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#F1F0EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14161A" media="(prefers-color-scheme: dark)">
 <meta name="description" content="일본어 JLPT N5–N4 학습 게임 — 히라가나·가타카나부터 단어 834개, 문장 224개까지. 간격 반복 복습으로 매일 조금씩.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C8352B'/%3E%3Ctext x='50' y='72' font-size='56' text-anchor='middle' fill='white' font-family='serif' font-weight='700'%3E道%3C/text%3E%3C/svg%3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="にほんご道場">
+<meta property="og:title" content="にほんご道場 — 일본어 도장">
+<meta property="og:description" content="히라가나부터 JLPT N4까지, 하루 5분 일본어 학습 게임.">
+<meta property="og:type" content="website">
 <title>にほんご道場</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700&family=Roboto+Mono:wght@500;700&display=swap">
 <style>
@@ -515,7 +521,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .newbadges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:4px 0 10px}
-.badgerow{display:flex;gap:8px;overflow-x:auto;margin:2px 0 12px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.badgerow{display:flex;align-items:flex-start;gap:8px;overflow-x:auto;margin:2px 0 12px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
 .badge{
   flex:none;width:52px;text-align:center;background:none;border:0;padding:0;color:inherit;
 }
@@ -2197,7 +2203,7 @@ const BADGES=[
   {id:'first',  n:'첫 수련',     d:'레슨을 하나 끝냈습니다',        jp:'初'},
   {id:'ten',    n:'열 걸음',     d:'레슨 10개',                     jp:'十'},
   {id:'fifty',  n:'오십 고개',   d:'레슨 50개',                     jp:'五十'},
-  {id:'hundred',n:'백 번의 수련',d:'레슨 100개',                    jp:'百'},
+  {id:'hundred',n:'백 걸음',d:'레슨 100개',                    jp:'百'},
   {id:'kana',   n:'문자 통달',   d:'문자 트랙을 모두 마쳤습니다',   jp:'字'},
   {id:'st3',    n:'사흘 연속',   d:'3일 연속 학습',                 jp:'三'},
   {id:'st7',    n:'일주일 연속', d:'7일 연속 학습',                 jp:'七'},
