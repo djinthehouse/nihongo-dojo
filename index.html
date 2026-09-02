@@ -6,21 +6,6 @@
 <meta name="theme-color" content="#F1F0EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14161A" media="(prefers-color-scheme: dark)">
 <meta name="description" content="일본어 JLPT N5–N4 학습 게임 — 히라가나·가타카나부터 단어 834개, 문장 224개까지. 간격 반복 복습으로 매일 조금씩.">
-<title>にほんご道場 — 일본어 N5 도장</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23D2452E'/%3E%3Ctext x='50' y='72' font-size='62' text-anchor='middle' fill='white' font-family='serif'%3E道%3C/text%3E%3C/svg%3E">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="にほんご道場">
-<meta property="og:title" content="にほんご道場 — 일본어 N5 도장">
-<meta property="og:description" content="히라가나부터 N5 어휘까지, 하루 5분 일본어 학습 게임.">
-<meta property="og:type" content="website">
-<style>
-  html{color-scheme:light dark}
-  body{margin:0;font:14px system-ui,-apple-system,sans-serif}
-  img{max-width:100%}
-  [hidden]{display:none!important}
-</style>
-</head>
-<body>
 <title>にほんご道場</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+JP:wght@400;600;700&family=Roboto+Mono:wght@500;700&display=swap">
 <style>
@@ -273,6 +258,20 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .speaker svg{width:21px;height:21px}
 .speaker.big{padding:24px 30px;font-size:16px;border-radius:18px}
 .speaker.big svg{width:32px;height:32px}
+.sayrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.speaker.slow{
+  background:var(--paper-2);color:var(--ai);border:1.5px solid var(--line);
+  border-bottom-width:4px;box-shadow:none;padding:11px 15px;font-size:13px;
+}
+.speaker.slow:active{transform:translateY(2px);border-bottom-width:2px}
+.speaker.slow svg{width:19px;height:19px}
+.qjp.tappable{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;
+  text-decoration-color:var(--stone);text-underline-offset:9px}
+.qjp.tappable:active{opacity:.6}
+.fb-say{display:inline-flex;align-items:center;justify-content:center;gap:6px;vertical-align:middle;
+  background:transparent;border:0;padding:2px 6px;margin-left:6px;color:var(--ai)}
+.fb-say svg{width:20px;height:20px}
+.fb-say:active{opacity:.55}
 
 .opts{display:flex;flex-direction:column;gap:10px;margin-top:26px}
 .opt{
@@ -459,6 +458,76 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   .bar>i::after{display:none}
 }
 
+/* ---- 오늘 카드: 목표 링 · 연속일 · 하루 과제 ---- */
+.beltbar{
+  display:flex;align-items:center;gap:11px;margin:2px 0 12px;padding:11px 14px;
+  border-radius:14px;background:var(--paper-2);border:1.5px solid var(--line);
+}
+.beltchip{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none;
+  font-family:"Noto Serif JP",serif;font-size:17px;font-weight:700;color:#fff;
+  box-shadow:inset 0 -2px 0 rgba(0,0,0,.18);
+}
+.beltbar .bt{flex:1;min-width:0}
+.beltbar .bn{font-weight:800;font-size:14.5px;color:var(--ink)}
+.beltbar .bp{margin-top:6px;height:6px;border-radius:99px;background:var(--paper-3);overflow:hidden}
+.beltbar .bp>i{display:block;height:100%;border-radius:99px;background:var(--gold)}
+.beltbar .bs{font-size:11.5px;color:var(--ink-3);margin-top:5px}
+
+.today{margin:2px 0 10px;padding:15px 16px;border-radius:18px;
+  background:var(--paper-2);border:1.5px solid var(--line)}
+.today .row1{display:flex;align-items:center;gap:15px}
+.ring{width:66px;height:66px;flex:none;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .rt{position:absolute;inset:0;display:grid;place-items:center;
+  font-family:"Roboto Mono",monospace;font-size:13px;font-weight:700;color:var(--ink)}
+.today .gl{flex:1;min-width:0}
+.today .gh{font-weight:800;font-size:15px;color:var(--ink)}
+.today .gs{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+.goalbtn{background:none;border:0;padding:0;color:var(--ai);font-size:12.5px;font-weight:700;
+  text-decoration:underline;text-underline-offset:3px;margin-top:6px}
+.week{display:flex;gap:6px;margin-top:14px}
+.week .d{flex:1;text-align:center}
+.week .dot{height:26px;border-radius:9px;background:var(--paper-3);display:grid;place-items:center;
+  font-size:12px;font-weight:800;color:var(--ink-3)}
+.week .d.on .dot{background:var(--shu);color:#fff}
+.week .d.now .dot{outline:2px solid var(--ai);outline-offset:1.5px}
+.week .lb{font-size:10px;color:var(--ink-3);margin-top:4px}
+
+.quests{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:9px}
+.qh{font-size:11.5px;font-weight:800;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
+.quest{display:flex;align-items:center;gap:10px}
+.quest .qi{width:22px;height:22px;border-radius:7px;flex:none;display:grid;place-items:center;
+  background:var(--paper-3);color:var(--ink-3);font-size:12px;font-weight:800}
+.quest.done .qi{background:var(--shu);color:#fff}
+.quest .qb{flex:1;min-width:0}
+.quest .qn{font-size:13px;color:var(--ink);font-weight:600}
+.quest.done .qn{color:var(--ink-3);text-decoration:line-through}
+.quest .qp{margin-top:5px;height:5px;border-radius:99px;background:var(--paper-3);overflow:hidden}
+.quest .qp>i{display:block;height:100%;border-radius:99px;background:var(--shu);transition:width .5s}
+.quest .qv{font-family:"Roboto Mono",monospace;font-size:11px;color:var(--ink-3);flex:none}
+
+.toast{
+  position:fixed;left:50%;transform:translate(-50%,-14px);top:calc(12px + env(safe-area-inset-top));
+  z-index:80;background:var(--band);color:var(--on-band);border-radius:14px;
+  padding:11px 16px;font-size:13.5px;font-weight:700;box-shadow:0 8px 24px var(--drop);
+  opacity:0;transition:opacity .3s,transform .3s;max-width:88vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.newbadges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:4px 0 10px}
+.badgerow{display:flex;gap:8px;overflow-x:auto;margin:2px 0 12px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.badge{
+  flex:none;width:52px;text-align:center;background:none;border:0;padding:0;color:inherit;
+}
+.badge .bi{
+  width:44px;height:44px;margin:0 auto;border-radius:13px;display:grid;place-items:center;
+  font-family:"Noto Serif JP",serif;font-size:17px;font-weight:700;
+  background:var(--paper-3);color:var(--ink-3);border:1.5px solid var(--line);
+}
+.badge.on .bi{background:var(--gold);color:#fff;border-color:transparent}
+.badge .bl{font-size:9.5px;color:var(--ink-3);margin-top:4px;line-height:1.25}
+.badge.on .bl{color:var(--ink-2);font-weight:700}
+
 .srscard{margin:4px 0 2px;padding:15px 16px;border-radius:16px;border:1.5px solid var(--line);
   background:var(--paper-2);display:flex;align-items:center;gap:12px}
 .srscard.due{border-color:var(--shu);background:var(--shu-soft)}
@@ -481,6 +550,8 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .path > .trackhead:first-child{margin-top:6px}
 .qjp.solo{font-size:78px;line-height:1.15}
 </style>
+</head>
+<body>
 
 <canvas id="petals" aria-hidden="true"></canvas>
 <div id="app"></div>
@@ -1989,7 +2060,13 @@ const ALL_SENT=UNITS.flatMap(u=>u.s);
 
 /* ---------------- 2. STATE ---------------- */
 const KEY='nihongo-dojo-v1';
-let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKana:false, doneAt:{}, firstDay:null, theme:null, sfxOn:true, bgmOn:false};
+let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKana:false, doneAt:{}, firstDay:null, theme:null, sfxOn:true, bgmOn:false,
+       goal:260,       /* 하루 목표 XP — 레슨 하나가 대략 140 XP 입니다 */
+       dayXp:null,     /* {d:'2026-9-2', v:35} — 오늘 쌓은 XP */
+       quests:null,    /* {d, list:[{id,need,prog,got}]} */
+       badges:{},      /* {배지id: 딴 날} */
+       act:[],         /* 학습한 날들 (최근 것만 남김) */
+       perfects:0      /* 하트를 하나도 안 잃고 끝낸 레슨 수 */ };
 try{ const r=localStorage.getItem(KEY); if(r) S=Object.assign(S, JSON.parse(r)); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
@@ -2038,10 +2115,119 @@ function srsNextInDays(){
 }
 function bumpStreak(){
   const t=dayKey(new Date());
+  if(S.act.indexOf(t)<0){ S.act.push(t); if(S.act.length>120) S.act=S.act.slice(-120); }
   if(S.last===t) return;
   const ys=dayKey(new Date(Date.now()-864e5));
   S.streak=(S.last===ys)? S.streak+1 : 1;
   S.last=t;
+}
+
+/* ================= 재미 요소 =================
+   띠 등급 · 하루 목표 · 하루 수련 과제 · 배지.
+   모두 브라우저 안에서만 계산합니다.                                   */
+
+/* --- 띠 등급: 누적 XP 로 올라갑니다 --- */
+const BELTS=[
+  /* 레슨 하나가 대략 130~150 XP 입니다. 175 레슨을 다 하면 24,000 XP 안팎. */
+  {xp:0,     ko:'백띠',   jp:'白帯', c:'#E4E0D6'},
+  {xp:1000,  ko:'노란띠', jp:'黄帯', c:'#E0B34A'},
+  {xp:2500,  ko:'주황띠', jp:'橙帯', c:'#DE8B3F'},
+  {xp:5000,  ko:'초록띠', jp:'緑帯', c:'#4E9A72'},
+  {xp:9000,  ko:'파란띠', jp:'青帯', c:'#31578F'},
+  {xp:14000, ko:'밤띠',   jp:'茶帯', c:'#7A5230'},
+  {xp:20000, ko:'검은띠', jp:'黒帯', c:'#2B2B31'},
+  {xp:30000, ko:'사범',   jp:'師範', c:'#A8801F'}
+];
+function beltOf(xp){
+  let i=0; for(let k=0;k<BELTS.length;k++) if(xp>=BELTS[k].xp) i=k;
+  return {...BELTS[i], i, next: BELTS[i+1]||null};
+}
+
+/* --- 하루 목표 --- */
+const GOALS=[{v:120,ko:'가볍게',s:'레슨 하나'},{v:260,ko:'보통',s:'레슨 두 개'},
+             {v:500,ko:'열심히',s:'레슨 서너 개'},{v:900,ko:'몰아서',s:'레슨 예닐곱 개'}];
+function todayXp(){
+  const t=dayKey(new Date());
+  if(!S.dayXp || S.dayXp.d!==t) S.dayXp={d:t, v:0};
+  return S.dayXp.v;
+}
+function addTodayXp(n){ todayXp(); S.dayXp.v += n; }
+
+/* --- 하루 수련 과제 세 가지 --- */
+const QUEST_POOL=[
+  {id:'lesson', t:'레슨 끝내기',      unit:'레슨', need:2},
+  {id:'xp',     t:'경험치 모으기',    unit:'XP',   need:0},   // need 는 목표에서 가져옵니다
+  {id:'perfect',t:'하트 한 번도 안 잃기', unit:'회', need:1},
+  {id:'srs',    t:'복습 문제 맞히기',  unit:'개',   need:8},
+  {id:'combo',  t:'연속으로 맞히기',   unit:'콤보', need:6},
+  {id:'listen', t:'듣기 문제 맞히기',  unit:'개',   need:5},
+  {id:'sent',   t:'문장 문제 맞히기',  unit:'개',   need:6}
+];
+const QUEST_XP=40;
+/* 날짜로 고정된 순서 — 같은 날에는 새로고침해도 같은 과제가 나옵니다 */
+function questsToday(){
+  const t=dayKey(new Date());
+  if(S.quests && S.quests.d===t) return S.quests.list;
+  let h=0; for(const ch of t) h=(h*31+ch.charCodeAt(0))>>>0;
+  const rest=QUEST_POOL.filter(q=>q.id!=='lesson'&&q.id!=='xp');
+  const pick=rest[h%rest.length];
+  S.quests={d:t, list:[
+    {id:'lesson', need:2,           prog:0, got:false},
+    {id:'xp',     need:S.goal||260, prog:0, got:false},
+    {id:pick.id,  need:pick.need,   prog:0, got:false}
+  ]};
+  save();
+  return S.quests.list;
+}
+function questMeta(id){ return QUEST_POOL.find(q=>q.id===id)||{t:id,unit:''}; }
+/* 진행도를 올리고, 새로 끝난 과제를 돌려줍니다 */
+function questBump(id, n){
+  const list=questsToday(); const out=[];
+  list.forEach(q=>{
+    if(q.id!==id || q.got) return;
+    q.prog=Math.min(q.need, q.prog+n);
+    if(q.prog>=q.need){ q.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); out.push(q); }
+  });
+  if(out.length) save();
+  return out;
+}
+
+/* --- 배지 --- */
+const BADGES=[
+  {id:'first',  n:'첫 수련',     d:'레슨을 하나 끝냈습니다',        jp:'初'},
+  {id:'ten',    n:'열 걸음',     d:'레슨 10개',                     jp:'十'},
+  {id:'fifty',  n:'오십 고개',   d:'레슨 50개',                     jp:'五十'},
+  {id:'hundred',n:'백 번의 수련',d:'레슨 100개',                    jp:'百'},
+  {id:'kana',   n:'문자 통달',   d:'문자 트랙을 모두 마쳤습니다',   jp:'字'},
+  {id:'st3',    n:'사흘 연속',   d:'3일 연속 학습',                 jp:'三'},
+  {id:'st7',    n:'일주일 연속', d:'7일 연속 학습',                 jp:'七'},
+  {id:'st30',   n:'한 달 연속',  d:'30일 연속 학습',                jp:'月'},
+  {id:'w100',   n:'백 단어',     d:'익힌 항목 100개',               jp:'語'},
+  {id:'w300',   n:'삼백 단어',   d:'익힌 항목 300개',               jp:'彙'},
+  {id:'pf5',    n:'무결점',      d:'하트를 지킨 레슨 5회',          jp:'無'},
+  {id:'owl',    n:'올빼미',      d:'밤 12시~새벽 4시에 학습',       jp:'夜'},
+  {id:'lark',   n:'새벽 수련',   d:'아침 5시~7시에 학습',           jp:'朝'}
+];
+function checkBadges(){
+  const got=[], n=Object.keys(S.done).length, learned=Object.keys(S.srs).length;
+  const hr=new Date().getHours();
+  const kanaDone=(TRACKS.kana||[]).length>0 && (TRACKS.kana||[]).every(l=>S.done[l.id]);
+  const give=id=>{ if(!S.badges[id]){ S.badges[id]=dayKey(new Date()); got.push(BADGES.find(b=>b.id===id)); } };
+  if(n>=1) give('first');
+  if(n>=10) give('ten');
+  if(n>=50) give('fifty');
+  if(n>=100) give('hundred');
+  if(kanaDone) give('kana');
+  if(S.streak>=3) give('st3');
+  if(S.streak>=7) give('st7');
+  if(S.streak>=30) give('st30');
+  if(learned>=100) give('w100');
+  if(learned>=300) give('w300');
+  if((S.perfects||0)>=5) give('pf5');
+  if(hr>=0&&hr<4) give('owl');
+  if(hr>=5&&hr<7) give('lark');
+  if(got.length) save();
+  return got;
 }
 
 /* ---------------- 3. HELPERS ---------------- */
@@ -2075,6 +2261,7 @@ const ICON={
   moon:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>',
   note:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 3 9 5.2V15a3.2 3.2 0 1 0 2 2.95V8.9l7-1.4v5.1a3.2 3.2 0 1 0 2 2.95V3z"/></svg>',
   spk:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm13.5 3c0-1.6-.9-3-2.2-3.7v7.4c1.3-.7 2.2-2.1 2.2-3.7z"/></svg>',
+  turtle:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 6c-3.6 0-6.5 2.3-6.5 5.4 0 .9.2 1.7.7 2.5H4a1 1 0 0 0 0 2h1.9l-.5 1.4a1 1 0 0 0 1.9.7l.7-2.1h8l.7 2.1a1 1 0 0 0 1.9-.7l-.5-1.4H20a1 1 0 0 0 0-2h-2.2c.4-.8.7-1.6.7-2.5C18.5 8.3 15.6 6 12 6zm9.3 3.6-2 .6a1 1 0 0 0 .5 1.9l2-.6a1 1 0 0 0-.5-1.9z"/></svg>',
   mute:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9.5l4.5 4.5M20.5 9.5L16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
 
@@ -2283,17 +2470,39 @@ function loadVoices(){
   if(vs.length){ VOICES_SEEN=true; JA_VOICE=vs.find(v=>v.lang&&v.lang.toLowerCase().indexOf('ja')===0)||null; }
 }
 if(TTS){ loadVoices(); speechSynthesis.addEventListener('voiceschanged', loadVoices); }
-function speak(text){
-  if(!TTS||!text) return;
+
+/* iOS·사파리는 사용자가 화면을 한 번 건드리기 전에는 소리를 내주지 않습니다.
+   첫 터치 때 조용한 발화를 흘려보내 음성 엔진을 깨워 둡니다.              */
+let TTS_WARM=false;
+function warmTTS(){
+  if(!TTS || TTS_WARM) return;
+  TTS_WARM=true;
   try{
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='ja-JP'; u.rate=.82; u.pitch=1;
-    if(JA_VOICE) u.voice=JA_VOICE;
+    loadVoices();
+    const u=new SpeechSynthesisUtterance(' ');
+    u.volume=0; u.lang='ja-JP';
     speechSynthesis.speak(u);
   }catch(e){}
 }
-/* audio exercises only when a Japanese voice exists (or list not yet populated on iOS) */
+function speak(text, slow){
+  if(!TTS||!text) return;
+  try{
+    warmTTS();
+    speechSynthesis.cancel();
+    /* 사파리에서 cancel 직후의 speak 이 삼켜지는 일이 있어 한 박자 둡니다 */
+    setTimeout(()=>{
+      try{
+        const u=new SpeechSynthesisUtterance(text);
+        u.lang='ja-JP'; u.rate= slow ? .45 : .82; u.pitch=1;
+        if(JA_VOICE) u.voice=JA_VOICE;
+        speechSynthesis.speak(u);
+      }catch(e){}
+    }, 60);
+  }catch(e){}
+}
+/* 스피커 버튼은 음성 기능만 있으면 보여 줍니다 */
+const canSpeak = () => TTS;
+/* 듣기 '문제'는 일본어 목소리가 확인될 때만 냅니다 */
 function audioOK(){ return TTS && (JA_VOICE || !VOICES_SEEN); }
 
 /* ---------------- 4. EXERCISE BUILDER ---------------- */
@@ -2385,6 +2594,60 @@ function renderHome(){
     </div>`;
   }
 
+  /* ---- 띠 등급 ---- */
+  const belt=beltOf(S.xp);
+  const bpct = belt.next ? Math.min(100, Math.round((S.xp-belt.xp)/(belt.next.xp-belt.xp)*100)) : 100;
+  h+=`<div class="beltbar">
+    <div class="beltchip jp" style="background:${belt.c}${belt.i<=1?';color:#5A5348':''}">${belt.jp}</div>
+    <div class="bt">
+      <div class="bn">${belt.ko} · 누적 ${S.xp} XP</div>
+      <div class="bp"><i style="width:${bpct}%"></i></div>
+      <div class="bs">${belt.next
+        ? '다음 '+belt.next.ko+'까지 '+(belt.next.xp-S.xp)+' XP'
+        : '가장 높은 자리입니다. 여기까지 온 사람은 많지 않아요.'}</div>
+    </div>
+  </div>`;
+
+  /* ---- 오늘 카드 ---- */
+  const tXp=todayXp(), goal=S.goal||260;
+  const gp=Math.min(1, tXp/goal), C=2*Math.PI*27;
+  const wk=[]; for(let i=6;i>=0;i--){ const d=new Date(Date.now()-i*864e5); wk.push({k:dayKey(d), l:'일월화수목금토'[d.getDay()], t:i===0}); }
+  const qs=questsToday();
+  h+=`<div class="today">
+    <div class="row1">
+      <div class="ring">
+        <svg width="66" height="66" viewBox="0 0 66 66" aria-hidden="true">
+          <circle cx="33" cy="33" r="27" fill="none" stroke="var(--paper-3)" stroke-width="8"/>
+          <circle cx="33" cy="33" r="27" fill="none" stroke="${gp>=1?'var(--gold)':'var(--shu)'}" stroke-width="8"
+                  stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-gp)}"/>
+        </svg>
+        <div class="rt">${tXp}</div>
+      </div>
+      <div class="gl">
+        <div class="gh">${gp>=1?'오늘 목표를 채웠어요':'오늘의 목표'}</div>
+        <div class="gs">${gp>=1
+          ? '연속 '+S.streak+'일째입니다. 더 해도 좋고, 여기서 접어도 좋아요.'
+          : (goal-tXp)+' XP 만 더 하면 됩니다. 레슨 하나면 충분해요.'}</div>
+        <button class="goalbtn" id="goalBtn">목표 바꾸기 (${goal} XP)</button>
+      </div>
+    </div>
+    <div class="week">${wk.map(d=>`<div class="d${S.act.indexOf(d.k)>=0?' on':''}${d.t?' now':''}">
+        <div class="dot">${S.act.indexOf(d.k)>=0?'✓':''}</div><div class="lb">${d.l}</div></div>`).join('')}</div>
+    <div class="quests">
+      <div class="qh">오늘의 수련 과제</div>
+      ${qs.map(q=>{ const m=questMeta(q.id); return `<div class="quest${q.got?' done':''}">
+        <div class="qi">${q.got?'✓':''}</div>
+        <div class="qb"><div class="qn">${esc(m.t)} ${q.need}${esc(m.unit)}</div>
+          <div class="qp"><i style="width:${Math.round(Math.min(1,q.prog/q.need)*100)}%"></i></div></div>
+        <div class="qv">${Math.min(q.prog,q.need)}/${q.need}</div>
+      </div>`; }).join('')}
+    </div>
+  </div>`;
+
+  /* ---- 배지 ---- */
+  h+=`<div class="badgerow">${BADGES.map(b=>`<button class="badge${S.badges[b.id]?' on':''}" data-badge="${b.id}">
+      <div class="bi jp">${b.jp}</div><div class="bl">${esc(b.n)}</div></button>`).join('')}</div>`;
+
   const dueN=srsDue().length, nextIn=srsNextInDays(), learned=Object.keys(S.srs).length;
   if(dueN || learned){
     h+=`<div class="srscard${dueN?' due':''}">
@@ -2474,6 +2737,16 @@ function renderHome(){
   };
   const rb=$('#reviewBtn'); if(rb) rb.onclick=startReview;
   const sb=$('#srsBtn'); if(sb) sb.onclick=startSrs;
+
+  const gb=$('#goalBtn');
+  if(gb) gb.onclick=()=>{ sfx('tap'); openGoalSheet(); };
+  app.querySelectorAll('[data-badge]').forEach(b2=>b2.onclick=()=>{
+    const bd=BADGES.find(x=>x.id===b2.dataset.badge); if(!bd) return;
+    sfx('tap');
+    const day=S.badges[bd.id];
+    openSheet(bd.n, bd.d + (day? ' — '+day+' 에 얻었습니다.' : ' (아직입니다)'),
+      '닫기', closeSheet, '', closeSheet);
+  });
   const bk=$('#bkOpen'); if(bk) bk.onclick=()=>{ sfx('tap'); renderBackup(); };
   const fb=$('#freeBtn'); if(fb) fb.onclick=()=>{ sfx('tap'); startFree(); };
   const fa=$('#fnAgain'); if(fa) fa.onclick=()=>{ sfx('tap');
@@ -2574,6 +2847,18 @@ function mergeProgress(a, b){
   if(db > da){ out.last=b.last; out.streak=b.streak|0; }
   else if(da > db){ out.last=a.last; out.streak=a.streak|0; }
   else { out.last=a.last||b.last||null; out.streak=Math.max(a.streak|0, b.streak|0); }
+
+  // 배지: 합집합. 먼저 얻은 날짜를 남깁니다.
+  out.badges = Object.assign({}, b.badges||{}, a.badges||{});
+  const bb=b.badges||{};
+  for(const k in bb) if(!out.badges[k] || bb[k] < out.badges[k]) out.badges[k]=bb[k];
+
+  // 학습한 날: 합집합 (최근 120일만)
+  out.act = [...new Set([...(a.act||[]), ...(b.act||[])])].slice(-120);
+
+  // 무결점 레슨 수 · 하루 목표: 더 큰 쪽 / 최근 쪽
+  out.perfects = Math.max(a.perfects|0, b.perfects|0);
+  out.goal = (db > da ? b.goal : a.goal) || a.goal || b.goal || 260;
 
   return out;
 }
@@ -2819,11 +3104,16 @@ const CLOUD = {
 /* 서버에 올리고 내리는 것은 진도뿐입니다 — 테마·소리 설정은 기기별로 둡니다. */
 function snapshotOf(s){
   return { xp:s.xp|0, streak:s.streak|0, last:s.last||null,
-           done:s.done||{}, mistakes:s.mistakes||[], srs:s.srs||{}, seenG:s.seenG||{} };
+           done:s.done||{}, mistakes:s.mistakes||[], srs:s.srs||{}, seenG:s.seenG||{},
+           badges:s.badges||{}, act:s.act||[], perfects:s.perfects|0, goal:s.goal||260 };
 }
 function applyProgress(p){
   S.xp=p.xp|0; S.streak=p.streak|0; S.last=p.last||null;
   S.done=p.done||{}; S.mistakes=p.mistakes||[]; S.srs=p.srs||{}; S.seenG=p.seenG||{};
+  if(p.badges) S.badges=p.badges;
+  if(p.act) S.act=p.act;
+  if(p.perfects!=null) S.perfects=p.perfects|0;
+  if(p.goal) S.goal=p.goal;
   save();
 }
 
@@ -3029,12 +3319,17 @@ function renderExercise(){
   const e=G.queue[G.i];
   G.answered=false; G.sel=null; G.built=[]; G.typed=''; G.ms=null;
   const combo = G.combo>=3 ? `<span class="combo">${ICON.bolt}${G.combo} 콤보</span>` : '';
-  const say = txt => audioOK()? `<button class="speaker" data-say="${esc(txt)}">${ICON.sound} 듣기</button>` : '';
+  const say = (txt, big) => canSpeak()
+    ? `<div class="sayrow">
+         <button class="speaker${big?' big':''}" data-say="${esc(txt)}" aria-label="다시 듣기">${ICON.sound} ${big?'다시 듣기':'듣기'}</button>
+         <button class="speaker slow" data-say="${esc(txt)}" data-slow="1" aria-label="느리게 듣기">${ICON.turtle} 느리게</button>
+       </div>` : '';
   let body='', footer='';
 
   if(e.kind==='mcq'){
+    const tap = e.audio && canSpeak();
     const head = e.jp
-      ? `<div class="qjp jp${e.jp && [...e.jp].length<=2 ? ' solo':''}">${esc(e.jp)}</div>${e.kana&&e.kana!==e.jp?`<div class="qkana jp">${esc(e.kana)}</div>`:''}
+      ? `<div class="qjp jp${e.jp && [...e.jp].length<=2 ? ' solo':''}${tap?' tappable':''}"${tap?` data-say="${esc(e.audio)}" role="button" aria-label="눌러서 듣기"`:''}>${esc(e.jp)}</div>${e.kana&&e.kana!==e.jp?`<div class="qkana jp">${esc(e.kana)}</div>`:''}
          ${e.audio?`<div style="margin-top:16px">${say(e.audio)}</div>`:''}`
       : `<div class="qko">${esc(e.ko)}</div>`;
     body=`<div class="prompt-label">${esc(e.q)}${combo}</div>${head}
@@ -3043,7 +3338,7 @@ function renderExercise(){
   }
   else if(e.kind==='listen'){
     body=`<div class="prompt-label">${esc(e.q)}${combo}</div>
-      <div style="margin:6px 0 2px"><button class="speaker big" data-say="${esc(e.audio)}">${ICON.sound} 다시 듣기</button></div>
+      <div style="margin:6px 0 2px">${say(e.audio, true)}</div>
       <div class="qhint">소리를 듣고 알맞은 것을 고르세요.</div>
       <div class="opts">${e.options.map(o=>`<button class="opt jp" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
     footer=`<button class="cta" id="check" disabled>확인</button>`;
@@ -3051,7 +3346,7 @@ function renderExercise(){
   else if(e.kind==='assemble'){
     body=`<div class="prompt-label">${esc(e.q)}${combo}</div>
       <div class="qko">${esc(e.ko)}</div>
-      ${e.audio&&audioOK()?`<div style="margin-top:16px">${say(e.audio)}</div>`:''}
+      ${e.audio?`<div style="margin-top:16px">${say(e.audio)}</div>`:''}
       <div class="answerline" id="ansLine"></div>
       <div class="answerline second"></div>
       <div class="bank" id="bank">${e.tokens.map((t,i)=>`<button class="tok jp" data-i="${i}">${esc(t)}</button>`).join('')}</div>`;
@@ -3073,7 +3368,7 @@ function renderExercise(){
   else if(e.kind==='type'){
     body=`<div class="prompt-label">${esc(e.q)}${combo}</div>
       <div class="qko">${esc(e.ko)}</div>
-      ${audioOK()?`<div style="margin-top:14px">${say(e.audio)}</div>`:''}
+      ${e.audio?`<div style="margin-top:14px">${say(e.audio)}</div>`:''}
       <div class="typebox jp"><span id="typed"></span><span class="caret"></span></div>
       <div class="kbd" id="kbd">${kbdHTML()}</div>`;
     footer=`<button class="cta" id="check" disabled>확인</button>`;
@@ -3082,7 +3377,10 @@ function renderExercise(){
   app.innerHTML=shell(body, footer);
   petalsOff();
   $('#quitBtn').onclick=confirmQuit;
-  app.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>speak(b.dataset.say));
+  app.querySelectorAll('[data-say]').forEach(b=>b.onclick=ev=>{
+    ev.preventDefault(); ev.stopPropagation();
+    speak(b.dataset.say, b.dataset.slow==='1');
+  });
   $('#fbBtn').onclick=next;
 
   if(e.kind==='mcq'||e.kind==='listen') bindOptions(e);
@@ -3119,7 +3417,9 @@ function bindAssemble(e){
   }
   bank.querySelectorAll('.tok').forEach(t=>t.onclick=()=>{
     if(G.answered||t.classList.contains('ghost')) return;
-    G.built.push({i:+t.dataset.i, t:e.tokens[+t.dataset.i]}); paint();
+    const word=e.tokens[+t.dataset.i];
+    speak(word);                       // 고른 낱말을 하나씩 들려줍니다
+    G.built.push({i:+t.dataset.i, t:word}); paint();
   });
   paint();
   chk.onclick=()=>judge(G.built.map(b=>b.t).join(' ')===e.answer, e.answer);
@@ -3128,6 +3428,9 @@ function bindMatch(e){
   const ms=G.ms;
   app.querySelectorAll('.mcard').forEach(c=>c.onclick=()=>{
     if(G.answered||c.classList.contains('gone')) return;
+    if(c.dataset.side==='l'){                       // 일본어 카드는 누를 때마다 들려줍니다
+      const w0=e.pairs.find(p=>p.j===c.dataset.k); if(w0) speak(w0.k||w0.j);
+    }
     if(!ms.sel){ ms.sel=c; c.classList.add('sel'); return; }
     if(ms.sel===c){ c.classList.remove('sel'); ms.sel=null; return; }
     if(ms.sel.dataset.side===c.dataset.side){ ms.sel.classList.remove('sel'); ms.sel=c; c.classList.add('sel'); return; }
@@ -3191,6 +3494,21 @@ function bindType(e){
 }
 
 /* ---------------- 7. JUDGE + FEEDBACK ---------------- */
+/* 이 문제에서 들려줄 일본어 — 읽는 법(k)이 있으면 그쪽이 정확합니다 */
+function sayText(e){
+  if(!e) return null;
+  if(e.audio) return e.audio;
+  if(e.item) return e.item.k || e.item.j || null;
+  return null;
+}
+function fbSay(e){
+  const t=sayText(e);
+  return (t && canSpeak())
+    ? ` <button class="fb-say" data-say="${esc(t)}" aria-label="정답 듣기">${ICON.sound}</button>`
+     + `<button class="fb-say" data-say="${esc(t)}" data-slow="1" aria-label="정답 느리게 듣기">${ICON.turtle}</button>`
+    : '';
+}
+
 function judge(ok, correct, missCount){
   if(G.answered) return;
   G.answered=true;
@@ -3204,6 +3522,8 @@ function judge(ok, correct, missCount){
     });
   }
 
+  const wasKnown = !!(e.item && S.srs[srsKey(e.item)]);   // 이미 익힌 항목 = 복습
+
   let gain=0;
   if(ok){
     G.cleared++; G.combo++; G.best=Math.max(G.best,G.combo);
@@ -3212,12 +3532,24 @@ function judge(ok, correct, missCount){
     sfx(G.combo>=5?'combo':'correct');
     burst(innerWidth/2, innerHeight-130, G.combo>=5?46:28, G.combo>=5?1.25:1);
     xpPop(gain);
-    if(e.audio) speak(e.audio); else if(e.item&&e.item.k) speak(e.item.k);
+    speak(sayText(e));
     if(!FREE_MODE){                       // 자유 복습은 일정을 앞당기지 않습니다
       if(e.item) srsTouch(e.item, true);
       if(e.kind==='match' && e.pairs) e.pairs.forEach(p=>srsTouch(p, true));
       if(e.item || e.pairs) save();
     }
+    /* 오늘의 과제 진행 */
+    const dn=[];
+    if(e.kind==='listen') dn.push(...questBump('listen',1));
+    if(e.item && e.item.t) dn.push(...questBump('sent',1));
+    if(wasKnown) dn.push(...questBump('srs',1));
+    const cq=(S.quests&&S.quests.list||[]).find(q=>q.id==='combo');
+    if(cq && !cq.got && G.combo>cq.prog){
+      cq.prog=Math.min(cq.need,G.combo);
+      if(cq.prog>=cq.need){ cq.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); dn.push(cq); }
+      save();
+    }
+    dn.forEach(q=>toast('과제 완료 · '+questMeta(q.id).t+' <b>+'+QUEST_XP+' XP</b>'));
   } else {
     G.combo=0;
     sfx('wrong'); setTimeout(()=>sfx('heart'),160);
@@ -3239,6 +3571,8 @@ function judge(ok, correct, missCount){
 
   const bar=app.querySelector('.bar>i'); if(bar) bar.style.width=Math.round(G.cleared/G.total*100)+'%';
 
+  if(!ok) setTimeout(()=>speak(sayText(e)), 420);   // 틀렸을 때도 바른 소리를 한 번 들려줍니다
+
   const dead = G.hearts<=0;
   const fb=$('#fb'), btn=$('#fbBtn');
   $('#fbMark').innerHTML = `<div class="neko-${ok?'happy':'sad'}">${nekoHead(ok?'happy':'sad')}</div>
@@ -3248,16 +3582,19 @@ function judge(ok, correct, missCount){
   if(ok){
     $('#fbTitle').textContent = praise[Math.floor(Math.random()*praise.length)];
     $('#fbBody').innerHTML = (e.item && e.item.m)
-      ? `<b>${esc(e.item.j)}</b>　${e.item.k&&e.item.k!==e.item.j?esc(e.item.k)+' · ':''}${esc(e.item.m)}`
+      ? `<b>${esc(e.item.j)}</b>${fbSay(e)}　${e.item.k&&e.item.k!==e.item.j?esc(e.item.k)+' · ':''}${esc(e.item.m)}`
       : '다섯 짝을 한 번에 모두 맞혔어요.';
     btn.className='cta shu';
   } else {
     $('#fbTitle').textContent='아쉬워요';
     $('#fbBody').innerHTML = e.kind==='match'
       ? `연결을 ${missCount}번 틀렸어요. 이 문제는 뒤에서 한 번 더 나옵니다.`
-      : `정답: <b>${esc(correct||e.answer)}</b>${(e.item&&e.item.m&&e.item.m!==(correct||e.answer))?`　${esc(e.item.m)}`:''}`;
+      : `정답: <b>${esc(correct||e.answer)}</b>${fbSay(e)}${(e.item&&e.item.m&&e.item.m!==(correct||e.answer))?`　${esc(e.item.m)}`:''}`;
     btn.className='cta';
   }
+  fb.querySelectorAll('[data-say]').forEach(b2=>b2.onclick=ev=>{
+    ev.preventDefault(); speak(b2.dataset.say, b2.dataset.slow==='1');
+  });
   if(dead){ btn.textContent='결과 보기'; btn.onclick=renderFail; }
   else btn.textContent='계속하기';
   $('#mainFooter').style.visibility='hidden';
@@ -3285,7 +3622,22 @@ function renderResult(){
     S.mistakes=S.mistakes.filter(j=>!asked.has(j)||stillWrong.has(j));
   }
   if(!S.firstDay) S.firstDay=dayKey(new Date());
-  bumpStreak(); save(); CLOUD.queue();
+  bumpStreak();
+
+  /* ---- 오늘 기록 · 과제 · 배지 ---- */
+  const beforeBelt=beltOf(S.xp-totalXP).i;
+  const wasUnder = todayXp() < (S.goal||260);
+  addTodayXp(totalXP);
+  if(G.hearts===5) S.perfects=(S.perfects||0)+1;
+  const doneQ=[
+    ...questBump('lesson',1),
+    ...questBump('xp',totalXP),
+    ...(G.hearts===5 ? questBump('perfect',1) : [])
+  ];
+  const goalHit = wasUnder && todayXp() >= (S.goal||260);
+  const newBadges = checkBadges();
+  const beltUp = beltOf(S.xp).i > beforeBelt ? beltOf(S.xp) : null;
+  save(); CLOUD.queue();
   const fin = G.lesson.isReview ? null : newlyFinished();
   if(!G.lesson.isReview) JUST_DONE=G.lesson.id;
   sfx('complete');
@@ -3304,6 +3656,12 @@ function renderResult(){
       <div class="scard shu"><div class="h">정확도</div><div class="v">${acc}%</div></div>
       <div class="scard"><div class="h">최고 콤보</div><div class="v">${G.best}</div></div>
     </div>
+    ${goalHit?`<p class="sub" style="margin-top:14px"><b>오늘 목표 ${S.goal||260} XP 달성.</b> 연속 ${S.streak}일째입니다.</p>`:''}
+    ${beltUp?`<p class="sub" style="margin-top:14px"><b>${beltUp.ko}로 올라섰습니다.</b> 누적 ${S.xp} XP.</p>`:''}
+    ${doneQ.length?`<p class="sub" style="margin-top:14px">오늘의 과제 ${doneQ.length}개 완료 · <b>+${doneQ.length*QUEST_XP} XP</b></p>`:''}
+    ${newBadges.length?`<div class="newbadges">${newBadges.map(b=>
+      `<div class="badge on"><div class="bi jp">${b.jp}</div><div class="bl">${esc(b.n)}</div></div>`).join('')}</div>
+      <p class="sub">새 배지를 얻었습니다.</p>`:''}
     ${wl.length?`<div class="review"><h3>다시 볼 표현</h3><ul>${wl.map(w=>
       `<li><span class="j">${esc(w.j)}</span><span class="k">${esc(w.m)}</span></li>`).join('')}</ul></div>`:''}
     <div style="width:100%"><button class="cta shu" id="homeBtn">계속하기</button></div>
@@ -3342,6 +3700,40 @@ function replay(){
   else startLesson(LESSONS.find(l=>l.id===G.lesson.id));
 }
 
+/* 화면 위로 잠깐 떠오르는 알림 — 과제를 끝냈을 때 씁니다 */
+function toast(html){
+  const el=document.createElement('div');
+  el.className='toast'; el.innerHTML=html;
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(), 350); }, 2600);
+}
+
+/* 하루 목표 고르기 */
+function openGoalSheet(){
+  closeSheet();
+  const bg=document.createElement('div'); bg.className='sheet-bg'; bg.id='sheetBg';
+  const sh=document.createElement('div'); sh.className='sheet'; sh.id='sheet';
+  sh.innerHTML=`<h3>하루 목표</h3>
+    <p>무리하지 않는 쪽이 오래 갑니다. 언제든 바꿀 수 있어요.</p>
+    <div class="opts" style="margin-top:14px">
+      ${GOALS.map(g=>`<button class="opt${(S.goal||260)===g.v?' right':''}" data-goal="${g.v}">
+        ${g.ko} · 하루 ${g.v} XP <span style="color:var(--ink-3);font-weight:500">· ${g.s}</span></button>`).join('')}
+    </div>
+    <button class="linkbtn" id="sheetS" style="width:100%;margin-top:12px">닫기</button>`;
+  document.body.append(bg, sh);
+  requestAnimationFrame(()=>sh.classList.add('show'));
+  bg.onclick=closeSheet;
+  sh.querySelector('#sheetS').onclick=closeSheet;
+  sh.querySelectorAll('[data-goal]').forEach(b=>b.onclick=()=>{
+    S.goal=+b.dataset.goal;
+    /* 오늘 과제의 XP 목표도 함께 맞춥니다 */
+    const q=(S.quests&&S.quests.list||[]).find(x=>x.id==='xp');
+    if(q && !q.got) q.need=S.goal;
+    save(); sfx('tap'); closeSheet(); renderHome();
+  });
+}
+
 /* ---------------- 9. SHEET ---------------- */
 function openSheet(title, text, primaryLabel, primaryFn, secondaryLabel, secondaryFn){
   closeSheet();
@@ -3369,7 +3761,7 @@ initCanvases();
 renderHome();
 /* browsers require a gesture before audio; unlock on the first tap */
 addEventListener('pointerdown', function unlock(){
-  ac();
+  ac(); warmTTS();
   if(S.bgmOn) setMusic(true);
   removeEventListener('pointerdown', unlock);
 }, {once:false});
