@@ -534,6 +534,76 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .badge .bl{font-size:9.5px;color:var(--ink-3);margin-top:4px;line-height:1.25}
 .badge.on .bl{color:var(--ink-2);font-weight:700}
 
+/* ---- 리액션: 색 무대 · 콤보 · 화면 흔들림 ---- */
+/* 캐릭터가 검정·흰색 위주라 화면에서 묻힙니다. 뒤에 색 무대를 깔아 줍니다. */
+.nekoblock::after{
+  content:'';position:absolute;left:50%;top:52%;z-index:0;
+  width:min(152%,68vw);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(closest-side, var(--shu-soft) 0%, var(--shu-soft) 56%, transparent 78%);
+}
+.nekoblock.party::after{
+  background:radial-gradient(closest-side, var(--gold) 0%, transparent 70%);opacity:.34;
+}
+@supports (color: color-mix(in srgb, red 50%, transparent)){
+  .nekoblock::after{background:radial-gradient(closest-side,
+      color-mix(in srgb, var(--shu) 38%, transparent) 0%,
+      color-mix(in srgb, var(--shu) 26%, transparent) 56%, transparent 78%)}
+  .nekoblock.party::after{background:radial-gradient(closest-side, color-mix(in srgb, var(--gold) 62%, transparent) 0%, transparent 70%);opacity:1}
+}
+.nekoblock>*{position:relative;z-index:1}
+/* 완주 순간에만 도는 빛살 — SVG 라 브라우저를 가리지 않습니다 */
+.nekoblock>.rays{
+  position:absolute;left:50%;top:47%;z-index:0;pointer-events:none;overflow:visible;
+  width:min(205%,82vw);aspect-ratio:1;transform:translate(-50%,-50%);
+}
+.nekoblock .rays .spin{transform-origin:50% 50%;animation:rayspin 22s linear infinite}
+@keyframes rayspin{to{transform:rotate(360deg)}}
+
+/* 콤보가 쌓일수록 눈에 띄게 */
+.combo{transition:background .2s,color .2s,box-shadow .2s}
+.combo.hot{background:var(--gold);color:#fff}
+.combo.fire{background:var(--shu);color:#fff;box-shadow:0 0 0 3px var(--shu-soft)}
+.combo.bump{animation:combobump .36s cubic-bezier(.2,1.7,.4,1)}
+@keyframes combobump{0%{transform:scale(1)}35%{transform:scale(1.45)}100%{transform:scale(1)}}
+
+/* 화면 한가운데 크게 뜨는 칭찬 */
+.cheerpop{
+  position:fixed;left:50%;top:36%;z-index:70;pointer-events:none;white-space:nowrap;
+  font-size:26px;font-weight:900;letter-spacing:-.01em;
+  background:var(--band);color:var(--on-band);border-radius:999px;padding:13px 26px;
+  box-shadow:0 12px 34px var(--drop);opacity:0;
+  animation:cheerpop 1.2s cubic-bezier(.2,1.5,.4,1) forwards;
+}
+.cheerpop.gold{background:var(--gold);color:#fff}
+.cheerpop.shu{background:var(--shu);color:#fff}
+@keyframes cheerpop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.5) rotate(-7deg)}
+  18%{opacity:1;transform:translate(-50%,-50%) scale(1.14) rotate(3deg)}
+  34%{transform:translate(-50%,-50%) scale(1) rotate(0)}
+  76%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-86%) scale(.93)}
+}
+
+/* 하트를 잃을 때 화면이 붉게 번쩍 */
+.hitflash{
+  position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at center, transparent 34%, rgba(216,64,42,.5) 100%);
+  animation:hitflash .5s ease-out forwards;
+}
+@keyframes hitflash{0%{opacity:0}16%{opacity:1}100%{opacity:0}}
+
+.shakeit{animation:bigshake .44s cubic-bezier(.36,.07,.19,.97)}
+@keyframes bigshake{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(5px)}
+  30%,50%,70%{transform:translateX(-9px)}40%,60%{transform:translateX(9px)}}
+.nudge{animation:nudgeup .32s ease-out}
+@keyframes nudgeup{0%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+
+/* 채점 줄의 캐릭터 얼굴이 더 크게 반응하도록 */
+.fb-mark .neko-happy{animation:markpop .52s cubic-bezier(.2,1.8,.4,1)}
+.fb-mark .neko-sad{animation:markwob .52s ease-in-out}
+@keyframes markpop{0%{transform:scale(.4) rotate(-14deg)}55%{transform:scale(1.24) rotate(7deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes markwob{0%,100%{transform:rotate(0)}20%{transform:rotate(-11deg)}60%{transform:rotate(10deg)}}
+
 .srscard{margin:4px 0 2px;padding:15px 16px;border-radius:16px;border:1.5px solid var(--line);
   background:var(--paper-2);display:flex;align-items:center;gap:12px}
 .srscard.due{border-color:var(--shu);background:var(--shu-soft)}
@@ -2279,7 +2349,8 @@ const FACE={
 };
 FACE.cheer=FACE.happy;
 function neko(mood){
-  const src=FACE[mood]||FACE.idle;
+  /* 환호 포즈는 따로 그린 그림이 없어 기쁨 포즈를 씁니다 */
+  const src=FACE[mood==='cheer'?'happy':mood]||FACE.idle;
   return `<img class="neko" src="${src}" alt="선생님 캐릭터" draggable="false">`;
 }
 const FACE_HEAD={
@@ -2289,8 +2360,31 @@ const FACE_HEAD={
 function nekoHead(mood){
   return `<img class="neko" src="${FACE_HEAD[mood]||FACE_HEAD.happy}" alt="선생님 캐릭터" draggable="false">`;
 }
+/* 흑백 캐릭터가 화면에서 뜨도록 뒤에 까는 빛살 — 금색과 주홍이 번갈아 16갈래.
+   안쪽(캐릭터 뒤)과 바깥쪽 끝은 마스크로 흐려서 글씨를 가리지 않습니다. */
+const RAYS=(()=>{
+  const pt=(r,t)=>(Math.cos(t)*r).toFixed(1)+','+(Math.sin(t)*r).toFixed(1);
+  const arm=[[],[]];
+  for(let i=0;i<16;i++){
+    const a=i*Math.PI/8, w=.05;
+    arm[i%2].push('M'+pt(26,a-w)+'L'+pt(98,a-w*2.6)+'L'+pt(98,a+w*2.6)+'L'+pt(26,a+w)+'Z');
+  }
+  return '<svg class="rays" viewBox="-100 -100 200 200" aria-hidden="true">'
+    +'<defs><radialGradient id="nkFade">'
+    +'<stop offset=".16" stop-color="#fff" stop-opacity="0"/>'
+    +'<stop offset=".44" stop-color="#fff" stop-opacity="1"/>'
+    +'<stop offset=".86" stop-color="#fff" stop-opacity="0"/>'
+    +'</radialGradient>'
+    +'<mask id="nkMask"><rect x="-100" y="-100" width="200" height="200" fill="url(#nkFade)"/></mask>'
+    +'</defs>'
+    +'<g class="spin" mask="url(#nkMask)">'
+    +'<path d="'+arm[0].join('')+'" fill="var(--gold)" opacity=".42"/>'
+    +'<path d="'+arm[1].join('')+'" fill="var(--shu)" opacity=".3"/>'
+    +'</g></svg>';
+})();
 function nekoBlock(mood, stampChar, size, grey){
-  return `<div class="nekoblock" style="width:${size}px">
+  const party = mood==='cheer';
+  return `<div class="nekoblock${party?' party':''}" style="width:${size}px">${party?RAYS:''}
     <div class="neko-${mood}">${neko(mood)}</div>
     ${stampChar?`<div class="stamp jp ${grey?'grey':''}">${stampChar}</div>`:''}
   </div>`;
@@ -2330,15 +2424,17 @@ function noise(at, dur, gain){
   s.connect(f); f.connect(g); g.connect(SND.sfxBus); s.start(at);
 }
 const YO=[261.63,293.66,349.23,392.00,440.00,523.25,587.33,698.46];  // 요나누키 음계
-function sfx(name){
+function sfx(name, lvl){
   if(!S.sfxOn) return;
   const c=ac(); if(!c) return;
   const t=c.currentTime;
+  /* 연속으로 맞히면 같은 소리가 반음씩 올라갑니다 — 쌓이는 느낌이 납니다 */
+  const up=Math.pow(2, Math.min(Math.max(lvl|0,0),8)/12);
   if(name==='correct'){
-    pluck(YO[3],t,.5,.3);pluck(YO[5],t+.07,.55,.26);pluck(YO[7],t+.14,.7,.2,'sine');
+    pluck(YO[3]*up,t,.5,.3);pluck(YO[5]*up,t+.07,.55,.26);pluck(YO[7]*up,t+.14,.7,.2,'sine');
   } else if(name==='combo'){
-    pluck(YO[3],t,.4,.26);pluck(YO[5],t+.06,.4,.24);pluck(YO[7],t+.12,.5,.22);
-    pluck(YO[7]*1.5,t+.2,.8,.16,'sine');pluck(YO[7]*2,t+.28,.9,.1,'sine');
+    pluck(YO[3]*up,t,.4,.26);pluck(YO[5]*up,t+.06,.4,.24);pluck(YO[7]*up,t+.12,.5,.22);
+    pluck(YO[7]*1.5*up,t+.2,.8,.16,'sine');pluck(YO[7]*2*up,t+.28,.9,.1,'sine');
   } else if(name==='wrong'){
     pluck(196,t,.32,.22,'sine');pluck(146.83,t+.1,.5,.2,'sine');noise(t,.08,.05);
   } else if(name==='heart'){
@@ -2353,6 +2449,17 @@ function sfx(name){
     for(let i=0;i<7;i++) pluck(YO[3+(i%5)]*2,t+.62+i*.055,.5,.07,'sine');
   } else if(name==='fail'){
     [7,5,3,0].forEach((n,i)=>pluck(YO[n]/2,t+i*.16,.7,.2,'sine'));
+  } else if(name==='streak'){          // 콤보 고비를 넘었을 때
+    [0,2,4,5].forEach((n,i)=>pluck(YO[n]*2,t+i*.05,.35,.15,'sine'));
+  } else if(name==='lvlup'){           // 승급
+    [0,2,4,7].forEach((n,i)=>pluck(YO[n],t+i*.1,1.1,.26));
+    [0,4,7].forEach((n,i)=>pluck(YO[n]*2,t+.44+i*.09,1.3,.13,'sine'));
+    for(let i=0;i<9;i++) pluck(YO[(3+i)%8]*2,t+.78+i*.05,.5,.055,'sine');
+  } else if(name==='quest'){           // 오늘의 과제 완료
+    pluck(YO[4],t,.3,.22);pluck(YO[7],t+.08,.45,.2,'sine');pluck(YO[7]*1.5,t+.16,.6,.12,'sine');
+  } else if(name==='goal'){            // 하루 목표 달성
+    [4,5,7].forEach((n,i)=>pluck(YO[n],t+i*.09,.7,.24));
+    pluck(YO[7]*2,t+.34,1.1,.12,'sine');
   }
 }
 /* looping koto-ish background phrase */
@@ -2465,6 +2572,49 @@ function xpPop(amount){
   d.style.left=(innerWidth/2)+'px'; d.style.top=(innerHeight*.56)+'px';
   document.body.appendChild(d);
   setTimeout(()=>d.remove(),1100);
+}
+
+/* ---------------- 리액션 ---------------- */
+function shakeScreen(hard){
+  if(RM) return;
+  const el=document.getElementById('app'); if(!el) return;
+  el.classList.remove('shakeit','nudge'); void el.offsetWidth;
+  el.classList.add(hard?'shakeit':'nudge');
+  setTimeout(()=>el.classList.remove('shakeit','nudge'), 540);
+}
+function hitFlash(){
+  if(RM) return;
+  const d=document.createElement('div'); d.className='hitflash';
+  document.body.appendChild(d); setTimeout(()=>d.remove(), 540);
+}
+/* 화면 한가운데 크게 뜨는 칭찬 — 콤보·승급·목표 달성에 씁니다 */
+function cheerPop(text, tone){
+  if(RM) return;
+  document.querySelectorAll('.cheerpop').forEach(e=>e.remove());
+  const d=document.createElement('div');
+  d.className='cheerpop'+(tone?' '+tone:''); d.textContent=text;
+  document.body.appendChild(d); setTimeout(()=>d.remove(), 1300);
+}
+/* 숫자가 올라가는 연출 */
+function countUp(el, to, ms){
+  if(!el) return;
+  if(RM){ el.textContent='+'+to; return; }
+  const t0=performance.now();
+  const tick=now=>{
+    const k=Math.min(1,(now-t0)/(ms||900));
+    el.textContent='+'+Math.round(to*(1-Math.pow(1-k,3)));
+    if(k<1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+/* 콤보가 특정 수에 닿을 때만 크게 칭찬합니다 — 매번 하면 금방 질립니다 */
+const COMBO_WORDS={3:'좋아요!',5:'불붙었다!',8:'멈추지 마세요',12:'대단해요!',16:'무시무시',20:'전설!'};
+function comboCheer(n){
+  const w=COMBO_WORDS[n];
+  if(!w) return;
+  cheerPop(n+' 연속 · '+w, n>=12?'shu':'gold');
+  sfx('streak'); shakeScreen(false);
+  burst(innerWidth/2, innerHeight*.42, 26, 1.1);
 }
 
 /* ---------------- speech ---------------- */
@@ -3338,7 +3488,9 @@ function shell(inner, footer){
 function renderExercise(){
   const e=G.queue[G.i];
   G.answered=false; G.sel=null; G.built=[]; G.typed=''; G.ms=null;
-  const combo = G.combo>=3 ? `<span class="combo">${ICON.bolt}${G.combo} 콤보</span>` : '';
+  const combo = G.combo>=3
+    ? `<span class="combo bump${G.combo>=10?' fire':(G.combo>=5?' hot':'')}">${ICON.bolt}${G.combo} 콤보</span>`
+    : '';
   const say = (txt, big) => canSpeak()
     ? `<div class="sayrow">
          <button class="speaker${big?' big':''}" data-say="${esc(txt)}" aria-label="다시 듣기">${ICON.sound} ${big?'다시 듣기':'듣기'}</button>
@@ -3549,9 +3701,10 @@ function judge(ok, correct, missCount){
     G.cleared++; G.combo++; G.best=Math.max(G.best,G.combo);
     gain = 10 + (G.combo>=5?5:0) + (e.kind==='assemble'||e.kind==='type'?5:0);
     G.xp+=gain;
-    sfx(G.combo>=5?'combo':'correct');
+    sfx(G.combo>=5?'combo':'correct', G.combo-1);
     burst(innerWidth/2, innerHeight-130, G.combo>=5?46:28, G.combo>=5?1.25:1);
     xpPop(gain);
+    comboCheer(G.combo);
     speak(sayText(e));
     if(!FREE_MODE){                       // 자유 복습은 일정을 앞당기지 않습니다
       if(e.item) srsTouch(e.item, true);
@@ -3569,10 +3722,12 @@ function judge(ok, correct, missCount){
       if(cq.prog>=cq.need){ cq.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); dn.push(cq); }
       save();
     }
+    if(dn.length) sfx('quest');
     dn.forEach(q=>toast('과제 완료 · '+questMeta(q.id).t+' <b>+'+QUEST_XP+' XP</b>'));
   } else {
     G.combo=0;
     sfx('wrong'); setTimeout(()=>sfx('heart'),160);
+    shakeScreen(true); hitFlash();
     G.hearts=Math.max(0,G.hearts-1);
     if(e.item){
       G.wrong.push(e.item);
@@ -3695,6 +3850,11 @@ function renderResult(){
     <button class="linkbtn" id="againBtn">이 레슨 다시 하기</button>
   </div>`;
   petalsOn();
+  countUp(document.querySelector('.scard.gold .v'), totalXP, 950);
+  if(beltUp) setTimeout(()=>{ cheerPop(beltUp.ko+' 승급!','gold'); sfx('lvlup');
+    burst(innerWidth*.5, innerHeight*.5, 60, 1.6); }, 950);
+  else if(goalHit) setTimeout(()=>{ cheerPop('오늘 목표 달성!','gold'); sfx('goal'); }, 950);
+  else if(doneQ.length) setTimeout(()=>sfx('quest'), 950);
   $('#homeBtn').onclick=()=>{ sfx('tap'); if(fin) renderFinish(fin); else renderHome(); };
   const nb=$('#nextBtn');
   if(nb) nb.onclick=()=>{ sfx('tap'); startLesson(nxt); };
