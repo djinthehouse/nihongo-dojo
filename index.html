@@ -604,6 +604,15 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 @keyframes markpop{0%{transform:scale(.4) rotate(-14deg)}55%{transform:scale(1.24) rotate(7deg)}100%{transform:scale(1) rotate(0)}}
 @keyframes markwob{0%,100%{transform:rotate(0)}20%{transform:rotate(-11deg)}60%{transform:rotate(10deg)}}
 
+/* 완주 화면의 승급·목표 달성 한 줄을 알약으로 도드라지게 */
+.center-screen .sub.win{
+  display:inline-block;background:var(--gold);color:#fff;border-radius:999px;
+  padding:9px 18px;font-weight:800;font-size:14.5px;box-shadow:0 6px 18px var(--drop);
+  animation:winpop .6s cubic-bezier(.2,1.6,.4,1) both;
+}
+.center-screen .sub.win b{color:#fff}
+@keyframes winpop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+
 .srscard{margin:4px 0 2px;padding:15px 16px;border-radius:16px;border:1.5px solid var(--line);
   background:var(--paper-2);display:flex;align-items:center;gap:12px}
 .srscard.due{border-color:var(--shu);background:var(--shu-soft)}
@@ -2575,6 +2584,12 @@ function xpPop(amount){
 }
 
 /* ---------------- 리액션 ---------------- */
+/* 받침이 없거나 ㄹ 이면 '로', 아니면 '으로' */
+function josaRo(s){
+  const c=String(s||'').charCodeAt(String(s||'').length-1);
+  const j=(c>=0xAC00&&c<=0xD7A3)?(c-0xAC00)%28:0;
+  return (j===0||j===8)?'로':'으로';
+}
 function shakeScreen(hard){
   if(RM) return;
   const el=document.getElementById('app'); if(!el) return;
@@ -3835,8 +3850,8 @@ function renderResult(){
       <div class="scard shu"><div class="h">정확도</div><div class="v">${acc}%</div></div>
       <div class="scard"><div class="h">최고 콤보</div><div class="v">${G.best}</div></div>
     </div>
-    ${goalHit?`<p class="sub" style="margin-top:14px"><b>오늘 목표 ${S.goal||260} XP 달성.</b> 연속 ${S.streak}일째입니다.</p>`:''}
-    ${beltUp?`<p class="sub" style="margin-top:14px"><b>${beltUp.ko}로 올라섰습니다.</b> 누적 ${S.xp} XP.</p>`:''}
+    ${goalHit?`<p class="sub win" style="margin-top:14px"><b>오늘 목표 ${S.goal||260} XP 달성.</b> 연속 ${S.streak}일째입니다.</p>`:''}
+    ${beltUp?`<p class="sub win" style="margin-top:14px"><b>${beltUp.ko}${josaRo(beltUp.ko)} 올라섰습니다.</b> 누적 ${S.xp} XP.</p>`:''}
     ${doneQ.length?`<p class="sub" style="margin-top:14px">오늘의 과제 ${doneQ.length}개 완료 · <b>+${doneQ.length*QUEST_XP} XP</b></p>`:''}
     ${newBadges.length?`<div class="newbadges">${newBadges.map(b=>
       `<div class="badge on"><div class="bi jp">${b.jp}</div><div class="bl">${esc(b.n)}</div></div>`).join('')}</div>
@@ -3850,10 +3865,12 @@ function renderResult(){
     <button class="linkbtn" id="againBtn">이 레슨 다시 하기</button>
   </div>`;
   petalsOn();
+  /* 완주 화면에서는 떠다니는 알약 대신 줄 자체를 도드라지게 — 캐릭터를 가리지 않습니다 */
   countUp(document.querySelector('.scard.gold .v'), totalXP, 950);
-  if(beltUp) setTimeout(()=>{ cheerPop(beltUp.ko+' 승급!','gold'); sfx('lvlup');
-    burst(innerWidth*.5, innerHeight*.5, 60, 1.6); }, 950);
-  else if(goalHit) setTimeout(()=>{ cheerPop('오늘 목표 달성!','gold'); sfx('goal'); }, 950);
+  if(beltUp) setTimeout(()=>{ sfx('lvlup');
+    burst(innerWidth*.34, innerHeight*.46, 44, 1.5);
+    setTimeout(()=>burst(innerWidth*.66, innerHeight*.46, 44, 1.5), 180); }, 950);
+  else if(goalHit) setTimeout(()=>{ sfx('goal'); burst(innerWidth*.5, innerHeight*.5, 34, 1.2); }, 950);
   else if(doneQ.length) setTimeout(()=>sfx('quest'), 950);
   $('#homeBtn').onclick=()=>{ sfx('tap'); if(fin) renderFinish(fin); else renderHome(); };
   const nb=$('#nextBtn');
