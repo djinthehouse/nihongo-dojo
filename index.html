@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#14161A" media="(prefers-color-scheme: dark)">
 <meta name="description" content="일본어 JLPT N5–N4 학습 게임 — 히라가나·가타카나부터 단어 834개, 문장 224개까지. 간격 반복 복습으로 매일 조금씩.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C8352B'/%3E%3Ctext x='50' y='72' font-size='56' text-anchor='middle' fill='white' font-family='serif' font-weight='700'%3E道%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="にほんご道場">
 <meta property="og:title" content="にほんご道場 — 일본어 도장">
@@ -633,6 +635,118 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 }
 .lginput:focus{outline:0;border-color:var(--ai)}
 .lgerr{color:var(--shu);font-size:12.5px;font-weight:700;min-height:18px;margin:6px 0 10px}
+/* ================= 3탄: 스트릭 화면 · 온보딩 · 말하기 · 받아쓰기 · 보석 · 상점 · PWA ================= */
+
+/* ---- 스트릭 축하 ---- */
+.stkscreen{
+  position:fixed;inset:0;z-index:90;background:var(--paper);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px 22px calc(26px + env(safe-area-inset-bottom));text-align:center;
+  opacity:0;transform:scale(1.04);transition:opacity .25s ease, transform .3s cubic-bezier(.2,1.2,.4,1);
+}
+.stkscreen.show{opacity:1;transform:none}
+.stkscreen .stkglow{
+  position:absolute;left:50%;top:30%;width:min(120vw,560px);aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side, var(--shu-soft) 0%, transparent 72%);
+}
+.stkscreen.mile .stkglow{background:radial-gradient(closest-side, rgba(224,179,74,.42) 0%, transparent 72%)}
+.stkscreen>*{position:relative}
+.stkflame{width:120px;height:120px;color:var(--shu);transition:transform .5s cubic-bezier(.2,1.8,.4,1)}
+.stkflame svg{width:100%;height:100%;display:block;filter:drop-shadow(0 8px 18px rgba(239,107,69,.35))}
+.stkflame.big{transform:scale(1.18)}
+.stkscreen.mile .stkflame{color:var(--gold)}
+.stknum{font-size:88px;font-weight:900;line-height:1;color:var(--shu);margin-top:6px;letter-spacing:-.03em}
+.stkscreen.mile .stknum{color:var(--gold)}
+.stknum.pop{animation:stkpop .6s cubic-bezier(.2,1.8,.4,1)}
+@keyframes stkpop{0%{transform:scale(.4) translateY(20px);opacity:.2}60%{transform:scale(1.2)}100%{transform:none;opacity:1}}
+.stklab{font-size:21px;font-weight:900;margin-top:6px}
+.stkweek{display:flex;gap:9px;margin:26px 0 8px}
+.stkweek .d{display:flex;flex-direction:column;align-items:center;gap:6px}
+.stkweek .dot{width:34px;height:34px;border-radius:50%;background:var(--paper-3);display:grid;place-items:center;
+  color:#fff;font-size:15px;font-weight:900;transition:background .3s,transform .4s cubic-bezier(.2,1.8,.4,1)}
+.stkweek .d.on .dot{background:var(--shu)}
+.stkweek .d.now .dot{box-shadow:0 0 0 3px var(--shu-soft)}
+.stkweek .d.now.on .dot{transform:scale(1.15)}
+.stkweek .lb{font-size:11.5px;font-weight:700;color:var(--ink-3)}
+.stkmsg{font-size:15px;color:var(--ink-2);line-height:1.55;max-width:320px;margin:14px 0 26px;word-break:keep-all}
+.stkscreen .cta{width:min(100%,420px)}
+
+/* ---- 온보딩 ---- */
+.obwrap{padding:14px 20px 40px;max-width:560px;margin:0 auto}
+.obtop{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:18px}
+.obdots{display:flex;gap:6px;justify-content:center}
+.obdots i{width:26px;height:6px;border-radius:99px;background:var(--paper-3)}
+.obdots i.on{background:var(--shu)}
+.obq{font-size:24px;font-weight:900;letter-spacing:-.01em;margin:8px 0 20px;text-align:center}
+.obopts{display:flex;flex-direction:column;gap:10px}
+.obopt{
+  display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;
+  background:var(--paper-2);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;
+  padding:14px 16px;font-size:16px;font-weight:800;color:var(--ink);
+  transition:transform .1s ease, border-color .15s, background .15s;
+}
+.obopt:active{transform:translateY(2px);border-bottom-width:2px}
+.obopt.sel{border-color:var(--ai);background:var(--ai-soft)}
+.obopt.rec{border-color:var(--gold)}
+.obopt .oi{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:grid;place-items:center;
+  background:var(--paper-3);font-size:18px;font-weight:900;color:var(--ai);letter-spacing:-.1em}
+.obopt .ot{display:flex;flex-direction:column;gap:2px;line-height:1.35}
+.obopt .ot small{font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.obnote{font-size:12.5px;color:var(--ink-3);text-align:center;margin-top:16px}
+.obhello .obbubble{
+  position:relative;margin:6px auto 12px;max-width:min(320px,88vw);background:var(--paper-2);
+  border:2px solid var(--line);border-radius:18px;padding:13px 18px;font-size:17px;font-weight:800;line-height:1.5;
+  box-shadow:0 4px 0 var(--drop);animation:bubin .55s cubic-bezier(.2,1.5,.4,1) both;
+}
+
+/* ---- 레슨 안 말하기 · 받아쓰기 ---- */
+.lsko{margin-top:8px;font-size:17px !important;color:var(--ink-2)}
+.dictwrap{margin:14px 0 4px;display:flex;justify-content:center}
+.dictwrap .speaker.big{transform:scale(1.08)}
+
+/* ---- 보석 ---- */
+.gemico{width:18px;height:18px;display:inline-block;vertical-align:-3px;color:#2E9BD6}
+.stat.gem{color:#2E9BD6;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stat.gem .gemico{width:19px;height:19px}
+.stat.gem .bx{font-size:10.5px;font-weight:900;background:var(--gold);color:#fff;border-radius:99px;padding:1px 6px;margin-left:3px}
+.center-screen .sub.gemline{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px}
+.center-screen .sub.gemline b{color:#2E9BD6}
+
+/* ---- 상점 ---- */
+.shopwrap{padding:4px 20px 40px;max-width:560px;margin:0 auto}
+.shoph{font-size:26px;font-weight:900;margin:6px 0 2px}
+.shops{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+.shopitem{display:flex;align-items:center;gap:13px;background:var(--paper-2);border-radius:18px;padding:14px;
+  margin-bottom:10px;box-shadow:0 3px 0 var(--drop)}
+.shi{width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:grid;place-items:center}
+.shi svg{width:28px;height:28px;display:block}
+.shi.hp{background:var(--shu-soft);color:var(--shu)}
+.shi.fz{background:var(--ai-soft);color:var(--ai)}
+.shi.bo{background:rgba(224,179,74,.18);color:var(--gold)}
+.shopitem .sb{flex:1;min-width:0}
+.shopitem .st{font-size:15.5px;font-weight:900}
+.shopitem .ss{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.4;word-break:keep-all}
+.shopitem .sn{font-size:11.5px;font-weight:800;color:var(--ai);margin-top:4px}
+.shbuy{display:inline-flex;align-items:center;gap:4px;border:0;border-radius:999px;padding:9px 13px;
+  background:var(--paper);box-shadow:inset 0 0 0 2px #2E9BD6;color:#2E9BD6;font-size:14px;font-weight:900;cursor:pointer;flex:0 0 auto}
+.shbuy.off{opacity:.45}
+
+/* ---- PWA 안내 ---- */
+.pwacard{display:flex;align-items:center;gap:12px;margin:0 20px 16px;background:var(--paper-2);
+  border-radius:18px;padding:13px 12px 13px 14px;box-shadow:0 3px 0 var(--drop)}
+.pwacard .pi{width:40px;height:40px;flex:0 0 40px;border-radius:12px;background:var(--shu);color:#fff;display:grid;place-items:center}
+.pwacard .pi svg{width:22px;height:22px}
+.pwacard .pb{flex:1;min-width:0}
+.pwacard .pt{font-size:14.5px;font-weight:900}
+.pwacard .ps{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.45;word-break:keep-all}
+.pwax{border:0;background:transparent;color:var(--ink-3);width:30px;height:30px;padding:4px;cursor:pointer;flex:0 0 auto}
+.pwax svg{width:100%;height:100%}
+
+@media (prefers-reduced-motion: reduce){
+  .stkscreen,.stkflame,.stknum.pop,.obhello .obbubble{transition:none;animation:none}
+}
+
 
 @media (prefers-reduced-motion: reduce){
   .micbtn.on,.crow.fresh .cbub{animation:none}
@@ -2343,7 +2457,8 @@ let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKa
        act:[],         /* 학습한 날들 (최근 것만 남김) */
        perfects:0      /* 하트를 하나도 안 잃고 끝낸 레슨 수 */ };
 /* 하트 · 보물상자 · 스트릭 보호막 */
-Object.assign(S,{hp:5, hpAt:0, chest:{}, freeze:0, fzGot:0, fzAt:null, story:{}, lg:null});
+Object.assign(S,{hp:5, hpAt:0, chest:{}, freeze:0, fzGot:0, fzAt:null, story:{}, lg:null,
+                gem:30, boostUntil:0, spkOff:0, ob:0, obAcc:0, why:null, pwaNo:0});
 try{ const r=localStorage.getItem(KEY); if(r) S=Object.assign(S, JSON.parse(r)); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
@@ -2798,7 +2913,7 @@ function renderStoryResult(){
   const first = !storyDone(s);
   const xp = first ? STORY_XP : Math.round(STORY_XP*.3);
   S.story=S.story||{};
-  if(first) S.story[s.id]=dayKey(new Date());
+  if(first){ S.story[s.id]=dayKey(new Date()); S.gem=(S.gem|0)+10; }
   S.xp+=xp; addTodayXp(xp);
   const doneQ=questBump('xp', xp);
   bumpStreak(); save();
@@ -2947,7 +3062,7 @@ async function lgRollWeek(){
       const i=rows.findIndex(r=>r.u===CLOUD.user.uid);
       if(i>=0){
         g.lastRank=i+1; g.lastWk=oldWk; g.lastTier=oldTier;
-        if(rows.length>=LG_MIN_UP && i<LG_UP && oldTier<LG_TIERS.length-1){ g.tier=oldTier+1; moved='up'; }
+        if(rows.length>=LG_MIN_UP && i<LG_UP && oldTier<LG_TIERS.length-1){ g.tier=oldTier+1; moved='up'; S.gem=(S.gem|0)+50; }
         else if(rows.length>=LG_MIN_DOWN && i>=rows.length-LG_DOWN && oldTier>0){ g.tier=oldTier-1; moved='down'; }
         else moved='stay';
       }
@@ -3116,6 +3231,421 @@ async function leagueSync(){
 }
 
 
+
+/* ================= 듀오링고식 장치 3탄 =================
+   1) 스트릭 축하 화면   2) 온보딩·수준 시험   3) 레슨 안 말하기
+   4) 받아쓰기           5) 결과 칭호·시간     6) 보석·상점
+   7) 홈 화면 설치(PWA)                                       */
+
+const OB = {"lang":"ja","hello":"ようこそ! にほんご道場에 오신 걸 환영합니다.","why":[["旅","여행"],["見","애니·드라마"],["仕","일·유학"],["学","공부·시험"],["友","가족·친구"],["脳","머리 운동"]],"place":{"units":["k1","k2","k3","k4","k5","k6","k7"],"label":"히라가나·가타카나"},"dictType":"들은 대로 입력하세요"};
+
+const GEM_SVG = '<svg class="gemico" viewBox="0 0 24 24" aria-hidden="true">'
+  + '<path fill="currentColor" d="M7 3h10l5 6-10 12L2 9z"/>'
+  + '<path fill="#fff" opacity=".38" d="M7 3l3 6H2zM17 3l-3 6h8zM10 9h4l-2 9z"/></svg>';
+const SHIELD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.5 8 11 4.6-1.5 8-6 8-11V5z"/></svg>';
+
+/* ---------------- 1. 스트릭 축하 ---------------- */
+let STREAK_EVT = null;
+const STREAK_MILES = [3,7,14,30,50,100,200,365];
+
+/* 결과 화면에서 처음 누르는 단추를 붙잡아, 스트릭 화면을 먼저 보여 준 뒤 원래 하려던 일을 합니다 */
+function streakGate(){
+  const ev=STREAK_EVT;
+  if(!ev) return;
+  if(!app.querySelector('.center-screen')){ STREAK_EVT=null; return; }
+  const h=(e)=>{
+    const scr=app.querySelector('.center-screen');
+    const b=e.target.closest && e.target.closest('button');
+    if(!scr || !b || !scr.contains(b)){ app.removeEventListener('click', h, true); STREAK_EVT=null; return; }
+    e.preventDefault(); e.stopImmediatePropagation();
+    app.removeEventListener('click', h, true);
+    STREAK_EVT=null;
+    showStreakScreen(ev, ()=>b.click());
+  };
+  app.addEventListener('click', h, true);
+}
+
+function showStreakScreen(ev, cont){
+  const to=ev.to|0, from=Math.max(0,to-1);
+  const mile = STREAK_MILES.indexOf(to)>=0;
+  const wk=[]; for(let i=6;i>=0;i--){ const d=new Date(Date.now()-i*864e5);
+    wk.push({k:dayKey(d), l:'일월화수목금토'[d.getDay()], t:i===0}); }
+  const msg = ev.fz ? '보호막이 스트릭을 지켜 줬어요. 오늘도 해냈어요!'
+    : mile ? to+'일 연속! 여기까지 온 사람은 많지 않아요.'
+    : to===1 ? '오늘부터 시작이에요. 내일도 오면 2일이 됩니다.'
+    : '내일도 이어가요. 잊지 않게 이 시간에 다시 와요.';
+  const d=document.createElement('div');
+  d.className='stkscreen'+(mile?' mile':'');
+  d.innerHTML=`
+    <div class="stkglow"></div>
+    <div class="stkflame">${ICON.flame}</div>
+    <div class="stknum mono" id="stkNum">${from}</div>
+    <div class="stklab">일 연속 학습${mile?' 달성':''}!</div>
+    <div class="stkweek">${wk.map(x=>`<div class="d${S.act.indexOf(x.k)>=0&&!x.t?' on':''}${x.t?' now':''}">
+      <div class="dot">${S.act.indexOf(x.k)>=0&&!x.t?'✓':''}</div><div class="lb">${x.l}</div></div>`).join('')}</div>
+    <p class="stkmsg">${esc(msg)}</p>
+    <button class="cta shu" id="stkGo">계속하기</button>`;
+  document.body.appendChild(d);
+  requestAnimationFrame(()=>d.classList.add('show'));
+  sfx('streak');
+  setTimeout(()=>{
+    const n=d.querySelector('#stkNum'); if(n){ n.textContent=to; n.classList.add('pop'); }
+    const now=d.querySelector('.stkweek .now'); if(now){ now.classList.add('on'); now.querySelector('.dot').textContent='✓'; }
+    d.querySelector('.stkflame').classList.add('big');
+    sfx(mile?'lvlup':'goal');
+    burst(innerWidth*.5, innerHeight*.36, mile?60:34, mile?1.6:1.2);
+    if(mile) setTimeout(()=>{ burst(innerWidth*.25, innerHeight*.5, 40, 1.4); burst(innerWidth*.75, innerHeight*.5, 40, 1.4); }, 260);
+  }, RM?0:650);
+  d.querySelector('#stkGo').onclick=()=>{
+    sfx('tap');
+    d.classList.remove('show');
+    setTimeout(()=>{ d.remove(); try{ cont(); }catch(_){ renderHome(); } }, RM?0:220);
+  };
+}
+
+/* ---------------- 2. 온보딩 · 수준 시험 ---------------- */
+let OBS = {};
+function needOnboard(){
+  if(S.ob) return false;
+  if(Object.keys(S.done||{}).length || (S.xp|0)>0){ S.ob=1; save(); return false; }
+  return true;
+}
+function obShell(step, inner){
+  const dots=[0,1,2,3].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('');
+  return `<div class="obwrap">
+    <div class="obtop">${step>0?`<button class="iconbtn" id="obBack" aria-label="이전">${ICON.x}</button>`:'<span></span>'}
+      <div class="obdots">${dots}</div><span></span></div>
+    ${inner}</div>`;
+}
+function renderOnboard(step){
+  step=step|0;
+  let h='';
+  if(step===0){
+    h=`<div class="center-screen obhello">
+      ${nekoBlock('cheer','',170)}
+      <div class="obbubble">${esc(OB.hello)}</div>
+      <p class="sub">하루 5분이면 충분해요. 몇 가지만 여쭤볼게요.</p>
+      <div style="width:100%"><button class="cta shu" id="obGo">시작하기</button>
+      ${(typeof CLOUD!=='undefined' && CLOUD.status!=='off')?`<button class="cta ghost" id="obHave" style="margin-top:10px">이미 계정이 있어요</button>`:''}</div>
+    </div>`;
+    app.innerHTML=h;
+  } else if(step===1){
+    h=obShell(0, `<h2 class="obq">왜 배우고 싶으세요?</h2>
+      <div class="obopts">${OB.why.map((w,i)=>`<button class="obopt" data-v="${i}"><span class="oi jp">${w[0]}</span><span class="ot">${esc(w[1])}</span></button>`).join('')}</div>`);
+    app.innerHTML=h;
+  } else if(step===2){
+    const LV=[['처음이에요','완전히 처음부터 시작할게요'],['조금 알아요',OB.place.label+' 정도는 알아요'],['꽤 알아요','기초는 건너뛰고 싶어요']];
+    h=obShell(1, `<h2 class="obq">얼마나 알고 있나요?</h2>
+      <div class="obopts">${LV.map((w,i)=>`<button class="obopt" data-v="${i}"><span class="oi mono">${'▮'.repeat(i+1)}</span><span class="ot">${esc(w[0])}<small>${esc(w[1])}</small></span></button>`).join('')}</div>`);
+    app.innerHTML=h;
+  } else if(step===3){
+    h=obShell(2, `<h2 class="obq">하루에 얼마나 할까요?</h2>
+      <div class="obopts">${GOALS.map(g=>`<button class="obopt${g.v===260?' rec':''}" data-v="${g.v}"><span class="oi mono">${g.v}</span><span class="ot">${esc(g.ko)}<small>${esc(g.s)} · ${g.v} XP</small></span></button>`).join('')}</div>
+      <p class="obnote">나중에 홈에서 언제든 바꿀 수 있어요.</p>`);
+    app.innerHTML=h;
+  } else if(step===4){
+    h=obShell(3, `<div class="center-screen" style="padding-top:8px">
+      ${nekoBlock('idle','',140)}
+      <h2>앞부분을 건너뛸까요?</h2>
+      <p class="sub"><b>${esc(OB.place.label)}</b><br>이미 알고 있다면 <b>12문제</b>로 확인하고 건너뛸 수 있어요.<br>하트 세 개 이상 남기면 통과입니다.</p>
+      <div style="width:100%"><button class="cta shu" id="obTest">수준 확인 시험 보기</button>
+        <button class="cta ghost" id="obFromStart" style="margin-top:10px">처음부터 할래요</button></div>
+    </div>`);
+    app.innerHTML=h;
+  }
+  petalsOff();
+  window.scrollTo(0,0);
+  const bk=$('#obBack'); if(bk) bk.onclick=()=>{ sfx('tap'); renderOnboard(step-1); };
+  const go=$('#obGo'); if(go) go.onclick=()=>{ sfx('tap'); renderOnboard(1); };
+  const hv=$('#obHave'); if(hv) hv.onclick=()=>{ sfx('tap'); AUTH_MODE='in'; renderAuth(); };
+  app.querySelectorAll('.obopt').forEach(b=>b.onclick=()=>{
+    sfx('pair'); b.classList.add('sel');
+    const v=b.dataset.v;
+    setTimeout(()=>{
+      if(step===1){ S.why=+v; save(); renderOnboard(2); }
+      else if(step===2){ OBS.lv=+v; renderOnboard(3); }
+      else if(step===3){ S.goal=+v; save(); obFinish(); }
+    }, 180);
+  });
+  const t=$('#obTest'); if(t) t.onclick=()=>{ sfx('tap'); startPlacement(); };
+  const fs0=$('#obFromStart'); if(fs0) fs0.onclick=()=>{ sfx('tap'); obStartFirst(); };
+}
+function obFinish(){
+  if((OBS.lv|0)>0) return renderOnboard(4);
+  obStartFirst();
+}
+function obStartFirst(){
+  S.ob=2; save();
+  startLesson(LESSONS[0]);
+  setTimeout(()=>mascotToast('첫 레슨이에요. 틀려도 괜찮아요!'), 500);
+}
+function startPlacement(){
+  const units=OB.place.units;
+  const ls=LESSONS.filter(l=>UNITS[l.unit] && units.indexOf(UNITS[l.unit].id)>=0 && !l.review);
+  let ex=[];
+  ls.forEach(l=>{ try{ ex=ex.concat(makeExercises(l).filter(e=>e.kind!=='match')); }catch(_){} });
+  ex=shuffle(ex).slice(0,12);
+  if(!ex.length) return obStartFirst();
+  G=newGame({id:'__place', title:'수준 확인', isReview:true, place:true}, ex);
+  renderExercise();
+}
+function renderPlaceResult(finished){
+  const pass = finished && (G.lost|0)<=2;
+  S.ob=2;
+  if(pass){
+    const d=dayKey(new Date());
+    S.chest=S.chest||{};
+    LESSONS.forEach(l=>{
+      const u=UNITS[l.unit];
+      if(u && OB.place.units.indexOf(u.id)>=0) S.done[l.id]=Math.max(S.done[l.id]||0, 1);
+    });
+    OB.place.units.forEach(u=>{ if(!S.chest[u]) S.chest[u]=d; });
+    if(typeof trackDone==='function' && S.doneAt)
+      Object.keys(TRACKS).forEach(t=>{ if(trackDone(t) && !S.doneAt[t]) S.doneAt[t]=Date.now(); });
+    S.xp+=50; addTodayXp(50); leagueBump(50);
+    if(!S.firstDay) S.firstDay=d;
+    bumpStreak();
+  }
+  save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
+  const first = pass ? (LESSONS.find(l=>!S.done[l.id]) || LESSONS[0]) : LESSONS[0];
+  sfx(pass?'complete':'fail');
+  if(pass){ setTimeout(()=>burst(innerWidth*.5, innerHeight*.4, 50, 1.4), 150); }
+  app.innerHTML=`
+  <div class="center-screen">
+    ${nekoBlock(pass?'cheer':'idle', pass?'合':'', 146)}
+    <h2>${pass?'통과했어요!':'처음부터 차근차근 해 봐요'}</h2>
+    <p class="sub">${pass
+      ? esc(OB.place.label)+' 건너뛰기 완료 · +50 XP'
+      : '괜찮아요. 기초를 한 번 다지고 가면 훨씬 빨라집니다.'}</p>
+    <div style="width:100%"><button class="cta shu" id="plGo">${esc((pass?'다음으로 · ':'시작하기 · ')+(UNITS[first.unit]?UNITS[first.unit].title+' ':'')+first.title)}</button>
+      <button class="cta ghost" id="plHome" style="margin-top:10px">레슨 지도 보기</button></div>
+  </div>`;
+  petalsOn();
+  $('#plGo').onclick=()=>{ sfx('tap'); startLesson(first); };
+  $('#plHome').onclick=()=>{ sfx('tap'); renderHome(); };
+  window.scrollTo(0,0);
+}
+
+/* 온보딩으로 들어온 사람이 첫 레슨을 끝내면 한 번만 계정을 권합니다 */
+function plusHomeAfter(){
+  if(S.ob===2 && !S.obAcc && Object.keys(S.done||{}).length
+     && typeof CLOUD!=='undefined' && CLOUD.status==='out'){
+    S.obAcc=1; save();
+    setTimeout(()=>{
+      if(!document.querySelector('.path')) return;
+      openSheet('진도를 저장해 둘까요?',
+        '계정을 만들면 기기를 바꿔도 이어서 할 수 있어요. 아이디와 비밀번호만 있으면 됩니다.',
+        '계정 만들기', ()=>{ closeSheet(); AUTH_MODE='up'; renderAuth(); }, '나중에', closeSheet);
+    }, 700);
+  }
+}
+
+/* ---------------- 3·4. 레슨에 말하기 · 받아쓰기 섞기 ---------------- */
+const EN_HOMO = new Set(['to','too','two','for','four','right','write','see','sea','eight','ate','hear','here',
+  'know','no','new','knew','one','won','son','sun','their','there','meet','meat','week','weak','blue','blew',
+  'buy','by','bye','hour','our','red','read','wear','where','pair','pear','tail','tale','road','rode','sale',
+  'sail','night','knight','hole','whole','peace','piece','plane','plain','dear','deer','be','bee','i','eye']);
+
+function plusMix(ex, lesson){
+  if(!lesson || lesson.isReview || !ex || !ex.length) return;
+  const au = (typeof audioOK==='function' ? audioOK() : canSpeak());
+  if(au){
+    const a=ex.find(e=>e.kind==='assemble' && !e.dict && sayText(e));
+    if(a) a.dict=true;
+    const t=ex.find(e=>e.kind==='type' && !e.dict && sayText(e)
+      && !(OB.lang==='en' && EN_HOMO.has(String(e.answer||'').trim().toLowerCase())));
+    if(t && Math.random()<.7) t.dict=true;
+  }
+  if(typeof speakInOK==='function' && speakInOK() && Date.now()>(S.spkOff||0)){
+    const items=ex.map(e=>e.item).filter(it=>it && it.j && it.m);
+    const pickIt = items.find(it=>it.t) || items[Math.floor(Math.random()*items.length)];
+    if(pickIt){
+      const at=Math.min(ex.length, Math.max(2, Math.floor(ex.length*.6)));
+      ex.splice(at, 0, {kind:'speak', q:'소리 내어 말해 보세요', item:pickIt, audio:pickIt.j});
+    }
+  }
+}
+
+/* 받아쓰기 — 이미 만든 문제 화면에서 뜻·글자를 걷어내고 큰 스피커를 둡니다 */
+function dictBody(body, e, combo, say){
+  const label = e.kind==='assemble' ? '들은 문장을 만들어 보세요' : OB.dictType;
+  const au = sayText(e);
+  return body
+    .replace(/<div class="prompt-label">[\s\S]*?<\/div>/, ()=>
+      '<div class="prompt-label">'+esc(label)+combo+'</div>'
+      + '<div class="dictwrap">'+say(au, true)+'</div>'
+      + '<div class="qhint">뜻은 맞힌 뒤에 보여 드려요.</div>')
+    .replace(/<div class="qjp[^"]*">[\s\S]*?<\/div>/, '')
+    .replace(/<div class="qko">[\s\S]*?<\/div>/, '')
+    .replace(/<div class="qkana[^"]*">[\s\S]*?<\/div>/, '')
+    .replace(/<div style="margin-top:1[46]px">\s*<div class="sayrow">[\s\S]*?<\/div>\s*<\/div>/, '');
+}
+
+/* 레슨 안 말하기 문제 */
+function speakExHTML(e, combo){
+  const it=e.item;
+  return {
+    body:`<div class="prompt-label">소리 내어 말해 보세요${combo}</div>
+      <div class="qjp jp tappable" data-say="${esc(it.j)}" role="button" aria-label="눌러서 듣기">${esc(it.j)}</div>
+      ${it.k && it.k!==it.j ? `<div class="qkana jp">${esc(it.k)}</div>` : ''}
+      <div class="qko lsko">${esc(it.m||'')}</div>
+      <div class="micwrap"><button class="micbtn" id="lsMic" aria-label="말하기 시작">${MIC_SVG}</button>
+        <div class="michint" id="lsHint">누르고 말하세요</div></div>`,
+    footer:`<button class="cta ghost" id="lsOff">지금 말할 수 없어요</button>`
+  };
+}
+function lsSkip(off){
+  if(!G || G.answered) return;
+  if(off){
+    S.spkOff=Date.now()+3600e3; save();
+    for(let k=G.queue.length-1;k>G.i;k--) if(G.queue[k].kind==='speak'){ G.queue.splice(k,1); G.total--; }
+    toast('1시간 동안 말하기 문제를 빼 드릴게요');
+  }
+  G.answered=true; G.cleared++;
+  next();
+}
+function bindSpeakEx(e){
+  let tries=0, busy=false, rec=null;
+  $('#lsOff').onclick=()=>{ sfx('tap'); lsSkip(true); };
+  $('#lsMic').onclick=()=>{
+    if(G.answered) return;
+    if(busy){ try{ rec.stop(); }catch(_){} return; }
+    try{ rec=new SRec(); }catch(_){ return lsSkip(true); }
+    busy=true;
+    rec.lang=SPEAK_LANG; rec.interimResults=false; rec.maxAlternatives=3;
+    const btn=$('#lsMic'), hint=$('#lsHint');
+    btn.classList.add('on'); hint.textContent='듣고 있어요… 말해 보세요';
+    let got=false;
+    rec.onresult=(ev)=>{
+      got=true;
+      const alts=[...ev.results[0]].map(r=>r.transcript);
+      let bs=0; alts.forEach(t=>{ bs=Math.max(bs, simRatio(t, e.item.j)); });
+      if(bs>=.7){ judge(true, e.item.j); return; }
+      tries++; sfx('pair'); shakeScreen(false);
+      if(tries>=2){ hint.textContent='괜찮아요 — 이번엔 넘어갈게요'; setTimeout(()=>lsSkip(false), 900); }
+      else hint.textContent='일치도 '+Math.round(bs*100)+'% · 한 번 더 말해 보세요';
+    };
+    rec.onerror=(ev)=>{
+      busy=false; btn.classList.remove('on');
+      const c=ev&&ev.error;
+      if(c==='not-allowed'||c==='service-not-allowed'){ hint.textContent='마이크가 막혀 있어요'; setTimeout(()=>lsSkip(true), 900); }
+      else if(c==='no-speech') hint.textContent='소리가 안 들렸어요. 다시 눌러 주세요';
+      else hint.textContent='다시 눌러 주세요';
+    };
+    rec.onend=()=>{
+      busy=false; if(btn) btn.classList.remove('on');
+      if(!got && hint && hint.textContent.indexOf('듣고')===0) hint.textContent='한 번 더 눌러 주세요';
+    };
+    try{ rec.start(); }catch(_){ busy=false; btn.classList.remove('on'); }
+  };
+}
+
+/* ---------------- 5. 결과 칭호 · 시간 ---------------- */
+function resultStats(){
+  const secs=Math.max(1, Math.round((Date.now()-(G.t0||Date.now()))/1000));
+  const per=secs/Math.max(1, G.cleared);
+  const perfect=(G.lost|0)===0, fast=per<7;
+  return {
+    time: Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0'),
+    title: perfect ? '완벽해요!' : (fast ? '빨라요!' : '끈기 있어요!'),
+    tlab: fast ? '빨라요' : '걸린 시간',
+    alab: perfect ? '완벽해요' : '정확도'
+  };
+}
+
+/* ---------------- 6. 보석 · 상점 ---------------- */
+function boostOn(){ return (S.boostUntil||0) > Date.now(); }
+function boostMin(){ return Math.max(0, Math.ceil(((S.boostUntil||0)-Date.now())/60000)); }
+const SHOP=[
+  {id:'heart',  t:'하트 채우기',   s:'하트를 다섯 개로 가득 채웁니다', c:30,
+   ico:()=>`<span class="shi hp">${ICON.heart}</span>`,
+   ok:()=>hpNow()<HP_MAX, why:'하트가 이미 가득해요'},
+  {id:'freeze', t:'스트릭 보호막', s:'하루 빠뜨려도 스트릭이 이어집니다 · 두 개까지', c:50,
+   ico:()=>`<span class="shi fz">${SHIELD_SVG}</span>`,
+   ok:()=>(S.freeze|0)<2, why:'보호막은 두 개까지 가질 수 있어요'},
+  {id:'boost',  t:'XP 2배 · 15분', s:'15분 동안 레슨에서 받는 XP 가 두 배', c:40,
+   ico:()=>`<span class="shi bo">${ICON.bolt}</span>`,
+   ok:()=>!boostOn(), why:'이미 켜져 있어요'}
+];
+function buyItem(id){
+  const it=SHOP.find(x=>x.id===id); if(!it) return false;
+  if(!it.ok()){ toast(it.why); return false; }
+  if((S.gem|0)<it.c){ sfx('wrong'); toast('보석이 '+(it.c-(S.gem|0))+'개 모자라요'); return false; }
+  S.gem=(S.gem|0)-it.c;
+  if(id==='heart') hpGain(HP_MAX);
+  else if(id==='freeze') S.freeze=(S.freeze|0)+1;
+  else if(id==='boost') S.boostUntil=Date.now()+15*60000;
+  save(); sfx('quest');
+  toast(it.t+' — 사용했어요');
+  return true;
+}
+function renderShop(){
+  app.innerHTML=`
+  <div class="topbar">
+    <button class="iconbtn" id="shBack" aria-label="돌아가기">${ICON.x}</button>
+    <div class="spacer"></div>
+    <div class="stat gem">${GEM_SVG}<span class="mono">${S.gem|0}</span></div>
+  </div>
+  <div class="shopwrap">
+    <h2 class="shoph">상점</h2>
+    <p class="shops">보석은 레슨·과제·보물상자·이야기에서 모여요.</p>
+    ${SHOP.map(it=>{
+      const can=it.ok(), afford=(S.gem|0)>=it.c;
+      const note = it.id==='boost' && boostOn() ? '남은 시간 '+boostMin()+'분'
+                 : it.id==='freeze' ? '지금 '+(S.freeze|0)+'개'
+                 : it.id==='heart' ? '지금 '+hpNow()+'개' : '';
+      return `<div class="shopitem">
+        ${it.ico()}
+        <div class="sb"><div class="st">${esc(it.t)}</div><div class="ss">${esc(it.s)}</div>
+          ${note?`<div class="sn">${esc(note)}</div>`:''}</div>
+        <button class="shbuy${(!can||!afford)?' off':''}" data-buy="${it.id}">${GEM_SVG}${it.c}</button>
+      </div>`;
+    }).join('')}
+  </div>`;
+  petalsOff();
+  $('#shBack').onclick=()=>{ sfx('tap'); renderHome(); };
+  app.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{ if(buyItem(b.dataset.buy)) renderShop(); });
+  window.scrollTo(0,0);
+}
+
+/* ---------------- 7. 홈 화면 설치 (PWA) ---------------- */
+let PWA_EVT=null;
+const PWA_ON = !!document.querySelector('link[rel="manifest"]');
+function pwaStandalone(){ try{ return matchMedia('(display-mode: standalone)').matches || navigator.standalone===true; }catch(_){ return false; } }
+function pwaIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent||''); }
+if(PWA_ON){
+  window.addEventListener('beforeinstallprompt', e=>{
+    e.preventDefault(); PWA_EVT=e;
+    if(document.querySelector('.path')) renderHome();
+  });
+  if('serviceWorker' in navigator && location.protocol==='https:'){
+    window.addEventListener('load', ()=>{ navigator.serviceWorker.register('/sw.js').catch(()=>{}); });
+  }
+}
+function pwaCardHTML(){
+  if(!PWA_ON || pwaStandalone() || S.pwaNo) return '';
+  if(PWA_EVT) return `<div class="pwacard">
+      <div class="pi">${ICON.flame}</div>
+      <div class="pb"><div class="pt">홈 화면에 추가하기</div><div class="ps">앱처럼 한 번에 열리고, 인터넷이 약해도 열립니다.</div></div>
+      <button class="lgbtn" id="pwaAdd">추가</button><button class="pwax" id="pwaNo" aria-label="닫기">${ICON.x}</button></div>`;
+  if(pwaIOS()) return `<div class="pwacard">
+      <div class="pi">${ICON.flame}</div>
+      <div class="pb"><div class="pt">홈 화면에 추가하기</div><div class="ps">사파리 아래 <b>공유</b> 단추 → <b>홈 화면에 추가</b>를 누르면 앱처럼 열려요.</div></div>
+      <button class="pwax" id="pwaNo" aria-label="닫기">${ICON.x}</button></div>`;
+  return '';
+}
+function pwaBind(){
+  const a=$('#pwaAdd');
+  if(a) a.onclick=async()=>{
+    sfx('tap');
+    if(!PWA_EVT) return;
+    PWA_EVT.prompt();
+    try{ const r=await PWA_EVT.userChoice; if(r && r.outcome==='accepted'){ S.pwaNo=1; save(); } }catch(_){}
+    PWA_EVT=null; renderHome();
+  };
+  const n=$('#pwaNo'); if(n) n.onclick=()=>{ sfx('tap'); S.pwaNo=1; save(); renderHome(); };
+}
+
 const HP_MAX=5, HP_MS=25*60*1000;   /* 25분마다 하트 하나가 돌아옵니다 */
 const CHEST_XP=80;
 
@@ -3165,6 +3695,14 @@ function startRefill(){
 }
 function heartSheet(){
   const hp=hpNow(), w=refillWay();
+  if(hp<HP_MAX && (S.gem|0)>=30){
+    sfx(hp<=0?'heart':'tap');
+    return openSheet('하트 '+hp+' / '+HP_MAX,
+      '보석 30개로 지금 바로 가득 채울 수 있어요 (지금 보석 '+(S.gem|0)+'개).'
+      + (w ? ' 복습을 한 번 끝내도 두 개가 채워집니다.' : ' 아니면 '+hpWaitMin()+'분마다 하나씩 돌아옵니다.'),
+      '보석 30개로 채우기', ()=>{ closeSheet(); buyItem('heart'); if(document.querySelector('.path')) renderHome(); },
+      w ? '복습으로 채우기' : '닫기', w ? startRefill : closeSheet);
+  }
   sfx(hp<=0?'heart':'tap');
   const body = hp>=HP_MAX
     ? '하트가 가득 찼어요. 레슨에서 틀리면 하나씩 줄고, '+(HP_MS/60000)+'분마다 하나씩 돌아옵니다.'
@@ -3229,7 +3767,7 @@ function openChest(unitId, btn){
     return openSheet('이미 연 상자예요','단원을 끝낸 보상은 한 번만 받을 수 있어요.','닫기',closeSheet,'',closeSheet);
   }
   S.chest[unitId]=dayKey(new Date());
-  S.xp+=CHEST_XP; addTodayXp(CHEST_XP); hpGain(1); leagueBump(CHEST_XP);
+  S.xp+=CHEST_XP; addTodayXp(CHEST_XP); hpGain(1); leagueBump(CHEST_XP); S.gem=(S.gem|0)+30;
   save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
   sfx('goal');
   if(btn){ btn.classList.add('got'); btn.textContent='✓'; }
@@ -3290,6 +3828,8 @@ function bumpStreak(){
   if(S.last && S.last!==ys && (S.freeze|0)>0){ S.freeze--; S.fzAt=t; S.streak=(S.streak||0)+1; }
   else S.streak=(S.last===ys)? S.streak+1 : 1;
   S.last=t;
+  STREAK_EVT={to:S.streak, fz:S.fzAt===t};
+  setTimeout(streakGate, 0);
 }
 
 /* ================= 재미 요소 =================
@@ -3356,7 +3896,7 @@ function questBump(id, n){
   list.forEach(q=>{
     if(q.id!==id || q.got) return;
     q.prog=Math.min(q.need, q.prog+n);
-    if(q.prog>=q.need){ q.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); out.push(q); }
+    if(q.prog>=q.need){ q.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); S.gem=(S.gem|0)+10; out.push(q); }
   });
   if(out.length) save();
   return out;
@@ -3828,11 +4368,12 @@ function nextLesson(cur){
 }
 
 function renderHome(){
+  if(needOnboard()) return renderOnboard(0);
   const doneN=Object.keys(S.done).length;
   let h=`
   <div class="topbar">
     <div class="stat streak" id="stkBtn" title="연속 학습일" role="button" tabindex="0">${ICON.flame}<span class="mono">${S.streak}</span>${(S.freeze|0)>0?`<span class="fz" aria-label="스트릭 보호막 ${S.freeze|0}개">${S.freeze|0}</span>`:''}</div>
-    <div class="stat xp" title="누적 경험치">${ICON.bolt}<span class="mono">${S.xp}</span></div>
+    <div class="stat gem" id="gemBtn" title="보석 · 상점" role="button" tabindex="0">${GEM_SVG}<span class="mono">${S.gem|0}</span>${boostOn()?`<span class="bx">2배 ${boostMin()}분</span>`:''}</div>
     <div class="stat hp${hpNow()<=0?' empty':(hpNow()<HP_MAX?' low':'')}" id="hpBtn" title="하트" role="button" tabindex="0">${ICON.heart}<span class="mono">${hpNow()}</span>${hpNow()<HP_MAX?`<span class="rc">${hpWaitMin()}분</span>`:''}</div>
     <div class="spacer"></div>
     <div class="sndrow">
@@ -3913,6 +4454,7 @@ function renderHome(){
   </div>`;
 
   h+=leagueCardHTML();
+  h+=pwaCardHTML();
 
   /* ---- 배지 ---- */
   h+=`<div class="badgerow">${BADGES.map(b=>`<button class="badge${S.badges[b.id]?' on':''}" data-badge="${b.id}">
@@ -4017,6 +4559,7 @@ function renderHome(){
     save();
   };
   const hb=$('#hpBtn'); if(hb) hb.onclick=heartSheet;
+  const gmb=$('#gemBtn'); if(gmb) gmb.onclick=()=>{ sfx('tap'); renderShop(); };
   const lj=$('#lgJoin'); if(lj) lj.onclick=leagueJoinSheet;
   const lm=$('#lgMore'); if(lm) lm.onclick=()=>{ sfx('tap'); renderLeague(); };
   const sb2=$('#speakBtn'); if(sb2) sb2.onclick=()=>{ sfx('tap'); startSpeak(); };
@@ -4052,13 +4595,15 @@ function renderHome(){
   if(freshNode) freshNode.scrollIntoView({block:'center'});
   else window.scrollTo(0,0);
   leagueSync();
+  pwaBind();
+  plusHomeAfter();
 }
 
 /* ---------------- 6. LESSON RUNTIME ---------------- */
 let G=null, JUST_DONE=null;
 Object.defineProperty(window,'G',{get:()=>G});   // 자동 테스트에서 현재 문제를 읽기 위한 통로
 function newGame(lesson, queue){
-  return {lesson, queue, i:0, total:queue.length, cleared:0, hearts:(lesson.isReview?HP_MAX:hpNow()), lost:0, xp:0,
+  return {lesson, queue, i:0, total:queue.length, cleared:0, hearts:(lesson.isReview?HP_MAX:hpNow()), lost:0, t0:Date.now(), xp:0,
           combo:0, best:0, wrong:[], t0:Date.now(), answered:false,
           sel:null, built:[], typed:'', ms:null};
 }
@@ -4560,6 +5105,7 @@ function startLesson(lesson, skipGrammar){
   }
   const ex=makeExercises(lesson);
   if(!ex.length) return renderHome();
+  plusMix(ex, lesson);
   G=newGame(lesson, ex);
   renderExercise();
 }
@@ -4670,6 +5216,8 @@ function renderExercise(){
     footer=`<button class="cta" id="check" disabled>확인</button>`;
   }
 
+  if(e.kind==='speak'){ const r=speakExHTML(e, combo); body=r.body; footer=r.footer; }
+  if(e.dict) body=dictBody(body, e, combo, say);
   app.innerHTML=shell(body, footer);
   midCheer();
   petalsOff();
@@ -4684,7 +5232,9 @@ function renderExercise(){
   else if(e.kind==='assemble') bindAssemble(e);
   else if(e.kind==='match') bindMatch(e);
   else if(e.kind==='type') bindType(e);
+  else if(e.kind==='speak') bindSpeakEx(e);
   if(e.kind==='listen') setTimeout(()=>speak(e.audio), 380);
+  if(e.dict) setTimeout(()=>speak(sayText(e)), 380);
   window.scrollTo(0,0);
 }
 
@@ -4844,7 +5394,7 @@ function judge(ok, correct, missCount){
     const cq=(S.quests&&S.quests.list||[]).find(q=>q.id==='combo');
     if(cq && !cq.got && G.combo>cq.prog){
       cq.prog=Math.min(cq.need,G.combo);
-      if(cq.prog>=cq.need){ cq.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); dn.push(cq); }
+      if(cq.prog>=cq.need){ cq.got=true; S.xp+=QUEST_XP; addTodayXp(QUEST_XP); S.gem=(S.gem|0)+10; dn.push(cq); }
       save();
     }
     if(dn.length) sfx('quest');
@@ -4910,10 +5460,13 @@ function next(){
 function uniqWrong(){ return [...new Map(G.wrong.map(w=>[w.j,w])).values()].slice(0,5); }
 
 function renderResult(){
+  if(G.lesson.place) return renderPlaceResult(true);
   const acc=Math.round(G.cleared/G.total*100);
   const stars = (G.lost|0)===0?3 : (G.lost|0)<=2?2 : 1;
   const bonus = (G.lost|0)===0?15:0;
-  const totalXP=G.xp+bonus;
+  const RS=resultStats();
+  const boostX=boostOn()?2:1;
+  const totalXP=(G.xp+bonus)*boostX;
 
   S.xp+=totalXP;
   if(!G.lesson.isReview) S.done[G.lesson.id]=Math.max(S.done[G.lesson.id]||0, stars);
@@ -4944,6 +5497,8 @@ function renderResult(){
     ...((G.lost|0)===0 ? questBump('perfect',1) : [])
   ];
   const goalHit = wasUnder && todayXp() >= (S.goal||260);
+  const gemGain = (G.lesson.isReview?3:5) + ((G.lost|0)===0 && !G.lesson.isReview?5:0) + (goalHit?10:0);
+  S.gem=(S.gem|0)+gemGain;
   const newBadges = checkBadges();
   const beltUp = beltOf(S.xp).i > beforeBelt ? beltOf(S.xp) : null;
   save(); CLOUD.queue();
@@ -4963,13 +5518,14 @@ function renderResult(){
   app.innerHTML=`
   <div class="center-screen">
     ${nekoBlock('cheer','合',146)}
-    <h2>레슨 완료!</h2>
+    <h2>${esc(RS.title)}</h2>
     <p class="sub">${esc(G.lesson.title)} · ${bonus?'하트를 하나도 잃지 않았어요. 보너스 +15 XP':'꾸준함이 실력이 됩니다'}</p>
     <div class="scorecards">
       <div class="scard gold"><div class="h">획득 XP</div><div class="v">+${totalXP}</div></div>
-      <div class="scard shu"><div class="h">정확도</div><div class="v">${acc}%</div></div>
-      <div class="scard"><div class="h">최고 콤보</div><div class="v">${G.best}</div></div>
+      <div class="scard"><div class="h">${RS.tlab}</div><div class="v mono">${RS.time}</div></div>
+      <div class="scard shu"><div class="h">${RS.alab}</div><div class="v">${acc}%</div></div>
     </div>
+    <p class="sub gemline">${GEM_SVG}<b>+${gemGain}</b> 보석${boostX>1?' · <b>XP 2배</b> 적용':''}${G.best>=5?' · 최고 콤보 '+G.best:''}</p>
     ${goalHit?`<p class="sub win" style="margin-top:14px"><b>오늘 목표 ${S.goal||260} XP 달성.</b> 연속 ${S.streak}일째입니다.</p>`:''}
     ${beltUp?`<p class="sub win" style="margin-top:14px"><b>${beltUp.ko}${josaRo(beltUp.ko)} 올라섰습니다.</b> 누적 ${S.xp} XP.</p>`:''}
     ${doneQ.length?`<p class="sub" style="margin-top:14px">오늘의 과제 ${doneQ.length}개 완료 · <b>+${doneQ.length*QUEST_XP} XP</b></p>`:''}
@@ -4999,6 +5555,7 @@ function renderResult(){
   window.scrollTo(0,0);
 }
 function renderFail(){
+  if(G.lesson.place) return renderPlaceResult(false);
   sfx('fail');
   const wl=uniqWrong();
   app.innerHTML=`
@@ -5022,6 +5579,7 @@ function renderFail(){
   window.scrollTo(0,0);
 }
 function replay(){
+  if(G.lesson.place) return startPlacement();
   if(G.lesson.isReview){
     FREE_MODE=false;
     if(G.lesson.id==='__srs') startSrs();
