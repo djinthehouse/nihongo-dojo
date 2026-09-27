@@ -1016,6 +1016,9 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .du-sw.on{background:var(--du-blue-soft);border-color:var(--du-blue-line);color:var(--du-blue-d);box-shadow:0 3px 0 var(--du-blue-line)}
 .du-pbtn{margin:0 0 14px !important;text-align:left;padding-left:18px;display:flex;align-items:center;gap:10px}
 .du-pbtn svg{width:24px;height:24px;flex:none}
+.du-pt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.du-pt b{font-size:16px;font-weight:900}
+.du-pt small{font-size:12.5px;font-weight:600;color:var(--ink-3);letter-spacing:0}
 .lgbtn{background:var(--du-green);color:#fff;box-shadow:0 3px 0 var(--du-green-d);border-radius:12px}
 .lgmore{border-radius:12px}
 .du-empty{border:2px dashed var(--du-line);border-radius:16px;padding:22px;text-align:center;color:var(--ink-3);font-weight:700}
@@ -1035,10 +1038,13 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .gbtn{display:flex;align-items:center;gap:5px;border:2px solid rgba(255,255,255,.4);background:transparent;border-radius:12px;
   padding:8px 10px;font-weight:900;font-size:13px;color:inherit}
 .gbtn svg{width:18px;height:18px}
-.du-jumpu{flex:none;border:2px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);border-radius:12px;padding:8px 10px;
-  font-weight:900;font-size:13px;color:inherit}
+.du-jumprow{display:flex;justify-content:center;padding:2px 0 6px;position:relative;z-index:2}
+.du-jumpu{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--du-line);background:var(--paper);border-radius:14px;
+  padding:9px 14px;font-weight:900;font-size:14px;color:var(--du-blue-d);box-shadow:0 3px 0 var(--du-line)}
+.du-jumpu svg{width:16px;height:16px;color:#FFC800}
+.du-jumpu:active{transform:translateY(2px);box-shadow:none}
 .lessons::before{display:none}
-.lessons.du-hascur{padding-top:64px}
+.node-row.du-currow{padding-top:62px}
 .speaker{background:var(--du-blue);color:#fff;border:0;box-shadow:0 4px 0 var(--du-blue-d);border-radius:14px}
 .speaker.slow{background:var(--paper);color:var(--du-blue-d);border:2px solid var(--du-line);box-shadow:0 4px 0 var(--du-line)}
 .speaker:active{transform:translateY(3px);box-shadow:none}
@@ -1134,6 +1140,11 @@ ruby rt{font-size:.5em;font-weight:500;letter-spacing:0;color:var(--ink-3);font-
 .unitband ruby rt,.trackhead ruby rt{color:inherit;opacity:.8}
 .qjp ruby rt{font-size:.42em}
 ruby rt{color:var(--ink-2)}
+
+/* ---- 작은 화면 ---- */
+
+:focus-visible{outline-color:var(--du-blue-line)}
+input:focus-visible,textarea:focus-visible{outline:none}
 </style>
 </head>
 <body>
@@ -4499,20 +4510,26 @@ function warmTTS(){
     speechSynthesis.speak(u);
   }catch(e){}
 }
+let TTS_REAL=0, TTS_AT=0;
 function speak(text, slow){
   if(!TTS||!text) return;
   try{
     warmTTS();
-    speechSynthesis.cancel();
-    /* 사파리에서 cancel 직후의 speak 이 삼켜지는 일이 있어 한 박자 둡니다 */
-    setTimeout(()=>{
+    /* 진짜 소리가 나는 중이거나 대기열이 막혀 있을 때만 끊습니다 */
+    const busy = (TTS_REAL>0 && (Date.now()-TTS_AT)<15000) || speechSynthesis.pending;
+    if(busy){ speechSynthesis.cancel(); TTS_REAL=0; }
+    const go=()=>{
       try{
         const u=new SpeechSynthesisUtterance(text);
         u.lang='ja-JP'; u.rate= slow ? .45 : .82; u.pitch=1;
         if(JA_VOICE) u.voice=JA_VOICE;
+        u.onend=u.onerror=()=>{ TTS_REAL=Math.max(0,TTS_REAL-1); };
+        TTS_REAL++; TTS_AT=Date.now();
         speechSynthesis.speak(u);
       }catch(e){}
-    }, 60);
+    };
+    /* 사파리는 cancel 직후 바로 말하면 삼키는 일이 있어, 끊었을 때만 한 박자 둡니다 */
+    if(busy) setTimeout(go, 60); else go();
   }catch(e){}
 }
 /* 스피커 버튼은 음성 기능만 있으면 보여 줍니다 */
@@ -6062,6 +6079,11 @@ function duHome(){
     b.classList.add('du-pbtn'); b.style.margin=''; P.practice.appendChild(b);
     if(wrap && wrap!==app && !wrap.children.length && !wrap.classList.contains('homefoot')) wrap.remove(); };
   pbtn('reviewBtn'); pbtn('freeBtn'); pbtn('speakBtn');
+  const relabel=(id, t, sub)=>{ const b=P.practice.querySelector('#'+id); if(!b) return;
+    const svg=b.querySelector('svg'); b.innerHTML=(svg?svg.outerHTML:'')+`<span class="du-pt"><b>${t}</b><small>${sub}</small></span>`; };
+  relabel('speakBtn','말하기 연습','소리 내어 말해 보기 · 마이크');
+  relabel('freeBtn','자유 복습','익힌 것 중에서 무작위로');
+  { const rb=P.practice.querySelector('#reviewBtn'); if(rb){ const n=(S.mistakes||[]).length; relabel('reviewBtn','틀린 표현 복습 ('+n+')','헷갈렸던 것만 다시'); } }
   const sl=q('.storylist');
   if(sl){ const more=sl.querySelector('.slmore'); if(more) more.remove(); mv(sl,'practice'); }
   const locked=(typeof STORIES!=='undefined')? STORIES.filter(s=>!storyOpen(s)) : [];
@@ -6116,7 +6138,7 @@ function duPath(path){
     const g=band.querySelector('.gbtn');
     if(g) g.innerHTML=DU_NODE.book+'<span>가이드북</span>';
     if(!isOpen(L0) && !S.done[L0.id]){
-      band.insertAdjacentHTML('beforeend', `<button class="du-jumpu" data-jump="${L0.id}">건너뛰기</button>`);
+      if(ls) ls.insertAdjacentHTML('afterbegin', `<div class="du-jumprow"><button class="du-jumpu" data-jump="${L0.id}">${DU_NODE.star}<span>여기로 건너뛰기</span></button></div>`);
     }
   });
   path.querySelectorAll('[data-jump]').forEach(b=>b.onclick=ev=>{
@@ -6137,7 +6159,7 @@ function duPath(path){
       const row=b.closest('.node-row'); if(row) row.classList.add('du-lockrow');
     } else if(open && !done && first){
       first=false; b.classList.add('du-cur');
-      const lsn=b.closest('.lessons'); if(lsn) lsn.classList.add('du-hascur');
+      const crow=b.closest('.node-row'); if(crow) crow.classList.add('du-currow');
       b.insertAdjacentHTML('beforeend', `<span class="du-start">${S.done && Object.keys(S.done).length?'시작':'여기서 시작'}</span>`);
     }
   });
@@ -6229,6 +6251,8 @@ function duLessonDeco(){
     w.innerHTML=`<div class="du-sayhead">${nekoHead('happy')}</div>`;
     ko.parentNode.insertBefore(w, ko); w.appendChild(ko);
   }
+  const qj=app.querySelector('.stage .qjp'), qk=app.querySelector('.stage .qkana');
+  if(qj && qk && qk.textContent.replace(/\s+/g,'')===qj.textContent.replace(/\s+/g,'')) qk.style.display='none';
   if(G.lesson && G.lesson.jump){
     const lb=app.querySelector('.prompt-label');
     if(lb && !app.querySelector('.du-jtag')) lb.insertAdjacentHTML('beforebegin','<div class="du-jtag">건너뛰기 테스트</div>');
@@ -6275,6 +6299,59 @@ addEventListener('keydown', ev=>{
     if(fb){ fb.click(); ev.preventDefault(); } else if(ck){ ck.click(); ev.preventDefault(); }
   }
 });
+
+/* ---- 듀오링고처럼: 뜻 고르기 문제는 나오자마자 그 말을 한 번 들려줍니다 ----
+   (읽는 법·병음을 고르는 문제는 소리가 곧 답이라 자동으로 틀지 않습니다) */
+function duAutoSay(e){
+  if(!e || e.kind!=='mcq' || !e.jp || !e.audio || e.dict || !canSpeak()) return false;
+  const it=e.item||{};
+  if(e.answer!==it.m) return false;
+  if(typeof KANA_ITEMS!=='undefined' && KANA_ITEMS.has(it)) return false;
+  return true;
+}
+const _duRenderEx2=renderExercise;
+renderExercise=function(){
+  const r=_duRenderEx2.apply(this, arguments);
+  try{
+    const e=G && G.queue && G.queue[G.i];
+    if(duAutoSay(e)) setTimeout(()=>{ if(G && G.queue[G.i]===e && !G.answered) speak(e.audio); }, 350);
+  }catch(_){}
+  return r;
+};
+
+/* ---- 보기 소리: 한국어 뜻 보기도 누르면 한국어로 읽어 줍니다 ----
+   대상 언어 보기는 그 언어로, 한국어 보기는 한국어로. '들리는 것을 고르세요'만 조용히. */
+let KO_VOICE=null;
+function koVoice(){
+  if(KO_VOICE || !TTS) return KO_VOICE;
+  try{ KO_VOICE=(speechSynthesis.getVoices()||[]).find(v=>v.lang && v.lang.toLowerCase().indexOf('ko')===0)||null; }catch(_){}
+  return KO_VOICE;
+}
+function speakKo(text){
+  if(!TTS || !text) return;
+  text=String(text).replace(/\s*\([^)]*\)\s*/g,' ').replace(/[~～]/g,'').trim();
+  if(!text) return;
+  try{
+    warmTTS();
+    const busy=(TTS_REAL>0 && (Date.now()-TTS_AT)<15000) || speechSynthesis.pending;
+    if(busy){ speechSynthesis.cancel(); TTS_REAL=0; }
+    const go=()=>{ try{
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='ko-KR'; u.rate=1; const v=koVoice(); if(v) u.voice=v;
+      u.onend=u.onerror=()=>{ TTS_REAL=Math.max(0,TTS_REAL-1); };
+      TTS_REAL++; TTS_AT=Date.now();
+      speechSynthesis.speak(u);
+    }catch(e){} };
+    if(busy) setTimeout(go, 60); else go();
+  }catch(e){}
+}
+optTap=function(e, b){
+  const t=optSayText(e, b.dataset.v);
+  const bump=()=>{ b.classList.remove('saying'); void b.offsetWidth; b.classList.add('saying'); };
+  if(t){ speak(t); bump(); return; }
+  if(e && e.kind==='mcq' && canSpeak() && /[가-힣]/.test(b.dataset.v||'')){ speakKo(b.dataset.v); bump(); return; }
+  sfx('tap');
+};
 
 /* ---------------- 10. START ---------------- */
 CLOUD.on(()=>{ if(document.querySelector('.path')) renderHome(); });
