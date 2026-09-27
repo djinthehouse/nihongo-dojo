@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F1F0EC" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14161A" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131F24" media="(prefers-color-scheme: dark)">
 <meta name="description" content="일본어 JLPT N5–N4 학습 게임 — 히라가나·가타카나부터 단어 834개, 문장 224개까지. 간격 반복 복습으로 매일 조금씩.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C8352B'/%3E%3Ctext x='50' y='72' font-size='56' text-anchor='middle' fill='white' font-family='serif' font-weight='700'%3E道%3C/text%3E%3C/svg%3E">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -943,6 +943,197 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .trackhead .tp{color:var(--ink-3);font-size:11.5px;margin-top:6px;letter-spacing:.06em}
 .path > .trackhead:first-child{margin-top:6px}
 .qjp.solo{font-size:78px;line-height:1.15}
+
+/* ================= 듀오링고식 화면 ================= */
+:root{
+  --du-green:#58CC02; --du-green-d:#58A700; --du-green-soft:#D7FFB8; --du-green-line:#A5ED6E;
+  --du-red:#FF4B4B;   --du-red-d:#EA2B2B;   --du-red-soft:#FFDFE0;   --du-red-line:#FFB2B2;
+  --du-blue:#1CB0F6;  --du-blue-d:#1899D6;  --du-blue-soft:#DDF4FF;  --du-blue-line:#84D8FF;
+  --du-gray:#E5E5E5;  --du-gray-d:#AFAFAF;  --du-line:#E5E5E5;
+  --paper:#FFFFFF; --paper-2:#FFFFFF; --paper-3:#F2F2F2; --line:#E5E5E5; --stone:#E5E5E5;
+  --ink:#3C3C3C; --ink-2:#4B4B4B; --ink-3:#777777; --drop:#E5E5E5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --du-green-soft:#1F3417; --du-green-line:#3E6B1F; --du-red-soft:#3B2226; --du-red-line:#7A3036;
+    --du-blue-soft:#15313F; --du-blue-line:#1F6E93; --du-gray:#37464F; --du-gray-d:#6F828C; --du-line:#37464F;
+    --paper:#131F24; --paper-2:#131F24; --paper-3:#1F2E35; --line:#37464F; --stone:#37464F;
+    --ink:#F1F7FB; --ink-2:#DCE6EC; --ink-3:#9DB0BB; --drop:#37464F;
+  }
+}
+:root[data-theme="dark"]{
+  --du-green-soft:#1F3417; --du-green-line:#3E6B1F; --du-red-soft:#3B2226; --du-red-line:#7A3036;
+  --du-blue-soft:#15313F; --du-blue-line:#1F6E93; --du-gray:#37464F; --du-gray-d:#6F828C; --du-line:#37464F;
+  --paper:#131F24; --paper-2:#131F24; --paper-3:#1F2E35; --line:#37464F; --stone:#37464F;
+  --ink:#F1F7FB; --ink-2:#DCE6EC; --ink-3:#9DB0BB; --drop:#37464F;
+}
+
+/* ---- 버튼 ---- */
+.cta{background:var(--du-green);color:#fff;box-shadow:0 4px 0 var(--du-green-d);border-radius:16px;font-weight:900;letter-spacing:.03em}
+.cta.shu{background:var(--du-green);box-shadow:0 4px 0 var(--du-green-d)}
+.cta.ghost{background:var(--paper);color:var(--du-blue-d);border:2px solid var(--du-line);box-shadow:0 4px 0 var(--du-line)}
+.cta:disabled{background:var(--du-gray);color:var(--du-gray-d);box-shadow:none}
+.cta:not(:disabled):active{transform:translateY(4px);box-shadow:none}
+.linkbtn{color:var(--du-blue-d);font-weight:800}
+
+/* ---- 윗줄 ---- */
+.topbar.du-top{justify-content:space-between;gap:6px;border-bottom:2px solid var(--du-line);padding:10px 16px}
+.topbar.du-top .spacer{display:none}
+.du-flag{width:36px;height:28px;border-radius:8px;display:grid;place-items:center;font-weight:900;font-size:14px;
+  color:#fff;background:var(--band);box-shadow:0 3px 0 var(--band-2);font-family:"Noto Sans KR","Noto Sans JP",sans-serif}
+.topbar.du-top .stat{font-size:16px;font-weight:900;gap:6px;padding:6px 8px;border-radius:12px}
+.topbar.du-top .stat svg{width:24px;height:24px}
+.topbar.du-top .stat.gem{color:var(--du-blue)}
+.topbar.du-top .stat.hp{color:var(--du-red)}
+.topbar.du-top .stat.streak{color:#FF9600}
+
+/* ---- 아래 탭 ---- */
+.du-spacer{height:92px}
+.du-tabs{position:fixed;left:0;right:0;bottom:0;z-index:35;max-width:480px;margin:0 auto;display:flex;gap:2px;
+  background:var(--paper);border-top:2px solid var(--du-line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.du-tab{flex:1;min-width:0;border:2px solid transparent;background:none;border-radius:12px;padding:4px 0 3px;display:flex;
+  flex-direction:column;align-items:center;gap:1px;position:relative;font-size:11px;font-weight:800;color:var(--ink-3)}
+.du-tab svg{width:30px;height:30px;display:block}
+.du-tab.on{border-color:var(--du-blue-line);background:var(--du-blue-soft);color:var(--du-blue-d)}
+.du-tab .dot{position:absolute;top:3px;left:calc(50% + 8px);width:11px;height:11px;border-radius:50%;background:var(--du-red);border:2px solid var(--paper)}
+.du-tab:active{transform:translateY(1px)}
+
+/* ---- 탭 화면 ---- */
+.du-pane{padding:0 16px}
+.du-pane[hidden]{display:none}
+.du-learn{padding:0}
+.du-ph h2{font-size:24px;font-weight:900;margin:22px 0 4px;color:var(--ink)}
+.du-ph p{margin:0 0 16px;color:var(--ink-3);font-size:14px;line-height:1.5;word-break:keep-all}
+.du-h3,.du-set h3{font-size:18px;font-weight:900;margin:22px 0 10px;color:var(--ink)}
+.du-pane .lgcard,.du-pane .storylist,.du-pane .pwacard,.du-pane .today,.du-pane .srscard,.du-pane .beltbar,.du-pane .acctrow{
+  margin:0 0 14px;background:var(--paper);border:2px solid var(--du-line);box-shadow:none;border-radius:16px}
+.du-pane .hero{padding-top:18px}
+.du-set{border:2px solid var(--du-line);border-radius:16px;padding:4px 16px 8px;margin:0 0 14px}
+.du-set h3{margin:12px 0 4px}
+.du-setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:2px solid var(--du-line);font-weight:700;font-size:15px}
+.du-setrow:first-of-type{border-top:0}
+.du-sw{border:2px solid var(--du-line);background:var(--paper);border-radius:12px;padding:7px 14px;font-weight:900;color:var(--ink-3);box-shadow:0 3px 0 var(--du-line)}
+.du-sw.on{background:var(--du-blue-soft);border-color:var(--du-blue-line);color:var(--du-blue-d);box-shadow:0 3px 0 var(--du-blue-line)}
+.du-pbtn{margin:0 0 14px !important;text-align:left;padding-left:18px;display:flex;align-items:center;gap:10px}
+.du-pbtn svg{width:24px;height:24px;flex:none}
+.lgbtn{background:var(--du-green);color:#fff;box-shadow:0 3px 0 var(--du-green-d);border-radius:12px}
+.lgmore{border-radius:12px}
+.du-empty{border:2px dashed var(--du-line);border-radius:16px;padding:22px;text-align:center;color:var(--ink-3);font-weight:700}
+.du-profile .homefoot{padding:18px 0 10px}
+.du-lockstory .si{color:var(--du-gray-d)}
+.du-lockstory .si svg{width:20px;height:20px}
+.du-lockstory .sx{color:var(--du-blue-d);font-weight:900}
+
+/* ---- 레슨 길 ---- */
+.du-learn .path{padding:4px 16px 30px}
+.trackhead .du-sec{font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--du-blue-d);margin-bottom:2px}
+.unitband{position:sticky;top:var(--du-top,56px);z-index:20;margin:22px 0 6px;border-radius:16px;padding:14px 14px 14px 18px;
+  box-shadow:0 4px 0 var(--band-2);gap:10px}
+.unitband .num{display:none}
+.unitband .du-ul{font-size:12px;font-weight:900;letter-spacing:.04em;opacity:.8;margin-bottom:2px}
+.unitband .t{font-size:17px;font-weight:900}
+.gbtn{display:flex;align-items:center;gap:5px;border:2px solid rgba(255,255,255,.4);background:transparent;border-radius:12px;
+  padding:8px 10px;font-weight:900;font-size:13px;color:inherit}
+.gbtn svg{width:18px;height:18px}
+.du-jumpu{flex:none;border:2px solid rgba(255,255,255,.55);background:rgba(255,255,255,.14);border-radius:12px;padding:8px 10px;
+  font-weight:900;font-size:13px;color:inherit}
+.lessons::before{display:none}
+.lessons.du-hascur{padding-top:64px}
+.speaker{background:var(--du-blue);color:#fff;border:0;box-shadow:0 4px 0 var(--du-blue-d);border-radius:14px}
+.speaker.slow{background:var(--paper);color:var(--du-blue-d);border:2px solid var(--du-line);box-shadow:0 4px 0 var(--du-line)}
+.speaker:active{transform:translateY(3px);box-shadow:none}
+.node-row.locked,.node-row.du-lockrow{opacity:1}
+.node.du-n{width:72px;height:66px;border-radius:50%;background:var(--du-gray);color:var(--du-gray-d);
+  box-shadow:0 7px 0 color-mix(in srgb, var(--du-gray) 70%, #000 12%)}
+.node.du-n svg{width:32px;height:32px;display:block}
+.node.du-n.open,.node.du-n.done{background:var(--band);color:#fff;box-shadow:0 7px 0 var(--band-2);--du-dot:var(--band)}
+.node.du-n.done{background:#FFC800;color:#fff;box-shadow:0 7px 0 #E0A800}
+.node.du-n.du-cur{box-shadow:0 7px 0 var(--band-2), 0 0 0 8px var(--paper), 0 0 0 14px var(--du-gray)}
+.node.du-n.du-locked{cursor:pointer}
+.node.du-n:not(:disabled):active{transform:translateY(5px) translateX(var(--off,0));box-shadow:0 2px 0 var(--band-2)}
+.node.du-n.du-locked:active{box-shadow:0 2px 0 var(--du-gray-d)}
+.node.du-n .stars{bottom:-18px}
+.du-start{position:absolute;bottom:calc(100% + 22px);left:50%;transform:translateX(-50%);white-space:nowrap;
+  background:var(--paper);color:var(--ai);border:2px solid var(--du-line);border-radius:12px;padding:8px 14px;
+  font:900 15px/1 "Noto Sans KR",sans-serif;letter-spacing:.04em;animation:du-bob 1.4s ease-in-out infinite;pointer-events:none}
+.du-start::after{content:"";position:absolute;top:100%;left:50%;width:12px;height:12px;background:var(--paper);
+  border-right:2px solid var(--du-line);border-bottom:2px solid var(--du-line);transform:translate(-50%,-6px) rotate(45deg)}
+@keyframes du-bob{0%,100%{margin-bottom:0}50%{margin-bottom:6px}}
+.node.chest{background:#FFC800;box-shadow:0 7px 0 #E0A800}
+.lab{font-weight:700}
+@media (prefers-reduced-motion: reduce){ .du-start{animation:none} }
+
+/* ---- 건너뛰기 시트 ---- */
+.sheet.du-skip p{line-height:1.6}
+.du-note{font-size:12.5px;color:var(--ink-3);line-height:1.5;margin:8px 2px 16px;word-break:keep-all}
+.du-jtag{align-self:flex-start;background:var(--du-blue-soft);color:var(--du-blue-d);font-weight:900;font-size:12px;border-radius:10px;padding:5px 10px;margin-bottom:10px}
+
+/* ---- 레슨 화면 ---- */
+.lessonbar{border-bottom:0;gap:12px;padding:14px 16px 6px}
+.lessonbar #quitBtn{border:0;background:none;box-shadow:none;color:var(--du-gray-d)}
+.lessonbar #quitBtn svg{width:26px;height:26px}
+.bar{height:16px;background:var(--du-gray)}
+.bar>i{background:var(--du-green)}
+.hearts{gap:5px}
+.hearts .h{color:var(--du-red)}
+.hearts .h.off{color:var(--du-gray-d);opacity:1}
+.hearts svg{width:26px;height:26px}
+.hearts .hn{font-size:18px;font-weight:900;color:var(--du-red);min-width:12px}
+.hearts .hn.pop{animation:pop .45s}
+.stage{padding-top:18px}
+.prompt-label{font-size:22px;font-weight:900;letter-spacing:0;color:var(--ink);margin-bottom:22px;line-height:1.35;word-break:keep-all;
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.opts{counter-reset:duo;gap:12px}
+.opt{display:flex;align-items:center;gap:12px;background:var(--paper);border:2px solid var(--du-line);border-bottom-width:2px;
+  box-shadow:0 4px 0 var(--du-line);border-radius:14px;padding:13px 14px;font-size:17px;color:var(--ink)}
+.opt::before{counter-increment:duo;content:counter(duo);flex:none;width:28px;height:28px;border:2px solid var(--du-line);border-radius:8px;
+  display:grid;place-items:center;font:800 14px/1 "Noto Sans KR",sans-serif;color:var(--du-gray-d)}
+.opt:active{transform:translateY(3px);box-shadow:0 1px 0 var(--du-line)}
+.opt.sel{background:var(--du-blue-soft);border-color:var(--du-blue-line);box-shadow:0 4px 0 var(--du-blue-line);color:var(--du-blue-d)}
+.opt.sel::before{border-color:var(--du-blue-line);color:var(--du-blue-d)}
+.opt.right{background:var(--du-green-soft);border-color:var(--du-green-line);box-shadow:0 4px 0 var(--du-green-line);color:var(--du-green-d);text-decoration:none}
+.opt.right::before{border-color:var(--du-green-line);color:var(--du-green-d)}
+.opt.wrong{background:var(--du-red-soft);border-color:var(--du-red-line);box-shadow:0 4px 0 var(--du-red-line);color:var(--du-red-d);text-decoration:none}
+.opt.wrong::before{border-color:var(--du-red-line);color:var(--du-red-d)}
+.tok{background:var(--paper);border:2px solid var(--du-line);border-bottom-width:2px;box-shadow:0 4px 0 var(--du-line);border-radius:12px;color:var(--ink)}
+.tok:active{transform:translateY(3px);box-shadow:0 1px 0 var(--du-line);border-bottom-width:2px}
+.tok.ghost{opacity:1;background:var(--du-gray);border-color:var(--du-gray);box-shadow:none;color:transparent;border-style:solid}
+.tok.ghost ruby rt{color:transparent}
+.mcard{background:var(--paper);border:2px solid var(--du-line);border-bottom-width:2px;box-shadow:0 4px 0 var(--du-line);border-radius:14px;color:var(--ink)}
+.mcard.sel{background:var(--du-blue-soft);border-color:var(--du-blue-line);box-shadow:0 4px 0 var(--du-blue-line);color:var(--du-blue-d)}
+.mcard.bad{background:var(--du-red-soft);border-color:var(--du-red-line);color:var(--du-red-d)}
+.footer{border-top:2px solid var(--du-line)}
+.du-say{display:flex;align-items:flex-end;gap:8px;margin:0 0 4px}
+.du-sayhead{flex:none;width:78px}
+.du-sayhead img{width:78px;height:auto;display:block}
+.du-say .qko{position:relative;flex:1;min-width:0;border:2px solid var(--du-line);border-radius:16px;padding:12px 16px;
+  font-size:19px;background:var(--paper);margin-bottom:18px}
+.du-say .qko::before{content:"";position:absolute;left:-9px;bottom:16px;width:14px;height:14px;background:var(--paper);
+  border-left:2px solid var(--du-line);border-bottom:2px solid var(--du-line);transform:rotate(45deg)}
+
+input.spellbox{background:var(--paper);border:2px solid var(--du-line);border-radius:14px}
+input.spellbox:focus{border-color:var(--du-blue-line);box-shadow:none}
+.typebox{background:var(--paper);border:2px solid var(--du-line);border-radius:14px}
+
+/* ---- 채점 ---- */
+.feedback{border-top:0}
+.feedback.ok{background:var(--du-green-soft)}
+.feedback.no{background:var(--du-red-soft)}
+.feedback .fb-title{font-size:22px}
+.feedback.ok .fb-title,.feedback.ok .fb-body,.feedback.ok .fb-body b{color:var(--du-green-d)}
+.feedback.no .fb-title,.feedback.no .fb-body,.feedback.no .fb-body b{color:var(--du-red-d)}
+.feedback.ok .fb-badge{background:var(--du-green);box-shadow:0 0 0 3px var(--du-green-soft)}
+.feedback.no .fb-badge{background:var(--du-red);box-shadow:0 0 0 3px var(--du-red-soft)}
+.feedback.ok .cta{background:var(--du-green);box-shadow:0 4px 0 var(--du-green-d);color:#fff}
+.feedback.no .cta{background:var(--du-red);box-shadow:0 4px 0 var(--du-red-d);color:#fff}
+
+/* ---- 후리가나 ---- */
+ruby{ruby-position:over}
+ruby rt{font-size:.5em;font-weight:500;letter-spacing:0;color:var(--ink-3);font-family:"Noto Sans JP","Noto Sans KR",sans-serif;user-select:none}
+.opt.sel ruby rt,.opt.right ruby rt,.opt.wrong ruby rt,.feedback ruby rt,.mcard.sel ruby rt{color:inherit;opacity:.75}
+.unitband ruby rt,.trackhead ruby rt{color:inherit;opacity:.8}
+.qjp ruby rt{font-size:.42em}
+ruby rt{color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -5671,6 +5862,419 @@ function closeSheet(){
   if(sh){ sh.classList.remove('show'); setTimeout(()=>sh.remove(),300); }
   if(bg) bg.remove();
 }
+
+/* ---- 후리가나 — 한자 위에 읽는 법 ---- */
+const FURI_KJ='\\u3400-\\u9FFF\\uF900-\\uFAFF々〆ヶ';
+const FURI_RUN=new RegExp('['+FURI_KJ+']+','g');
+function furiHira(s){ return String(s||'').replace(/[ァ-ヶ]/g, c=>String.fromCharCode(c.charCodeAt(0)-0x60)); }
+function furiAlign(j, k){
+  const src=String(j||'').replace(/[\s　]/g,'');
+  if(!k || !new RegExp('['+FURI_KJ+']').test(src) || /[0-9A-Za-z０-９Ａ-Ｚａ-ｚ~〜～]/.test(src)) return null;
+  const segs=[]; const re=new RegExp('(['+FURI_KJ+']+)|([^'+FURI_KJ+']+)','g'); let m;
+  while((m=re.exec(src))) segs.push(m[1]?{kj:1,t:m[1]}:{kj:0,t:m[2]});
+  const kk=furiHira(k).replace(/[^ぁ-ゖー]/g,'');
+  let pat='^';
+  for(const s of segs){
+    if(s.kj) pat+='([\\u3041-\\u3096ー]+?)';
+    else pat+=furiHira(s.t).replace(/[^ぁ-ゖー]/g,'');
+  }
+  const mm=kk.match(new RegExp(pat+'$')); if(!mm) return null;
+  let gi=1; return segs.map(s=>s.kj?{t:s.t, r:mm[gi++], kj:1}:{t:s.t});
+}
+const FURI_DICT=(()=>{
+  const cnt={};
+  const add=(key,r)=>{ const o=cnt[key]||(cnt[key]={}); o[r]=(o[r]||0)+1; };
+  const feed=o=>{ if(!o||!o.j||!o.k) return; const a=furiAlign(o.j,o.k); if(!a) return;
+    a.forEach((s,i)=>{ if(!s.kj) return;
+      add(s.t, s.r);
+      const nx=a[i+1]; if(nx && !nx.kj){ const c=furiHira(nx.t).replace(/[^ぁ-ゖー]/g,'')[0]; if(c) add(s.t+'|'+c, s.r); }
+    }); };
+  UNITS.forEach(u=>{ (u.w||[]).forEach(feed); (u.s||[]).forEach(feed); ((u.grammar&&u.grammar.ex)||[]).forEach(feed); });
+  const best={}; for(const key in cnt){ const o=cnt[key]; best[key]=Object.keys(o).sort((a,b)=>o[b]-o[a])[0]; }
+  const extra={'生':'せい','時':'じ','半':'はん','思':'おも','分':'ふん','円':'えん','年':'ねん','月':'がつ','日':'にち'};
+  for(const k in extra) if(!best[k]) best[k]=extra[k];
+  return best;
+})();
+/* 한자 덩어리 하나를 사전으로 읽습니다 — 통째로 없으면 가장 긴 앞부분부터 잘라 봅니다 */
+function furiRun(run, nextCh){
+  if(nextCh && FURI_DICT[run+'|'+nextCh]) return [{t:run, r:FURI_DICT[run+'|'+nextCh]}];
+  if(FURI_DICT[run]) return [{t:run, r:FURI_DICT[run]}];
+  const out=[]; let i=0;
+  while(i<run.length){
+    let hit=null;
+    for(let L=run.length-i; L>=1; L--){
+      const part=run.substr(i,L), nc=(i+L===run.length)?nextCh:null;
+      const r=(nc&&FURI_DICT[part+'|'+nc])||FURI_DICT[part];
+      if(r){ hit={t:part, r}; break; }
+    }
+    if(!hit) hit={t:run[i], r:null};
+    out.push(hit); i+=hit.t.length;
+  }
+  return out;
+}
+function furiHTML(text){
+  const s=String(text); let h='', last=0, m;
+  FURI_RUN.lastIndex=0;
+  while((m=FURI_RUN.exec(s))){
+    h+=esc(s.slice(last, m.index));
+    const nc=furiHira(s.slice(m.index+m[0].length).replace(/^[\s　]+/,''))[0];
+    furiRun(m[0], /[ぁ-ゖ]/.test(nc||'')?nc:null).forEach(p=>{
+      h+= p.r ? `<ruby>${esc(p.t)}<rt>${esc(p.r)}</rt></ruby>` : esc(p.t);
+    });
+    last=m.index+m[0].length;
+  }
+  return h+esc(s.slice(last));
+}
+const FURI_SKIP='.topbar,.node,.unitband .num,.du-unit .num,.badgerow,.beltchip,.hero h1,.kbd,.typebox,ruby,rt,script,style,textarea,input,[data-nofuri],.du-tabs,.du-flag,.lgname,.ob-flag';
+function furiOn(){ return S.furi!==false && S.furi!==0; }
+function furiWalk(root){
+  if(!furiOn() || !root) return;
+  const tw=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode(n){
+    if(!n.nodeValue || !new RegExp('['+FURI_KJ+']').test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
+    const p=n.parentElement; if(!p || p.closest(FURI_SKIP)) return NodeFilter.FILTER_REJECT;
+    return NodeFilter.FILTER_ACCEPT; }});
+  const list=[]; while(tw.nextNode()) list.push(tw.currentNode);
+  list.forEach(n=>{
+    const html=furiHTML(n.nodeValue);
+    if(html.indexOf('<ruby>')<0) return;
+    const span=document.createElement('span'); span.className='furi'; span.innerHTML=html;
+    n.parentNode.replaceChild(span, n);
+    const q=span.closest('.qjp'); if(q){ const kn=q.parentNode.querySelector('.qkana'); if(kn) kn.style.display='none'; }
+  });
+}
+let FURI_BUSY=false;
+const FURI_MO=new MutationObserver(ms=>{
+  if(FURI_BUSY || !furiOn()) return;
+  FURI_BUSY=true;
+  try{ ms.forEach(m=>m.addedNodes.forEach(n=>{
+    if(n.nodeType===1) furiWalk(n);
+    else if(n.nodeType===3 && n.parentElement) furiWalk(n.parentElement);
+  })); } finally { FURI_BUSY=false; }
+});
+FURI_MO.observe(document.body, {childList:true, subtree:true});
+function furiToggle(){ S.furi = furiOn()?0:1; save(); location.reload(); }
+
+/* ================= 듀오링고식 화면 =================
+   · 홈은 레슨 길이 먼저 — 목표·퀘스트·리그·상점·프로필은 아래 탭으로 나눕니다.
+   · 확인은 초록, 오답은 빨강, 고른 보기는 파랑.
+   · 잠긴 레슨을 누르면 '바로 해보기' 또는 '건너뛰기 테스트'.            */
+let DU_TAB='learn', DU_SCROLL=true;
+const DU_STORY_FREE=new Set();
+const DU_FLAG={en:'EN', zh:'中', ja:'あ'}[OB.lang]||'•';
+const DU_ICON={
+  learn:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 14.5 16 6l10 8.5V26a2 2 0 0 1-2 2h-5.5v-7h-5v7H8a2 2 0 0 1-2-2z" fill="#FF9600"/><path d="M4 15 16 4.8 28 15" fill="none" stroke="#E4572E" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="13.5" y="20" width="5" height="8" rx="1" fill="#FFC800"/></svg>',
+  practice:'<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="11" width="5" height="10" rx="2" fill="#1CB0F6"/><rect x="24" y="11" width="5" height="10" rx="2" fill="#1CB0F6"/><rect x="7" y="8" width="5" height="16" rx="2" fill="#1899D6"/><rect x="20" y="8" width="5" height="16" rx="2" fill="#1899D6"/><rect x="12" y="14.5" width="8" height="3" rx="1.5" fill="#8EA1AC"/></svg>',
+  league:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 27 7v8c0 7-4.8 11.6-11 14-6.2-2.4-11-7-11-14V7z" fill="#FFC800"/><path d="M16 6.5 24 9.4v5.8c0 5.1-3.3 8.6-8 10.6-4.7-2-8-5.5-8-10.6V9.4z" fill="#FF9600"/><path d="m16 10 1.9 3.9 4.3.6-3.1 3 .7 4.2-3.8-2-3.8 2 .7-4.2-3.1-3 4.3-.6z" fill="#fff"/></svg>',
+  quest:'<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="13" width="24" height="15" rx="3" fill="#CD7900"/><path d="M4 13a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v3H4z" fill="#FF9600"/><rect x="4" y="15" width="24" height="3" fill="#A35F00"/><rect x="13.5" y="13" width="5" height="8" rx="1.5" fill="#FFC800"/></svg>',
+  shop:'<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12h22v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#FF4B4B"/><path d="M4 7h24l-1.5 6.5a3 3 0 0 1-5.8 0 3 3 0 0 1-5.7 0 3 3 0 0 1-5.7 0 3 3 0 0 1-5.8 0z" fill="#FF8C8C"/><rect x="13" y="19" width="6" height="9" rx="1" fill="#fff" opacity=".85"/></svg>',
+  profile:'<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="#CE82FF"/><circle cx="16" cy="13" r="5" fill="#fff"/><path d="M7.5 25.5a9.5 9.5 0 0 1 17 0A13 13 0 0 1 16 29a13 13 0 0 1-8.5-3.5z" fill="#fff"/></svg>'
+};
+const DU_NODE={
+  star:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.8 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" fill="currentColor"/></svg>',
+  talk:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.6 3.9c-.5.4-1.2 0-1.2-.6V16h0A2.5 2.5 0 0 1 4 13.5z" fill="currentColor"/><circle cx="8.5" cy="9.5" r="1.4" fill="var(--du-dot,#fff)"/><circle cx="12" cy="9.5" r="1.4" fill="var(--du-dot,#fff)"/><circle cx="15.5" cy="9.5" r="1.4" fill="var(--du-dot,#fff)"/></svg>',
+  gym:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="8" width="3.5" height="8" rx="1.3" fill="currentColor"/><rect x="19" y="8" width="3.5" height="8" rx="1.3" fill="currentColor"/><rect x="4.5" y="5.5" width="4" height="13" rx="1.5" fill="currentColor"/><rect x="15.5" y="5.5" width="4" height="13" rx="1.5" fill="currentColor"/><rect x="8" y="10.6" width="8" height="2.8" rx="1.2" fill="currentColor"/></svg>',
+  check:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 4.8 4.8L19.5 7" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2.6"/></svg>',
+  book:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5A1.5 1.5 0 0 1 4 17.5zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5a1.5 1.5 0 0 0 1.5-1.5z" fill="currentColor"/></svg>'
+};
+
+function duTabsHTML(active){
+  const T=[['learn','학습'],['practice','연습'],['league','리그'],['quest','퀘스트'],['shop','상점'],['profile','프로필']];
+  let dueN=0; try{ dueN=srsDue().length + (S.mistakes||[]).length; }catch(_){}
+  let qOpen=false; try{ qOpen=questsToday().some(q=>!q.got); }catch(_){}
+  const dot={practice:dueN>0, quest:qOpen};
+  return `<div class="du-spacer"></div><nav class="du-tabs" aria-label="메뉴">${T.map(([k,l])=>
+    `<button class="du-tab${k===active?' on':''}" data-tab="${k}" aria-current="${k===active?'page':'false'}">${DU_ICON[k]}<span>${l}</span>${dot[k]&&k!==active?'<i class="dot"></i>':''}</button>`).join('')}</nav>`;
+}
+function duBindTabs(){
+  app.querySelectorAll('.du-tab').forEach(b=>b.onclick=()=>{
+    sfx('tap'); const k=b.dataset.tab;
+    if(k==='shop'){ renderShop(); return; }
+    DU_TAB=k; DU_SCROLL=true; renderHome();
+  });
+}
+function duAfterSub(k){
+  if(app.querySelector('.du-tabs')) return;
+  app.insertAdjacentHTML('beforeend', duTabsHTML(k));
+  duBindTabs();
+}
+
+/* 레슨 하나가 무엇을 하는지 — 아이콘 */
+function duKind(l){ return l.review ? 'gym' : ((l.s && l.s.length) ? 'talk' : 'star'); }
+function duUnitLabel(l){
+  const u=UNITS[l.unit]; if(!u) return '';
+  const inTrack=UNITS.filter(x=>x.track===u.track);
+  const secs=[...new Set(UNITS.map(x=>x.track))];
+  return '섹션 '+(secs.indexOf(u.track)+1)+' · 단원 '+(inTrack.indexOf(u)+1);
+}
+
+function duHome(){
+  const path=app.querySelector('.path'); if(!path || app.querySelector('.du-pane')) return;
+  const top=app.querySelector('.topbar');
+  if(top){
+    top.classList.add('du-top');
+    top.insertAdjacentHTML('afterbegin', `<div class="du-flag" aria-label="지금 배우는 언어">${DU_FLAG}</div>`);
+  }
+  const P={};
+  ['learn','practice','league','quest','profile'].forEach(k=>{
+    const d=document.createElement('section'); d.className='du-pane du-'+k; d.dataset.pane=k;
+    if(k!==DU_TAB) d.hidden=true; P[k]=d;
+  });
+  const head=(k,t,s)=>P[k].insertAdjacentHTML('beforeend', `<div class="du-ph"><h2>${t}</h2>${s?`<p>${s}</p>`:''}</div>`);
+  const mv=(el,k)=>{ if(el) P[k].appendChild(el); return el; };
+  const q=s=>app.querySelector(s);
+
+  /* ---- 프로필 ---- */
+  mv(q('.hero'),'profile');
+  mv(q('.beltbar'),'profile');
+  mv(q('.acctrow'),'profile');
+  const snd=top && top.querySelector('.sndrow');
+  const set=document.createElement('div'); set.className='du-set';
+  set.innerHTML='<h3>설정</h3>';
+  const row=(label, el)=>{ if(!el) return; const r=document.createElement('div'); r.className='du-setrow';
+    r.innerHTML=`<span>${label}</span>`; r.appendChild(el); set.appendChild(r); };
+  row('효과음', q('#sfxBtn')); row('배경음악', q('#bgmBtn')); row('밝은 화면 / 어두운 화면', q('#themeBtn'));
+  if(typeof furiToggle==='function'){
+    const fb=document.createElement('button'); fb.className='du-sw'+(furiOn()?' on':''); fb.id='furiBtn';
+    fb.setAttribute('aria-pressed', furiOn()?'true':'false'); fb.textContent=furiOn()?'켜짐':'꺼짐';
+    fb.onclick=()=>{ sfx('tap'); furiToggle(); };
+    row('후리가나 (한자 위 읽는 법)', fb);
+  }
+  if(snd) snd.remove();
+  P.profile.appendChild(set);
+  const bdg=q('.badgerow');
+  if(bdg){ P.profile.insertAdjacentHTML('beforeend','<h3 class="du-h3">업적</h3>'); mv(bdg,'profile'); }
+  app.querySelectorAll('.pwacard').forEach(el=>mv(el,'profile'));
+  mv(q('.homefoot'),'profile');
+
+  /* ---- 퀘스트 ---- */
+  head('quest','퀘스트','오늘의 목표와 과제를 채우면 보석과 XP 를 받아요');
+  mv(q('.today'),'quest');
+
+  /* ---- 리그 ---- */
+  head('league','리그','같은 조 사람들과 이번 주 XP 로 겨뤄요 · 월요일마다 새 조');
+  app.querySelectorAll('.lgcard').forEach(el=>mv(el,'league'));
+
+  /* ---- 연습 ---- */
+  head('practice','연습','익힌 것을 다시 꺼내 볼수록 오래 기억합니다');
+  mv(q('.srscard'),'practice');
+  const pbtn=(id)=>{ const b=q('#'+id); if(!b) return; const wrap=b.parentElement;
+    b.classList.add('du-pbtn'); b.style.margin=''; P.practice.appendChild(b);
+    if(wrap && wrap!==app && !wrap.children.length && !wrap.classList.contains('homefoot')) wrap.remove(); };
+  pbtn('reviewBtn'); pbtn('freeBtn'); pbtn('speakBtn');
+  const sl=q('.storylist');
+  if(sl){ const more=sl.querySelector('.slmore'); if(more) more.remove(); mv(sl,'practice'); }
+  const locked=(typeof STORIES!=='undefined')? STORIES.filter(s=>!storyOpen(s)) : [];
+  if(locked.length){
+    let box=sl;
+    if(!box){ box=document.createElement('div'); box.className='storylist';
+      box.innerHTML='<div class="slh"><div class="t">이야기</div><div class="s">짧은 대화로 익히는 진짜 말</div></div>';
+      P.practice.appendChild(box); }
+    box.insertAdjacentHTML('beforeend', locked.map(s=>`<button class="srow du-lockstory" data-story-try="${s.id}">
+        <div class="si">${DU_NODE.lock}</div>
+        <div class="sb"><div class="st">${esc(s.title)}</div><div class="ss">${esc(s.sub)}</div></div>
+        <div class="sx">미리 하기</div></button>`).join(''));
+    box.querySelectorAll('[data-story-try]').forEach(b=>b.onclick=()=>{
+      sfx('tap'); DU_STORY_FREE.add(b.dataset.storyTry); startStory(b.dataset.storyTry); });
+  }
+  if(P.practice.querySelectorAll('.srscard,.du-pbtn,.storylist').length===0)
+    P.practice.insertAdjacentHTML('beforeend','<div class="du-empty">레슨을 하나 끝내면 여기에 복습 거리가 생겨요.</div>');
+
+  /* ---- 학습 (레슨 길) ---- */
+  mv(path,'learn');
+  duPath(path);
+
+  /* 남은 빈 껍데기 정리 후 조립 */
+  [...app.children].forEach(el=>{ if(el!==top && !el.classList.contains('du-pane') && !el.id) el.remove(); });
+  Object.values(P).forEach(p=>app.appendChild(p));
+  app.insertAdjacentHTML('beforeend', duTabsHTML(DU_TAB));
+  duBindTabs();
+  if(top) document.documentElement.style.setProperty('--du-top', top.offsetHeight+'px');
+
+  /* 스크롤 — 방금 끝낸 자리, 아니면 지금 할 레슨 */
+  const fresh=app.querySelector('.node.justdone');
+  if(DU_TAB==='learn'){
+    const cur=fresh || app.querySelector('.node.du-cur');
+    if(cur && (fresh || DU_SCROLL)) cur.scrollIntoView({block:'center'});
+  } else if(DU_SCROLL) window.scrollTo(0,0);
+  DU_SCROLL=false;
+}
+
+function duPath(path){
+  const secs=[...new Set(UNITS.map(x=>x.track))];
+  path.querySelectorAll('.trackhead').forEach((th,i)=>{
+    const thl=th.querySelector('.thl');
+    if(thl) thl.insertAdjacentHTML('afterbegin', `<div class="du-sec">섹션 ${i+1}</div>`);
+  });
+  path.querySelectorAll('.unitband').forEach(band=>{
+    const ls=band.nextElementSibling;
+    const n0=ls && ls.querySelector('[data-lesson]');
+    const L0=n0 && LESSONS.find(l=>l.id===n0.dataset.lesson);
+    if(!L0) return;
+    const t=band.querySelector('.ub-t');
+    if(t) t.insertAdjacentHTML('afterbegin', `<div class="du-ul">${esc(duUnitLabel(L0))}</div>`);
+    const g=band.querySelector('.gbtn');
+    if(g) g.innerHTML=DU_NODE.book+'<span>가이드북</span>';
+    if(!isOpen(L0) && !S.done[L0.id]){
+      band.insertAdjacentHTML('beforeend', `<button class="du-jumpu" data-jump="${L0.id}">건너뛰기</button>`);
+    }
+  });
+  path.querySelectorAll('[data-jump]').forEach(b=>b.onclick=ev=>{
+    ev.stopPropagation(); sfx('tap');
+    const L=LESSONS.find(l=>l.id===b.dataset.jump); if(L) duSkipSheet(L); });
+
+  let first=true;
+  path.querySelectorAll('.node[data-lesson]').forEach(b=>{
+    const L=LESSONS.find(l=>l.id===b.dataset.lesson); if(!L) return;
+    const done=!!S.done[L.id], open=isOpen(L);
+    const stars=b.querySelector('.stars');
+    b.innerHTML = (done ? DU_NODE.check : (open ? DU_NODE[duKind(L)] : DU_NODE[duKind(L)])) + (stars?stars.outerHTML:'');
+    b.classList.add('du-n','k-'+duKind(L));
+    if(!open && !done){
+      b.disabled=false; b.classList.add('du-locked');
+      b.setAttribute('aria-label', b.getAttribute('aria-label').replace(' (잠김)','')+' (잠김 · 눌러서 건너뛰기)');
+      b.onclick=()=>{ sfx('tap'); duSkipSheet(L); };
+      const row=b.closest('.node-row'); if(row) row.classList.add('du-lockrow');
+    } else if(open && !done && first){
+      first=false; b.classList.add('du-cur');
+      const lsn=b.closest('.lessons'); if(lsn) lsn.classList.add('du-hascur');
+      b.insertAdjacentHTML('beforeend', `<span class="du-start">${S.done && Object.keys(S.done).length?'시작':'여기서 시작'}</span>`);
+    }
+  });
+}
+
+/* ---------------- 건너뛰기 ---------------- */
+function duTrackOf(L){ return TRACKS[L.track]||LESSONS; }
+function duSkipSheet(L){
+  closeSheet();
+  const t=duTrackOf(L), i=t.indexOf(L);
+  const skipped=t.slice(0,i).filter(l=>!S.done[l.id]);
+  const u=UNITS[L.unit];
+  const bg=document.createElement('div'); bg.className='sheet-bg'; bg.id='sheetBg';
+  const sh=document.createElement('div'); sh.className='sheet du-skip'; sh.id='sheet';
+  sh.innerHTML=`<h3>여기로 건너뛸까요?</h3>
+    <p><b>${esc(u?u.title:'')}</b> · ${esc(L.title)}<br>앞에 아직 안 한 레슨이 ${skipped.length}개 있어요.</p>
+    <button class="cta" id="duJump">건너뛰기 테스트 보기</button>
+    <div class="du-note">앞 과정에서 12문제 · 하트 3개. 통과하면 앞 레슨이 모두 완료로 바뀌고 여기부터 이어집니다.</div>
+    <button class="cta ghost" id="duTry">테스트 없이 이 레슨만 해보기</button>
+    <div class="du-note">앞 레슨은 그대로 두고 이 레슨만 먼저 해 봅니다. 끝내면 다음 레슨도 열려요.</div>
+    <button class="linkbtn" id="duNo" style="width:100%">취소</button>`;
+  document.body.append(bg, sh);
+  requestAnimationFrame(()=>sh.classList.add('show'));
+  bg.onclick=closeSheet;
+  sh.querySelector('#duNo').onclick=closeSheet;
+  sh.querySelector('#duJump').onclick=()=>{ closeSheet(); sfx('tap'); startJump(L); };
+  sh.querySelector('#duTry').onclick=()=>{ closeSheet(); sfx('tap'); startLesson(L); };
+}
+function startJump(L){
+  if(!L) return renderHome();
+  const t=duTrackOf(L), i=t.indexOf(L);
+  let pool=t.slice(0,i).filter(l=>!S.done[l.id] && !l.review);
+  if(!pool.length) pool=t.slice(0,i).filter(l=>!l.review);
+  if(!pool.length) return startLesson(L);
+  const n=Math.min(pool.length, 12), picked=[];
+  for(let k=0;k<n;k++){ const x=pool[Math.round((pool.length-1)*(n===1?1:(k/(n-1))))]; if(picked.indexOf(x)<0) picked.push(x); }
+  const per=Math.ceil(12/picked.length);
+  let ex=[];
+  picked.forEach(l=>{ try{ ex=ex.concat(shuffle(makeExercises(l).filter(e=>e.kind!=='match' && e.kind!=='speak')).slice(0,per)); }catch(_){} });
+  ex=shuffle(ex).slice(0,12);
+  if(!ex.length) return startLesson(L);
+  G=newGame({id:'__jump', title:'건너뛰기 테스트', isReview:true, jump:L.id}, ex);
+  G.hearts=3;
+  renderExercise();
+}
+function duJumpResult(pass){
+  const L=LESSONS.find(l=>l.id===G.lesson.jump);
+  const d=dayKey(new Date());
+  if(pass && L){
+    const t=duTrackOf(L), i=t.indexOf(L);
+    t.slice(0,i).forEach(l=>{ S.done[l.id]=Math.max(S.done[l.id]||0, 1); });
+    S.chest=S.chest||{};
+    UNITS.forEach(u=>{ if(u.lessons && u.lessons.every(l=>S.done[l.id]) && !S.chest[u.id]) S.chest[u.id]=d; });
+    if(typeof trackDone==='function' && S.doneAt)
+      Object.keys(TRACKS).forEach(k=>{ if(trackDone(k) && !S.doneAt[k]) S.doneAt[k]=Date.now(); });
+    S.xp+=30; addTodayXp(30); if(typeof leagueBump==='function') leagueBump(30);
+    if(!S.firstDay) S.firstDay=d;
+    bumpStreak();
+    save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
+  }
+  sfx(pass?'complete':'fail');
+  if(pass) setTimeout(()=>burst(innerWidth*.5, innerHeight*.4, 50, 1.4), 150);
+  const u=L && UNITS[L.unit];
+  app.innerHTML=`
+  <div class="center-screen">
+    ${nekoBlock(pass?'cheer':'idle', pass?'合':'', 146)}
+    <h2>${pass?'건너뛰기 성공!':'아쉽게 통과하지 못했어요'}</h2>
+    <p class="sub">${pass
+      ? '앞 레슨을 모두 완료로 바꿨어요 · +30 XP'
+      : '틀린 게 '+(G.lost|0)+'개예요. 다시 도전하거나, 테스트 없이 이 레슨만 먼저 해 볼 수 있어요.'}</p>
+    <div style="width:100%">
+      <button class="cta" id="jpGo">${esc((pass?'바로 시작 · ':'다시 도전하기'))}${pass&&L?esc((u?u.title+' ':'')+L.title):''}</button>
+      ${pass?'':`<button class="cta ghost" id="jpTry" style="margin-top:12px">이 레슨만 해보기</button>`}
+      <button class="linkbtn" id="jpHome" style="width:100%;margin-top:10px">레슨 지도로</button>
+    </div>
+  </div>`;
+  $('#jpGo').onclick=()=>{ sfx('tap'); pass ? startLesson(L) : startJump(L); };
+  const tr=$('#jpTry'); if(tr) tr.onclick=()=>{ sfx('tap'); startLesson(L); };
+  $('#jpHome').onclick=()=>{ sfx('tap'); DU_TAB='learn'; if(L) JUST_DONE=L.id; renderHome(); };
+  window.scrollTo(0,0);
+}
+
+/* ---------------- 레슨 화면 ---------------- */
+function duLessonDeco(){
+  const e=G && G.queue && G.queue[G.i]; if(!e) return;
+  const ko=app.querySelector('.stage .qko');
+  if(ko && !ko.closest('.du-say') && (e.kind==='mcq'||e.kind==='assemble'||e.kind==='type') && getComputedStyle(ko).display!=='none'){
+    const w=document.createElement('div'); w.className='du-say';
+    w.innerHTML=`<div class="du-sayhead">${nekoHead('happy')}</div>`;
+    ko.parentNode.insertBefore(w, ko); w.appendChild(ko);
+  }
+  if(G.lesson && G.lesson.jump){
+    const lb=app.querySelector('.prompt-label');
+    if(lb && !app.querySelector('.du-jtag')) lb.insertAdjacentHTML('beforebegin','<div class="du-jtag">건너뛰기 테스트</div>');
+  }
+}
+function duHeartsSync(){
+  const hn=app.querySelector('.hearts .hn'); if(!hn || !G) return;
+  if(hn.textContent!==String(G.hearts)){ hn.textContent=G.hearts; hn.classList.remove('pop'); void hn.offsetWidth; hn.classList.add('pop'); }
+  const h=app.querySelector('.hearts'); if(h) h.setAttribute('aria-label','남은 하트 '+G.hearts+'개');
+}
+
+/* ---- 기존 화면 함수에 덧씌우기 ---- */
+const _duRenderHome=renderHome;
+renderHome=function(){ const r=_duRenderHome.apply(this, arguments); try{ duHome(); }catch(err){ console.error(err); } return r; };
+const _duRenderShop=renderShop;
+renderShop=function(){ const r=_duRenderShop.apply(this, arguments); try{ duAfterSub('shop'); }catch(_){} return r; };
+const _duRenderLeague=renderLeague;
+renderLeague=async function(){ const r=await _duRenderLeague.apply(this, arguments); try{ if(document.querySelector('.lgscreen, .lgboard, #lgBack')) duAfterSub('league'); }catch(_){} return r; };
+const _duRenderEx=renderExercise;
+renderExercise=function(){ const r=_duRenderEx.apply(this, arguments); try{ duLessonDeco(); }catch(err){ console.error(err); } return r; };
+heartsHTML=function(){ return `<span class="h${G.hearts<=0?' off':''}">${ICON.heart}</span><b class="hn mono">${G.hearts}</b>`; };
+const _duJudge=judge;
+judge=function(){ const r=_duJudge.apply(this, arguments); try{ duHeartsSync(); }catch(_){} return r; };
+const _duResult=renderResult;
+renderResult=function(){ if(G && G.lesson && G.lesson.jump) return duJumpResult(true); return _duResult.apply(this, arguments); };
+const _duFail=renderFail;
+renderFail=function(){ if(G && G.lesson && G.lesson.jump) return duJumpResult(false); return _duFail.apply(this, arguments); };
+const _duReplay=replay;
+replay=function(){ if(G && G.lesson && G.lesson.jump) return startJump(LESSONS.find(l=>l.id===G.lesson.jump)); return _duReplay.apply(this, arguments); };
+const _duStoryOpen=storyOpen;
+storyOpen=function(s){ return _duStoryOpen(s) || DU_STORY_FREE.has(s.id); };
+
+/* 키보드 — 1~4 로 보기 고르기, Enter 로 확인·계속 (데스크톱) */
+addEventListener('keydown', ev=>{
+  const a=document.activeElement;
+  if(a && (a.tagName==='INPUT' || a.tagName==='TEXTAREA' || a.isContentEditable)) return;
+  if(ev.ctrlKey || ev.metaKey || ev.altKey || document.querySelector('.sheet.show')) return;
+  if(/^[1-9]$/.test(ev.key)){
+    const o=app.querySelectorAll('.stage .opt')[+ev.key-1];
+    if(o && G && !G.answered){ o.click(); ev.preventDefault(); }
+  } else if(ev.key==='Enter'){
+    const fb=document.querySelector('#fb.show #fbBtn');
+    const ck=document.querySelector('#check:not([disabled])');
+    if(fb){ fb.click(); ev.preventDefault(); } else if(ck){ ck.click(); ev.preventDefault(); }
+  }
+});
 
 /* ---------------- 10. START ---------------- */
 CLOUD.on(()=>{ if(document.querySelector('.path')) renderHome(); });
