@@ -519,6 +519,125 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 }
 .chestlab{font-size:12px;font-weight:800;color:var(--gold);line-height:1.35;text-align:left;padding-left:16px}
 .chestlab.got{color:var(--ink-3);font-weight:700}
+/* ================= 말하기 · 이야기 · 리그 ================= */
+
+/* ---- 말하기 ---- */
+.micwrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:30px 0 8px}
+.micbtn{
+  width:96px;height:96px;border-radius:50%;border:0;padding:0;
+  background:var(--shu);color:#fff;display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 6px 0 var(--shu-2), 0 0 0 10px var(--shu-soft);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.micbtn svg{width:44px;height:44px;display:block}
+.micbtn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--shu-2), 0 0 0 10px var(--shu-soft)}
+.micbtn.on{animation:micpulse 1.2s ease-in-out infinite}
+@keyframes micpulse{
+  0%,100%{box-shadow:0 6px 0 var(--shu-2), 0 0 0 10px var(--shu-soft)}
+  50%{box-shadow:0 6px 0 var(--shu-2), 0 0 0 22px var(--shu-soft)}
+}
+.michint{font-size:13.5px;font-weight:700;color:var(--ink-3);min-height:20px;text-align:center}
+.simbar{margin-top:9px;height:8px;border-radius:99px;background:var(--paper-3);overflow:hidden}
+.simbar>i{display:block;height:100%;border-radius:99px;background:var(--stone);transition:width .5s cubic-bezier(.2,1,.3,1)}
+.simbar>i.g{background:var(--gold)}
+.simbar>i.c{background:var(--ai)}
+.simbar>i.n{background:var(--stone)}
+
+/* ---- 이야기 ---- */
+.storystage{padding-bottom:20px}
+.storyhead{text-align:center;margin:2px 0 18px}
+.storyhead .t{font-size:21px;font-weight:900;letter-spacing:-.01em}
+.storyhead .s{font-size:13px;color:var(--ink-3);margin-top:3px}
+.chat{display:flex;flex-direction:column;gap:13px;width:100%}
+.crow{display:flex;flex-direction:column;max-width:86%}
+.crow.l{align-self:flex-start;align-items:flex-start}
+.crow.r{align-self:flex-end;align-items:flex-end}
+.crow .cwho{font-size:11.5px;font-weight:800;color:var(--ink-3);margin:0 6px 3px}
+.cbub{
+  border:0;text-align:left;cursor:pointer;padding:12px 15px;border-radius:17px;
+  background:var(--paper-2);box-shadow:0 2px 0 var(--drop);
+  transition:transform .1s ease;
+}
+.cbub:active{transform:scale(.985)}
+.crow.l .cbub{border-bottom-left-radius:5px}
+.crow.r .cbub{border-bottom-right-radius:5px;background:var(--ai-soft)}
+.cbub .ct{font-size:19px;font-weight:700;line-height:1.5;color:var(--ink)}
+.cbub .ct b{color:var(--shu)}
+.cbub .ck{font-size:12.5px;color:var(--ink-3);margin-top:2px;font-weight:600}
+.cbub .cm{font-size:13px;color:var(--ink-2);margin-top:6px;line-height:1.45;word-break:keep-all}
+.crow.fresh .cbub{animation:chatin .42s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes chatin{0%{opacity:0;transform:translateY(9px) scale(.96)}100%{opacity:1;transform:none}}
+
+.gapbox{margin-top:22px;width:100%}
+.gapbox .gaph{font-size:13px;font-weight:800;color:var(--ink-3);margin-bottom:10px;text-align:center}
+.gapopts{display:flex;flex-direction:column;gap:9px}
+.gapopt{width:100%}
+
+.storylist{margin:6px 20px 20px;background:var(--paper-2);border-radius:20px;padding:15px 15px 8px;box-shadow:0 3px 0 var(--drop)}
+.storylist .slh{margin-bottom:11px}
+.storylist .slh .t{font-size:16px;font-weight:900}
+.storylist .slh .s{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.srow{display:flex;align-items:center;gap:12px;width:100%;border:0;background:transparent;
+  padding:9px 2px;cursor:pointer;text-align:left;border-top:1px solid var(--line)}
+.srow:first-of-type{border-top:0}
+.srow .si{width:38px;height:38px;flex:0 0 38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--ai);color:#fff;font-size:17px;font-weight:700}
+.srow.done .si{background:var(--paper-3);color:var(--ink-3)}
+.srow .sb{flex:1;min-width:0}
+.srow .st{font-size:14.5px;font-weight:800;line-height:1.35}
+.srow .ss{font-size:12px;color:var(--ink-3);margin-top:1px;line-height:1.35;word-break:keep-all}
+.srow .sx{font-size:12px;font-weight:800;color:var(--gold);flex:0 0 auto}
+.srow.done .sx{color:var(--ink-3)}
+.slmore{font-size:12px;color:var(--ink-3);padding:9px 2px 4px;border-top:1px solid var(--line);line-height:1.45}
+
+/* ---- 리그 ---- */
+.lgcard{margin:6px 20px 16px;background:var(--paper-2);border-radius:20px;padding:15px;box-shadow:0 3px 0 var(--drop)}
+.lgcard.join{display:flex;align-items:center;gap:12px}
+.lgcard.join .lgh{flex:1;min-width:0}
+.lgh{display:flex;align-items:center;gap:12px}
+.lgh .t{font-size:16px;font-weight:900;line-height:1.3}
+.lgh .s{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.4;word-break:keep-all}
+.lgt{flex:1;min-width:0}
+.lgbadge{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:grid;place-items:center;
+  color:#fff;font-size:19px;font-weight:800;box-shadow:0 3px 0 var(--drop)}
+.lgbadge.big{width:74px;height:74px;flex:0 0 74px;border-radius:22px;font-size:34px;margin:0 auto 10px}
+.lgbtn,.lgmore{border:0;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:800;cursor:pointer;
+  background:var(--shu);color:#fff;flex:0 0 auto}
+.lgmore{background:var(--paper-3);color:var(--ink-2);padding:7px 13px;font-size:12px}
+.lgrows{margin-top:12px}
+.lgrow{display:flex;align-items:center;gap:11px;padding:8px 4px;border-top:1px solid var(--line)}
+.lgrow:first-child{border-top:0}
+.lgrow .lgr{width:26px;flex:0 0 26px;text-align:center;font-size:13.5px;font-weight:900;color:var(--ink-3)}
+.lgrow.up .lgr{color:var(--gold)}
+.lgrow .lgn{flex:1;min-width:0;font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgrow .lgx{font-size:13.5px;font-weight:800;color:var(--ink-2);flex:0 0 auto}
+.lgrow.me{background:var(--ai-soft);border-radius:11px;border-top-color:transparent}
+.lgrow.me .lgn{color:var(--ai)}
+.lgme{font-size:10.5px;font-weight:900;background:var(--ai);color:#fff;border-radius:99px;padding:1px 6px;margin-left:5px}
+.lgdots{text-align:center;color:var(--ink-3);font-size:14px;letter-spacing:.2em;padding:2px 0}
+.lgnote{font-size:13px;color:var(--ink-3);padding:8px 2px;line-height:1.5;word-break:keep-all}
+.lgmove{margin-top:10px;font-size:12.5px;font-weight:800;border-radius:11px;padding:8px 12px;line-height:1.45}
+.lgmove.up{background:var(--gold);color:#fff}
+.lgmove.down{background:var(--paper-3);color:var(--ink-2)}
+.lgfull{padding:0 20px 40px}
+.lgfull .lgrow{background:var(--paper-2);border-radius:13px;margin-bottom:7px;border-top:0;padding:11px 13px;box-shadow:0 2px 0 var(--drop)}
+.lgfull .lgrow.me{background:var(--ai-soft)}
+.lgrule{font-size:12.5px;color:var(--ink-3);line-height:1.55;margin-top:14px;word-break:keep-all}
+
+.sheet .warn{color:var(--shu);font-weight:700}
+.lglab{display:block;font-size:12.5px;font-weight:800;color:var(--ink-3);margin:14px 0 6px}
+.lginput{
+  width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:14px;
+  padding:13px 15px;font-size:17px;font-weight:700;font-family:inherit;
+  background:var(--paper);color:var(--ink);
+}
+.lginput:focus{outline:0;border-color:var(--ai)}
+.lgerr{color:var(--shu);font-size:12.5px;font-weight:700;min-height:18px;margin:6px 0 10px}
+
+@media (prefers-reduced-motion: reduce){
+  .micbtn.on,.crow.fresh .cbub{animation:none}
+}
+
 
 @media (prefers-reduced-motion: reduce){
   .hero .bubble,.node.chest{animation:none}
@@ -2224,7 +2343,7 @@ let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKa
        act:[],         /* 학습한 날들 (최근 것만 남김) */
        perfects:0      /* 하트를 하나도 안 잃고 끝낸 레슨 수 */ };
 /* 하트 · 보물상자 · 스트릭 보호막 */
-Object.assign(S,{hp:5, hpAt:0, chest:{}, freeze:0, fzGot:0, fzAt:null});
+Object.assign(S,{hp:5, hpAt:0, chest:{}, freeze:0, fzGot:0, fzAt:null, story:{}, lg:null});
 try{ const r=localStorage.getItem(KEY); if(r) S=Object.assign(S, JSON.parse(r)); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
@@ -2237,6 +2356,766 @@ if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
    모두 브라우저 안에서만 계산합니다.                              */
 
 /* ---- 1. 하트 ---- */
+
+/* ---- 이야기 대본 ---- */
+const STORIES=[
+{ id:'ja1', need:'u1-1', title:'はじめまして', sub:'처음 만나 인사합니다',
+  cast:{a:'ゆい', b:'ミンス'},
+  lines:[
+    {w:'a', t:'こんにちは。', k:'konnichiwa', m:'안녕하세요.'},
+    {w:'b', t:'こんにちは。はじめまして。', k:'konnichiwa. hajimemashite', m:'안녕하세요. 처음 뵙겠습니다.'},
+    {w:'a', t:'わたしは ゆい です。', k:'watashi wa Yui desu', m:'저는 유이입니다.'},
+    {w:'b', t:'わたしは ミンス です。かんこくじん です。', k:'watashi wa Minsu desu. kankokujin desu', m:'저는 민수입니다. 한국 사람입니다.'},
+    {w:'a', t:'そう ですか。よろしく おねがいします。', k:'sou desu ka. yoroshiku onegaishimasu', m:'그렇군요. 잘 부탁드립니다.'},
+    {w:'b', t:'こちらこそ よろしく おねがいします。', k:'kochirakoso yoroshiku onegaishimasu', m:'저야말로 잘 부탁드립니다.'},
+    {w:'a', t:'では、また ___。', k:'dewa, mata ___', m:'그럼, ___ 또 봐요.',
+      gap:{a:'あした', o:['あした','ごはん','でんわ'], km:'내일'}},
+    {w:'b', t:'はい、さようなら。', k:'hai, sayounara', m:'네, 안녕히 가세요.'}
+  ],
+  quiz:{q:'민수는 어느 나라 사람인가요?', o:['한국','일본','중국'], a:'한국'} },
+
+{ id:'ja2', need:'u2-1', title:'わたしは 学生です', sub:'직업과 학교를 이야기합니다',
+  cast:{a:'ミンス', b:'ゆい'},
+  lines:[
+    {w:'a', t:'ゆいさんは 学生 ですか。', k:'Yui-san wa gakusei desu ka', m:'유이 씨는 학생입니까?'},
+    {w:'b', t:'はい、大学生 です。', k:'hai, daigakusei desu', m:'네, 대학생입니다.'},
+    {w:'a', t:'なにを べんきょうして いますか。', k:'nani o benkyou shite imasu ka', m:'무엇을 공부하고 있나요?'},
+    {w:'b', t:'かんこくごを べんきょうして います。', k:'kankokugo o benkyou shite imasu', m:'한국어를 공부하고 있어요.'},
+    {w:'a', t:'すごい ですね！むずかしい ですか。', k:'sugoi desu ne! muzukashii desu ka', m:'대단하네요! 어렵나요?'},
+    {w:'b', t:'すこし むずかしい です。でも たのしい です。', k:'sukoshi muzukashii desu. demo tanoshii desu', m:'조금 어려워요. 그래도 즐거워요.'},
+    {w:'a', t:'わたしも にほんごを ___ います。', k:'watashi mo nihongo o ___ imasu', m:'저도 일본어를 ___ 있어요.',
+      gap:{a:'べんきょうして', o:['べんきょうして','たべて','ねて'], km:'공부하고'}},
+    {w:'b', t:'いっしょに がんばりましょう。', k:'issho ni ganbarimashou', m:'같이 힘내요.'}
+  ],
+  quiz:{q:'유이는 무엇을 공부하나요?', o:['한국어','영어','중국어'], a:'한국어'} },
+
+{ id:'ja3', need:'u4-1', title:'いま 何時ですか', sub:'시간과 약속을 정합니다',
+  cast:{a:'ゆい', b:'ミンス'},
+  lines:[
+    {w:'a', t:'いま 何時 ですか。', k:'ima nanji desu ka', m:'지금 몇 시예요?'},
+    {w:'b', t:'３時 です。', k:'sanji desu', m:'세 시예요.'},
+    {w:'a', t:'えいがは 何時からですか。', k:'eiga wa nanji kara desu ka', m:'영화는 몇 시부터예요?'},
+    {w:'b', t:'４時半から です。', k:'yoji han kara desu', m:'네 시 반부터예요.'},
+    {w:'a', t:'じゃあ、４時に えきで あいましょう。', k:'jaa, yoji ni eki de aimashou', m:'그럼 네 시에 역에서 만나요.'},
+    {w:'b', t:'わかりました。おくれないで ください。', k:'wakarimashita. okurenaide kudasai', m:'알겠습니다. 늦지 마세요.'},
+    {w:'a', t:'だいじょうぶ です。___ いきます。', k:'daijoubu desu. ___ ikimasu', m:'괜찮아요. ___ 갈게요.',
+      gap:{a:'はやく', o:['はやく','おそく','たかく'], km:'일찍'}},
+    {w:'b', t:'では、あとで。', k:'dewa, ato de', m:'그럼, 이따 봐요.'}
+  ],
+  quiz:{q:'두 사람은 몇 시에 만나기로 했나요?', o:['네 시','세 시','네 시 반'], a:'네 시'} },
+
+{ id:'ja4', need:'u6-1', title:'なに たべる？', sub:'먹고 싶은 것을 고릅니다',
+  cast:{a:'ミンス', b:'ゆい'},
+  lines:[
+    {w:'a', t:'おなかが すきました。', k:'onaka ga sukimashita', m:'배가 고파요.'},
+    {w:'b', t:'なにが たべたい ですか。', k:'nani ga tabetai desu ka', m:'뭐가 먹고 싶어요?'},
+    {w:'a', t:'ラーメンが たべたい です。', k:'raamen ga tabetai desu', m:'라멘이 먹고 싶어요.'},
+    {w:'b', t:'いいですね。わたしは すしが すき です。', k:'ii desu ne. watashi wa sushi ga suki desu', m:'좋네요. 저는 초밥을 좋아해요.'},
+    {w:'a', t:'からい ものは だいじょうぶ ですか。', k:'karai mono wa daijoubu desu ka', m:'매운 건 괜찮아요?'},
+    {w:'b', t:'はい、だいすき です。', k:'hai, daisuki desu', m:'네, 아주 좋아해요.'},
+    {w:'a', t:'では、あの みせに ___。', k:'dewa, ano mise ni ___', m:'그럼, 저 가게에 ___.',
+      gap:{a:'いきましょう', o:['いきましょう','ねましょう','よみましょう'], km:'갑시다'}},
+    {w:'b', t:'さんせい！いきましょう。', k:'sansei! ikimashou', m:'찬성! 가요.'}
+  ],
+  quiz:{q:'민수가 먹고 싶은 것은?', o:['라멘','초밥','우동'], a:'라멘'} },
+
+{ id:'ja5', need:'u10-1', title:'これ ください', sub:'가게에서 물건을 삽니다',
+  cast:{a:'ゆい', b:'てんいん'},
+  lines:[
+    {w:'b', t:'いらっしゃいませ。', k:'irasshaimase', m:'어서 오세요.'},
+    {w:'a', t:'すみません、これは いくら ですか。', k:'sumimasen, kore wa ikura desu ka', m:'실례합니다, 이건 얼마예요?'},
+    {w:'b', t:'８００円 です。', k:'happyaku en desu', m:'800엔입니다.'},
+    {w:'a', t:'もっと やすいのは ありますか。', k:'motto yasui no wa arimasu ka', m:'더 싼 건 있나요?'},
+    {w:'b', t:'こちらは ５００円 です。', k:'kochira wa gohyaku en desu', m:'이쪽은 500엔입니다.'},
+    {w:'a', t:'じゃあ、それを ふたつ ください。', k:'jaa, sore o futatsu kudasai', m:'그럼, 그걸 두 개 주세요.'},
+    {w:'b', t:'ぜんぶで ___円 です。', k:'zenbu de ___ en desu', m:'전부 ___엔입니다.',
+      gap:{a:'１０００', o:['１０００','５００','８００'], km:'1000'}},
+    {w:'a', t:'はい。ありがとう ございます。', k:'hai. arigatou gozaimasu', m:'네. 감사합니다.'}
+  ],
+  quiz:{q:'유이가 산 물건은 하나에 얼마인가요?', o:['500엔','800엔','1000엔'], a:'500엔'} }
+];
+
+/* ================= 말하기 연습 =================
+   마이크로 직접 말해 보고, 얼마나 가깝게 발음했는지 보여 줍니다.
+   레슨 안이 아니라 따로 떨어진 연습 화면입니다 — 하트도 별도 없고,
+   브라우저가 음성 인식을 지원하지 않으면 입구 자체가 나타나지 않습니다. */
+
+const SRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+const MIC_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+  + '<path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3z"/>'
+  + '<path d="M18 11a1 1 0 1 0-2 0 4 4 0 0 1-8 0 1 1 0 1 0-2 0 6 6 0 0 0 5 5.9V20H9a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2h-2v-3.1A6 6 0 0 0 18 11z"/></svg>';
+const SPEAK_LANG = 'ja-JP';
+function speakInOK(){ return !!SRec; }
+
+/* 말한 것과 목표를 비교하기 전에 군더더기를 걷어냅니다 */
+function normSay(s){
+  return String(s||'')
+    .toLowerCase()
+    .replace(/[^\u3040-\u30ff\u4e00-\u9fff\uff10-\uff19]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+/* 편집 거리로 얼마나 가까운지 — 0(전혀 다름) ~ 1(똑같음) */
+function simRatio(a, b){
+  a=normSay(a); b=normSay(b);
+  if(!a || !b) return 0;
+  if(a===b) return 1;
+  const m=a.length, n=b.length;
+  let prev=new Array(n+1), cur=new Array(n+1);
+  for(let j=0;j<=n;j++) prev[j]=j;
+  for(let i=1;i<=m;i++){
+    cur[0]=i;
+    for(let j=1;j<=n;j++){
+      cur[j]=Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    }
+    const t=prev; prev=cur; cur=t;
+  }
+  return Math.max(0, 1 - prev[n]/Math.max(m,n));
+}
+
+/* 연습할 문장 고르기 — 이미 배운 것 우선, 없으면 열린 단원에서 */
+function speakItems(n){
+  const known=new Set(Object.keys(S.srs||{}));
+  const openUnits=UNITS.filter(u=>u.lessons.some(l=>S.done[l.id]));
+  const poolS=(openUnits.length?openUnits:UNITS.slice(0,2)).flatMap(u=>u.s||[]);
+  const poolW=(openUnits.length?openUnits:UNITS.slice(0,2)).flatMap(u=>u.w||[]);
+  const hit=x=>known.has(x.j);
+  const first=poolS.filter(hit), second=poolW.filter(hit);
+  let out=pick(first, Math.min(n, first.length));
+  if(out.length<n) out=out.concat(pick(second, Math.min(n-out.length, second.length)));
+  if(out.length<n) out=out.concat(pick(poolS, Math.min(n-out.length, poolS.length)));
+  if(out.length<n) out=out.concat(pick(poolW, Math.min(n-out.length, poolW.length)));
+  return shuffle(out).slice(0, n);
+}
+
+let SP=null;   /* 말하기 연습 진행 상태 */
+
+function startSpeak(){
+  if(!speakInOK()) return renderHome();
+  const items=speakItems(8);
+  if(!items.length) return renderHome();
+  SP={ items, i:0, good:0, close:0, xp:0, rec:null, busy:false, said:'', sim:0, judged:null };
+  renderSpeakIntro();
+}
+function endSpeak(){
+  try{ if(SP&&SP.rec) SP.rec.abort(); }catch(e){}
+  SP=null;
+}
+
+function renderSpeakIntro(){
+  app.innerHTML=`
+  <div class="center-screen">
+    ${nekoBlock('idle','声',132)}
+    <h2>말하기 연습</h2>
+    <p class="sub">${SP.items.length}문장을 소리 내어 말해 봅니다.<br>
+      처음 한 번은 브라우저가 <b>마이크 사용을 물어봅니다</b>. 허락해 주세요.</p>
+    <p class="sub" style="opacity:.75">인식은 브라우저가 합니다. 크롬에서는 말한 소리가<br>구글 음성 인식 서버로 보내질 수 있어요. 이 앱은 녹음을 저장하지 않습니다.</p>
+    <div style="width:100%"><button class="cta shu" id="spGo">시작하기</button>
+      <button class="cta ghost" id="spBack" style="margin-top:10px">돌아가기</button></div>
+  </div>`;
+  petalsOff();
+  $('#spGo').onclick=()=>{ sfx('tap'); renderSpeakStep(); };
+  $('#spBack').onclick=()=>{ sfx('tap'); endSpeak(); renderHome(); };
+  window.scrollTo(0,0);
+}
+
+function renderSpeakStep(){
+  const e=SP.items[SP.i];
+  const pct=Math.round(SP.i/SP.items.length*100);
+  SP.said=''; SP.sim=0; SP.judged=null; SP.busy=false;
+  app.innerHTML=`
+  <div class="lessonbar">
+    <button class="iconbtn" id="spQuit" aria-label="나가기">${ICON.x}</button>
+    <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
+    <div class="stat xp">${ICON.bolt}<span class="mono">${SP.xp}</span></div>
+  </div>
+  <div class="stage">
+    <div class="prompt-label">이 문장을 소리 내어 말해 보세요</div>
+    <div class="qjp jp tappable" id="spSay" role="button" aria-label="눌러서 듣기">${esc(e.j)}</div>
+    ${e.k && e.k!==e.j ? `<div class="qkana jp">${esc(e.k)}</div>` : ''}
+    <div class="qko" style="margin-top:10px">${esc(e.m||'')}</div>
+    <div class="sayrow" style="margin-top:18px">
+      <button class="speaker" id="spHear">${ICON.sound} 먼저 듣기</button>
+      <button class="speaker slow" id="spHearSlow">${ICON.turtle} 느리게</button>
+    </div>
+    <div class="micwrap">
+      <button class="micbtn" id="spMic" aria-label="말하기 시작">${MIC_SVG}</button>
+      <div class="michint" id="spHint">누르고 말하세요</div>
+    </div>
+  </div>
+  <div class="footer"><div class="footer-inner">
+    <button class="cta ghost" id="spSkip">이 문장 건너뛰기</button>
+  </div></div>
+  <div class="feedback" id="fb">
+    <div class="fb-inner">
+      <div class="fb-mark jp" id="fbMark"></div>
+      <div class="fb-text"><div class="fb-title" id="fbTitle"></div><div class="fb-body" id="fbBody"></div></div>
+    </div>
+    <div class="footer-inner"><button class="cta" id="fbBtn">계속하기</button></div>
+  </div>`;
+  petalsOff();
+  const say=()=>speak(e.j);
+  $('#spSay').onclick=()=>say();
+  $('#spHear').onclick=()=>say();
+  $('#spHearSlow').onclick=()=>speak(e.j, true);
+  $('#spQuit').onclick=()=>{ sfx('tap'); endSpeak(); renderHome(); };
+  $('#spSkip').onclick=()=>{ sfx('tap'); speakNext(); };
+  $('#spMic').onclick=()=>micGo(e);
+  window.scrollTo(0,0);
+}
+
+function micGo(e){
+  if(SP.busy) { try{ SP.rec.stop(); }catch(x){} return; }
+  let rec;
+  try{ rec=new SRec(); }catch(x){ return micFail('이 브라우저에서는 마이크를 쓸 수 없어요.'); }
+  SP.rec=rec; SP.busy=true;
+  rec.lang=SPEAK_LANG; rec.interimResults=false; rec.maxAlternatives=3;
+  const btn=$('#spMic'), hint=$('#spHint');
+  if(btn) btn.classList.add('on');
+  if(hint) hint.textContent='듣고 있어요… 말해 보세요';
+  let got=false;
+  rec.onresult=(ev)=>{
+    got=true;
+    const alts=[...ev.results[0]].map(r=>r.transcript);
+    /* 여러 후보 중 가장 가까운 것으로 봐 줍니다 */
+    let best=alts[0], bs=0;
+    alts.forEach(t=>{ const s=simRatio(t, e.j); if(s>bs){ bs=s; best=t; } });
+    SP.said=best; SP.sim=bs;
+    judgeSpeak(e);
+  };
+  rec.onerror=(ev)=>{
+    SP.busy=false;
+    if(btn) btn.classList.remove('on');
+    const code=ev && ev.error;
+    if(code==='not-allowed' || code==='service-not-allowed')
+      micFail('마이크 사용이 막혀 있어요. 주소창 옆 자물쇠에서 허용해 주세요.');
+    else if(code==='no-speech') { if(hint) hint.textContent='소리가 안 들렸어요. 한 번 더 눌러 주세요'; }
+    else if(hint) hint.textContent='다시 눌러 주세요';
+  };
+  rec.onend=()=>{
+    SP.busy=false;
+    if(btn) btn.classList.remove('on');
+    if(!got && hint && hint.textContent.indexOf('듣고')===0) hint.textContent='한 번 더 눌러 주세요';
+  };
+  try{ rec.start(); }catch(x){ SP.busy=false; if(btn) btn.classList.remove('on'); }
+}
+function micFail(msg){
+  SP.busy=false;
+  openSheet('마이크', msg, '닫기', closeSheet, '', closeSheet);
+}
+
+function judgeSpeak(e){
+  const s=SP.sim;
+  const good = s>=.82, close = !good && s>=.58;
+  SP.judged = good?'good':(close?'close':'no');
+  if(good){ SP.good++; SP.xp+=12; sfx('correct'); burst(innerWidth*.5, innerHeight*.5, 18, .9); }
+  else if(close){ SP.close++; SP.xp+=5; sfx('pair'); }
+  else { sfx('wrong'); shakeScreen(false); }
+  srsTouch(e, good);
+  save();
+  const fb=$('#fb'), mark=$('#fbMark'), t=$('#fbTitle'), b=$('#fbBody');
+  if(!fb) return;
+  mark.innerHTML=`<div class="neko-${good?'happy':'sad'}">${nekoHead(good?'happy':'sad')}</div>
+    <span class="fb-badge jp">${good?'〇':(close?'△':'✕')}</span>`;
+  fb.classList.add(good?'ok':'no','show');
+  t.textContent = good ? '좋아요! 잘 들렸어요' : (close ? '거의 맞았어요' : '한 번 더 해볼까요');
+  b.innerHTML = `들린 말: <b>${esc(SP.said||'—')}</b>　·　일치도 ${Math.round(s*100)}%`
+    + `<div class="simbar"><i style="width:${Math.round(s*100)}%" class="${good?'g':(close?'c':'n')}"></i></div>`;
+  $('#fbBtn').textContent = good ? '다음' : '다시 말해 보기';
+  $('#fbBtn').onclick = good ? speakNext : ()=>{
+    fb.classList.remove('show','ok','no');
+    const h=$('#spHint'); if(h) h.textContent='누르고 말하세요';
+  };
+  setTimeout(()=>speak(e.j), 380);
+}
+
+function speakNext(){
+  SP.i++;
+  if(SP.i>=SP.items.length) return renderSpeakResult();
+  renderSpeakStep();
+}
+
+function renderSpeakResult(){
+  const n=SP.items.length, good=SP.good, xp=SP.xp;
+  S.xp+=xp; addTodayXp(xp);
+  const doneQ=questBump('xp', xp);
+  bumpStreak(); save();
+  if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
+  if(typeof leagueBump==='function') leagueBump(xp);
+  sfx('complete');
+  setTimeout(()=>burst(innerWidth*.3, innerHeight*.45, 30, 1.2), 120);
+  setTimeout(()=>burst(innerWidth*.7, innerHeight*.45, 30, 1.2), 300);
+  app.innerHTML=`
+  <div class="center-screen">
+    ${nekoBlock('cheer','声',146)}
+    <h2>말하기 끝!</h2>
+    <p class="sub">${n}문장 중 <b>${good}문장</b>을 또렷하게 말했어요.${SP.close?` ${SP.close}문장은 거의 맞았습니다.`:''}</p>
+    <div class="scorecards">
+      <div class="scard gold"><div class="h">획득 XP</div><div class="v">+${xp}</div></div>
+      <div class="scard shu"><div class="h">또렷하게</div><div class="v">${good}/${n}</div></div>
+    </div>
+    ${doneQ.length?`<p class="sub" style="margin-top:14px">오늘의 과제 ${doneQ.length}개 완료 · <b>+${doneQ.length*QUEST_XP} XP</b></p>`:''}
+    <div style="width:100%">
+      <button class="cta shu" id="spAgain">한 번 더</button>
+      <button class="cta ghost" id="spHome" style="margin-top:10px">지도로 돌아가기</button></div>
+  </div>`;
+  petalsOn();
+  $('#spAgain').onclick=()=>{ sfx('tap'); endSpeak(); startSpeak(); };
+  $('#spHome').onclick=()=>{ sfx('tap'); endSpeak(); renderHome(); };
+  window.scrollTo(0,0);
+}
+
+/* ================= 이야기 (짧은 대화) =================
+   두 사람이 주고받는 짧은 대화를 한 줄씩 넘겨 가며 봅니다.
+   줄을 누르면 소리가 나고, 중간에 빈칸 하나, 끝에 이해 확인 한 문제.
+   끝내면 한 번만 XP 를 줍니다.                                     */
+
+const STORY_XP = 70;
+let ST = null;
+
+function storyOpen(s){ return !s.need || !!S.done[s.need]; }
+function storyDone(s){ return !!(S.story && S.story[s.id]); }
+function storiesReady(){ return STORIES.filter(storyOpen); }
+
+function startStory(id){
+  const s=STORIES.find(x=>x.id===id);
+  if(!s || !storyOpen(s)) return renderHome();
+  ST={ s, n:1, gapDone:{}, wrong:0, phase:'lines' };
+  renderStory();
+}
+
+function storySpeak(li){
+  const t = li.gap ? String(li.t).replace('___', li.gap.a) : li.t;
+  speak(t);
+}
+
+function renderStory(){
+  const s=ST.s;
+  const shown=s.lines.slice(0, ST.n);
+  const cur=s.lines[ST.n-1];
+  const needGap = cur && cur.gap && !ST.gapDone[ST.n-1];
+  const atEnd = ST.n>=s.lines.length && !needGap;
+
+  let h=`
+  <div class="lessonbar">
+    <button class="iconbtn" id="stQuit" aria-label="나가기">${ICON.x}</button>
+    <div class="bar" role="progressbar"><i style="width:${Math.round(ST.n/(s.lines.length+1)*100)}%"></i></div>
+    <div class="stat xp">${ICON.bolt}<span class="mono">${STORY_XP}</span></div>
+  </div>
+  <div class="stage storystage">
+    <div class="storyhead"><div class="t">${esc(s.title)}</div><div class="s">${esc(s.sub)}</div></div>
+    <div class="chat">`;
+
+  shown.forEach((li, idx)=>{
+    const me = li.w==='a';
+    const solved = !li.gap || ST.gapDone[idx];
+    const txt = li.gap
+      ? (solved ? String(li.t).replace('___', '<b>'+esc(li.gap.a)+'</b>') : esc(li.t))
+      : esc(li.t);
+    const ko = li.gap ? String(li.m).replace('___', solved? esc(li.gap.km||li.gap.a) : '___') : esc(li.m);
+    h+=`<div class="crow ${me?'l':'r'}${idx===ST.n-1?' fresh':''}">
+      <div class="cwho">${esc(me? s.cast.a : s.cast.b)}</div>
+      <button class="cbub" data-line="${idx}">
+        <div class="ct jp">${txt}</div>
+        ${li.k?`<div class="ck jp">${esc(li.k)}</div>`:''}
+        <div class="cm">${ko}</div>
+      </button>
+    </div>`;
+  });
+  h+=`</div>`;
+
+  if(needGap){
+    h+=`<div class="gapbox">
+      <div class="gaph">빈칸에 들어갈 말은?</div>
+      <div class="gapopts">${shuffle(cur.gap.o).map(o=>
+        `<button class="opt gapopt" data-g="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+    </div>`;
+  }
+  h+=`</div>
+  <div class="footer"><div class="footer-inner">
+    ${needGap ? `<button class="cta" disabled>빈칸을 골라 주세요</button>`
+      : (atEnd ? `<button class="cta shu" id="stQuiz">마지막 문제</button>`
+               : `<button class="cta" id="stNext">계속하기</button>`)}
+  </div></div>`;
+
+  app.innerHTML=h;
+  petalsOff();
+  $('#stQuit').onclick=()=>{ sfx('tap'); ST=null; renderHome(); };
+  app.querySelectorAll('.cbub[data-line]').forEach(b=>{
+    b.onclick=()=>storySpeak(s.lines[+b.dataset.line]);
+  });
+  const nx=$('#stNext'); if(nx) nx.onclick=()=>{ sfx('tap'); ST.n++; renderStory(); };
+  const qz=$('#stQuiz'); if(qz) qz.onclick=()=>{ sfx('tap'); ST.phase='quiz'; renderStoryQuiz(); };
+  app.querySelectorAll('.gapopt').forEach(b=>{
+    b.onclick=()=>{
+      const ok = b.dataset.g===cur.gap.a;
+      if(ok){
+        ST.gapDone[ST.n-1]=1;
+        sfx('correct'); b.classList.add('right');
+        setTimeout(()=>{ renderStory(); storySpeak(cur); }, 380);
+      } else {
+        ST.wrong++;
+        sfx('wrong'); shakeScreen(false); b.classList.add('wrong'); b.disabled=true;
+      }
+    };
+  });
+  /* 새로 나온 줄은 자동으로 한 번 읽어 줍니다 */
+  const last=s.lines[ST.n-1];
+  if(last && (!last.gap || ST.gapDone[ST.n-1])) setTimeout(()=>storySpeak(last), 220);
+  const chat=app.querySelector('.crow.fresh');
+  if(chat) setTimeout(()=>chat.scrollIntoView({block:'center', behavior:'smooth'}), 60);
+}
+
+function renderStoryQuiz(){
+  const s=ST.s, q=s.quiz;
+  app.innerHTML=`
+  <div class="lessonbar">
+    <button class="iconbtn" id="stQuit2" aria-label="나가기">${ICON.x}</button>
+    <div class="bar"><i style="width:100%"></i></div>
+    <div class="stat xp">${ICON.bolt}<span class="mono">${STORY_XP}</span></div>
+  </div>
+  <div class="stage">
+    <div class="prompt-label">이야기를 잘 보았나요?</div>
+    <div class="qko">${esc(q.q)}</div>
+    <div class="opts" style="margin-top:22px">${shuffle(q.o).map(o=>
+      `<button class="opt" data-q="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+  </div>
+  <div class="footer"><div class="footer-inner"><button class="cta" id="stBack">이야기 다시 보기</button></div></div>`;
+  petalsOff();
+  $('#stQuit2').onclick=()=>{ sfx('tap'); ST=null; renderHome(); };
+  $('#stBack').onclick=()=>{ sfx('tap'); ST.phase='lines'; renderStory(); };
+  app.querySelectorAll('.opt[data-q]').forEach(b=>{
+    b.onclick=()=>{
+      if(b.dataset.q===q.a){ sfx('correct'); b.classList.add('right'); setTimeout(renderStoryResult, 420); }
+      else { ST.wrong++; sfx('wrong'); shakeScreen(true); hitFlash(); b.classList.add('wrong'); b.disabled=true; }
+    };
+  });
+  window.scrollTo(0,0);
+}
+
+function renderStoryResult(){
+  const s=ST.s;
+  const first = !storyDone(s);
+  const xp = first ? STORY_XP : Math.round(STORY_XP*.3);
+  S.story=S.story||{};
+  if(first) S.story[s.id]=dayKey(new Date());
+  S.xp+=xp; addTodayXp(xp);
+  const doneQ=questBump('xp', xp);
+  bumpStreak(); save();
+  if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
+  if(typeof leagueBump==='function') leagueBump(xp);
+  sfx('complete');
+  setTimeout(()=>burst(innerWidth*.3, innerHeight*.45, 34, 1.2), 120);
+  setTimeout(()=>burst(innerWidth*.7, innerHeight*.45, 34, 1.2), 320);
+  const nxt = STORIES.filter(x=>storyOpen(x) && !storyDone(x) && x.id!==s.id)[0];
+  app.innerHTML=`
+  <div class="center-screen">
+    ${nekoBlock('cheer','話',146)}
+    <h2>이야기 끝!</h2>
+    <p class="sub">${esc(s.title)} · ${ST.wrong===0 ? '한 번도 안 틀렸어요!' : '끝까지 잘 따라왔어요'}</p>
+    <div class="scorecards">
+      <div class="scard gold"><div class="h">획득 XP</div><div class="v">+${xp}</div></div>
+      <div class="scard shu"><div class="h">읽은 이야기</div><div class="v">${Object.keys(S.story||{}).length}</div></div>
+    </div>
+    ${first?'':'<p class="sub" style="margin-top:12px;opacity:.8">이미 읽은 이야기라 XP 가 줄어듭니다.</p>'}
+    ${doneQ.length?`<p class="sub" style="margin-top:12px">오늘의 과제 ${doneQ.length}개 완료 · <b>+${doneQ.length*QUEST_XP} XP</b></p>`:''}
+    <div style="width:100%">
+      ${nxt?`<button class="cta shu" id="stNextStory">다음 이야기 · ${esc(nxt.title)}</button>
+             <button class="cta ghost" id="stHome" style="margin-top:10px">지도로 돌아가기</button>`
+           :`<button class="cta shu" id="stHome">지도로 돌아가기</button>`}
+    </div>
+  </div>`;
+  petalsOn();
+  const ns=$('#stNextStory');
+  if(ns) ns.onclick=()=>{ sfx('tap'); startStory(nxt.id); };
+  $('#stHome').onclick=()=>{ sfx('tap'); ST=null; renderHome(); };
+  window.scrollTo(0,0);
+}
+
+/* 홈에 붙는 이야기 목록 */
+function storyCardHTML(){
+  const open=storiesReady();
+  if(!open.length) return '';
+  return `<div class="storylist">
+    <div class="slh"><div class="t">이야기</div><div class="s">짧은 대화로 익히는 진짜 말</div></div>
+    ${open.map(s=>{
+      const d=storyDone(s);
+      return `<button class="srow${d?' done':''}" data-story="${s.id}">
+        <div class="si jp">${d?'✓':'話'}</div>
+        <div class="sb"><div class="st">${esc(s.title)}</div><div class="ss">${esc(s.sub)}</div></div>
+        <div class="sx">${d?'다시':'+'+STORY_XP}</div>
+      </button>`;
+    }).join('')}
+    ${STORIES.length>open.length?`<div class="slmore">레슨을 더 하면 이야기가 ${STORIES.length-open.length}개 더 열립니다.</div>`:''}
+  </div>`;
+}
+
+/* ================= 주간 리그 =================
+   같은 조의 사람들과 이번 주 XP 로 겨룹니다. 월요일에 조가 새로 짜이고,
+   위에서 세 명은 올라가고 아래에서 세 명은 내려갑니다.
+
+   보이는 것은 **여기서 직접 정한 별명과 이번 주 XP 뿐**입니다.
+   아이디·이메일·진도·정답률은 절대 올라가지 않습니다.
+   참가는 스스로 눌러야 시작되고, 언제든 나갈 수 있습니다.        */
+
+const LG_COL  = 'league_ja';
+const LG_TIERS = [{ko:'白 리그',g:'白',c:'#8A9AA6'},{ko:'青 리그',g:'青',c:'#16607F'},{ko:'赤 리그',g:'赤',c:'#D8402A'},{ko:'金 리그',g:'金',c:'#B8871B'},{ko:'龍 리그',g:'龍',c:'#2B2B31'}];
+const LG_UP = 3, LG_DOWN = 3;          /* 위 3명 승급 · 아래 3명 강등 */
+const LG_MIN_UP = 4, LG_MIN_DOWN = 8;  /* 사람이 너무 적으면 적용하지 않습니다 */
+const LG_NAME_MAX = 12;
+
+/* 그 주의 월요일 — 조를 가르는 기준 */
+function weekKey(d){
+  const t=new Date(d||Date.now());
+  t.setHours(0,0,0,0);
+  t.setDate(t.getDate() - ((t.getDay()+6)%7));   /* 월요일로 */
+  return t.getFullYear()+'-'+(t.getMonth()+1)+'-'+t.getDate();
+}
+function lgState(){
+  if(!S.lg) S.lg={on:false, name:'', tier:0, wk:'', xp:0, lastWk:'', lastRank:0, lastMove:'', lastTier:0};
+  return S.lg;
+}
+function lgCohort(tier, wk){ return 'T'+tier+'-'+wk; }
+function lgTier(i){ return LG_TIERS[Math.max(0, Math.min(LG_TIERS.length-1, i|0))]; }
+function lgOnline(){ return !!(typeof CLOUD!=='undefined' && CLOUD.ready && CLOUD.user && CLOUD.api); }
+
+/* 아무 것도 알려 주지 않는 별명을 하나 만들어 줍니다 */
+const LG_WORDS=['바람','구름','달빛','산새','물결','돌담','연필','종이','모래','등불','풀잎','파도'];
+function lgSuggestName(){
+  return LG_WORDS[Math.floor(Math.random()*LG_WORDS.length)] + ' ' + (10+Math.floor(Math.random()*90));
+}
+function lgNameBad(v){
+  const s=String(v||'').trim();
+  if(!s) return '별명을 적어 주세요.';
+  if([...s].length>LG_NAME_MAX) return '별명은 '+LG_NAME_MAX+'자까지예요.';
+  if(/[@<>]/.test(s) || /\s{3,}/.test(s)) return '쓸 수 없는 글자가 들어 있어요.';
+  return '';
+}
+
+let LGBOARD=null, LG_T=null, LG_BUSY=false, LG_LAST=0;
+
+/* 이번 주 XP 를 쌓습니다 — 레슨·이야기·말하기 어디서든 불립니다 */
+function leagueBump(xp){
+  const g=lgState(), wk=weekKey();
+  if(g.wk!==wk){ g.wk=wk; g.xp=0; }
+  g.xp=(g.xp|0)+(xp|0);
+  save();
+  if(g.on) lgPushSoon();
+}
+function lgPushSoon(){
+  clearTimeout(LG_T);
+  LG_T=setTimeout(lgPush, 2000);
+}
+async function lgPush(){
+  const g=lgState();
+  if(!g.on || !lgOnline()) return;
+  try{
+    const f=CLOUD.api.f, uid=CLOUD.user.uid;
+    const id=lgCohort(g.tier, g.wk)+'__'+uid;
+    await f.setDoc(f.doc(CLOUD.api.fs, LG_COL, id), {
+      c: lgCohort(g.tier, g.wk), n: g.name, x: g.xp|0, t: g.tier|0, u: uid, at: Date.now()
+    });
+  }catch(e){}
+}
+async function lgFetch(){
+  const g=lgState();
+  if(!g.on || !lgOnline()) return null;
+  try{
+    const f=CLOUD.api.f;
+    const q=f.query(f.collection(CLOUD.api.fs, LG_COL), f.where('c','==', lgCohort(g.tier, g.wk)));
+    const snap=await f.getDocs(q);
+    const rows=[];
+    snap.forEach(d=>{ const v=d.data(); rows.push({n:v.n, x:v.x|0, u:v.u, me: v.u===CLOUD.user.uid}); });
+    rows.sort((a,b)=> b.x-a.x || String(a.n).localeCompare(String(b.n)));
+    return rows;
+  }catch(e){ return null; }
+}
+
+/* 주가 바뀌면 지난주 등수를 보고 올리거나 내립니다 */
+async function lgRollWeek(){
+  const g=lgState(), wk=weekKey();
+  if(!g.on || g.wk===wk) return false;
+  const oldWk=g.wk, oldTier=g.tier|0;
+  let moved='';
+  if(oldWk && lgOnline()){
+    try{
+      const f=CLOUD.api.f;
+      const q=f.query(f.collection(CLOUD.api.fs, LG_COL), f.where('c','==', lgCohort(oldTier, oldWk)));
+      const snap=await f.getDocs(q);
+      const rows=[]; snap.forEach(d=>rows.push(d.data()));
+      rows.sort((a,b)=> (b.x|0)-(a.x|0));
+      const i=rows.findIndex(r=>r.u===CLOUD.user.uid);
+      if(i>=0){
+        g.lastRank=i+1; g.lastWk=oldWk; g.lastTier=oldTier;
+        if(rows.length>=LG_MIN_UP && i<LG_UP && oldTier<LG_TIERS.length-1){ g.tier=oldTier+1; moved='up'; }
+        else if(rows.length>=LG_MIN_DOWN && i>=rows.length-LG_DOWN && oldTier>0){ g.tier=oldTier-1; moved='down'; }
+        else moved='stay';
+      }
+    }catch(e){}
+  }
+  g.lastMove=moved; g.wk=wk; g.xp=0; save();
+  await lgPush();
+  return !!moved;
+}
+
+/* 홈에 붙는 리그 카드 */
+function leagueCardHTML(){
+  const g=lgState();
+  if(!g.on){
+    return `<div class="lgcard join">
+      <div class="lgh"><div class="t">주간 리그</div><div class="s">같은 조 사람들과 이번 주 XP 로 겨뤄요</div></div>
+      <button class="lgbtn" id="lgJoin">참가하기</button>
+    </div>`;
+  }
+  const tier=lgTier(g.tier);
+  const rows=LGBOARD;
+  let body;
+  if(!lgOnline()) body=`<div class="lgnote">로그인하면 이번 주 순위를 볼 수 있어요.</div>`;
+  else if(rows===null) body=`<div class="lgnote">순위를 불러오는 중…</div>`;
+  else if(!rows.length) body=`<div class="lgnote">아직 이 조에 아무도 없어요. 레슨을 하면 이름이 올라갑니다.</div>`;
+  else {
+    const top=rows.slice(0,5);
+    const meAt=rows.findIndex(r=>r.me);
+    body=top.map((r,i)=>lgRowHTML(r,i+1)).join('')
+      + (meAt>=5 ? `<div class="lgdots">⋯</div>`+lgRowHTML(rows[meAt], meAt+1) : '');
+  }
+  const mv = g.lastMove==='up' ? `<div class="lgmove up">지난주 ${g.lastRank}위 · ${esc(lgTier(g.lastTier).ko)}에서 올라왔어요</div>`
+           : g.lastMove==='down' ? `<div class="lgmove down">지난주 ${g.lastRank}위 · 한 단계 내려왔어요</div>`
+           : '';
+  return `<div class="lgcard">
+    <div class="lgh">
+      <div class="lgbadge jp" style="background:${tier.c}">${tier.g}</div>
+      <div class="lgt"><div class="t">${esc(tier.ko)}</div>
+        <div class="s">이번 주 ${g.xp|0} XP · 위 ${LG_UP}명은 올라가요</div></div>
+      <button class="lgmore" id="lgMore">전체</button>
+    </div>
+    ${mv}
+    <div class="lgrows">${body}</div>
+  </div>`;
+}
+function lgRowHTML(r, rank){
+  const medal = rank<=LG_UP ? ' up' : '';
+  return `<div class="lgrow${r.me?' me':''}${medal}">
+    <div class="lgr">${rank}</div>
+    <div class="lgn">${esc(r.n||'이름 없음')}${r.me?' <span class="lgme">나</span>':''}</div>
+    <div class="lgx mono">${r.x|0}</div>
+  </div>`;
+}
+
+/* 참가 안내 — 무엇이 남에게 보이는지 먼저 분명히 말합니다 */
+function leagueJoinSheet(){
+  sfx('tap');
+  if(!lgOnline()){
+    return openSheet('먼저 로그인이 필요해요',
+      '리그는 다른 사람과 순위를 겨루는 기능이라 계정이 있어야 해요. 홈 위쪽에서 로그인해 주세요.',
+      '닫기', closeSheet, '', closeSheet);
+  }
+  closeSheet();
+  const bg=document.createElement('div'); bg.className='sheet-bg'; bg.id='sheetBg';
+  const sh=document.createElement('div'); sh.className='sheet'; sh.id='sheet';
+  const suggest=lgSuggestName();
+  sh.innerHTML=`<h3>주간 리그에 참가할까요?</h3>
+    <p>같은 조 사람들에게 <b>여기서 정한 별명과 이번 주 XP</b> 만 보입니다.
+       아이디·이메일·진도는 보이지 않아요.</p>
+    <p class="warn">실명, 학교 이름, 전화번호는 쓰지 마세요. 언제든 나갈 수 있습니다.</p>
+    <label class="lglab" for="lgName">별명 (${LG_NAME_MAX}자까지)</label>
+    <input class="lginput" id="lgName" maxlength="${LG_NAME_MAX}" value="${esc(suggest)}"
+      autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div class="lgerr" id="lgErr"></div>
+    <button class="cta shu" id="sheetP">참가하기</button>
+    <button class="linkbtn" id="sheetS" style="width:100%">취소</button>`;
+  document.body.append(bg, sh);
+  requestAnimationFrame(()=>sh.classList.add('show'));
+  bg.onclick=closeSheet;
+  sh.querySelector('#sheetS').onclick=closeSheet;
+  sh.querySelector('#sheetP').onclick=async()=>{
+    const v=sh.querySelector('#lgName').value;
+    const bad=lgNameBad(v);
+    if(bad){ sh.querySelector('#lgErr').textContent=bad; return; }
+    const g=lgState();
+    g.on=true; g.name=String(v).trim(); g.tier=g.tier|0; g.wk=weekKey();
+    g.xp=g.xp|0; save();
+    closeSheet(); sfx('goal');
+    await lgPush();
+    LGBOARD=await lgFetch();
+    renderHome();
+  };
+}
+
+function leagueSheet(){
+  const g=lgState();
+  sfx('tap');
+  openSheet(lgTier(g.tier).ko,
+    '월요일마다 조가 새로 짜입니다. 이번 주 XP 가 높은 위 '+LG_UP+'명은 한 단계 올라가고, '
+    + '사람이 '+LG_MIN_DOWN+'명 이상인 조에서는 아래 '+LG_DOWN+'명이 한 단계 내려갑니다. '
+    + '보이는 것은 별명과 이번 주 XP 뿐입니다.',
+    '리그에서 나가기', ()=>{ closeSheet(); leagueLeaveSheet(); }, '닫기', closeSheet);
+}
+function leagueLeaveSheet(){
+  openSheet('리그에서 나갈까요?',
+    '이번 주 순위에서 사라지고, 올려 둔 별명도 지워집니다. XP 와 진도는 그대로예요. 다시 들어올 수 있습니다.',
+    '나가기', async()=>{
+      const g=lgState();
+      closeSheet();
+      try{
+        if(lgOnline()){
+          const f=CLOUD.api.f;
+          await f.deleteDoc(f.doc(CLOUD.api.fs, LG_COL, lgCohort(g.tier, g.wk)+'__'+CLOUD.user.uid));
+        }
+      }catch(e){}
+      g.on=false; g.name=''; save();
+      LGBOARD=null; renderHome();
+    }, '그대로 두기', closeSheet);
+}
+
+/* 전체 순위 화면 */
+async function renderLeague(){
+  const g=lgState(), tier=lgTier(g.tier);
+  app.innerHTML=`<div class="center-screen"><h2>${esc(tier.ko)}</h2><p class="sub">순위를 불러오는 중…</p></div>`;
+  const rows=await lgFetch() || [];
+  LGBOARD=rows;
+  app.innerHTML=`
+  <div class="topbar">
+    <button class="iconbtn" id="lgBack" aria-label="돌아가기">${ICON.x}</button>
+    <div class="spacer"></div>
+  </div>
+  <div class="hero" style="padding-bottom:6px">
+    <div class="lgbadge big jp" style="background:${tier.c}">${tier.g}</div>
+    <h1 class="jp" style="font-size:30px">${esc(tier.ko)}</h1>
+    <p class="tag mono">이번 주 ${g.xp|0} XP</p>
+  </div>
+  <div class="lgfull">
+    ${rows.length? rows.map((r,i)=>lgRowHTML(r,i+1)).join('')
+      : `<div class="lgnote">아직 이 조에 아무도 없어요.</div>`}
+    <div class="lgrule">위 ${LG_UP}명은 다음 주에 한 단계 올라갑니다.
+      ${LG_MIN_DOWN}명 이상인 조에서는 아래 ${LG_DOWN}명이 내려갑니다.</div>
+    <button class="bklink" id="lgLeave" style="display:block;margin:20px auto">리그에서 나가기</button>
+  </div>`;
+  petalsOff();
+  $('#lgBack').onclick=()=>{ sfx('tap'); renderHome(); };
+  $('#lgLeave').onclick=()=>{ sfx('tap'); leagueLeaveSheet(); };
+  window.scrollTo(0,0);
+}
+
+/* 홈을 그릴 때마다 조용히 갱신합니다 */
+async function leagueSync(){
+  const g=lgState();
+  if(!g.on || !lgOnline() || LG_BUSY) return;
+  /* 홈을 그릴 때마다 서버를 찌르지 않도록 45초는 있는 것을 씁니다 */
+  if(LGBOARD && Date.now()-LG_LAST < 45000 && g.wk===weekKey()) return;
+  LG_BUSY=true; LG_LAST=Date.now();
+  try{
+    const rolled=await lgRollWeek();
+    if(g.wk!==weekKey()){ g.wk=weekKey(); g.xp=0; save(); }
+    await lgPush();
+    LGBOARD=await lgFetch();
+    if(rolled && g.lastMove==='up'){ sfx('lvlup'); }
+    renderHome();
+  }catch(e){}
+  LG_BUSY=false;
+}
+
+
 const HP_MAX=5, HP_MS=25*60*1000;   /* 25분마다 하트 하나가 돌아옵니다 */
 const CHEST_XP=80;
 
@@ -2350,7 +3229,7 @@ function openChest(unitId, btn){
     return openSheet('이미 연 상자예요','단원을 끝낸 보상은 한 번만 받을 수 있어요.','닫기',closeSheet,'',closeSheet);
   }
   S.chest[unitId]=dayKey(new Date());
-  S.xp+=CHEST_XP; addTodayXp(CHEST_XP); hpGain(1);
+  S.xp+=CHEST_XP; addTodayXp(CHEST_XP); hpGain(1); leagueBump(CHEST_XP);
   save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
   sfx('goal');
   if(btn){ btn.classList.add('got'); btn.textContent='✓'; }
@@ -3033,6 +3912,8 @@ function renderHome(){
     </div>
   </div>`;
 
+  h+=leagueCardHTML();
+
   /* ---- 배지 ---- */
   h+=`<div class="badgerow">${BADGES.map(b=>`<button class="badge${S.badges[b.id]?' on':''}" data-badge="${b.id}">
       <div class="bi jp">${b.jp}</div><div class="bl">${esc(b.n)}</div></button>`).join('')}</div>`;
@@ -3105,6 +3986,8 @@ function renderHome(){
   });
   h+=`</div>`;
   const learnedN=Object.keys(S.srs).length;
+  h+=storyCardHTML();
+  if(speakInOK()) h+=`<div style="padding:0 20px 6px"><button class="cta ghost" id="speakBtn">${MIC_SVG} 말하기 연습 — 소리 내어 말해 보기</button></div>`;
   h+=`<div class="homefoot">`;
   if(learnedN>=4)
     h+=`<button class="cta ghost" id="freeBtn" style="margin-bottom:14px">자유 복습 — 익힌 것 중에서 무작위로</button>`;
@@ -3134,6 +4017,10 @@ function renderHome(){
     save();
   };
   const hb=$('#hpBtn'); if(hb) hb.onclick=heartSheet;
+  const lj=$('#lgJoin'); if(lj) lj.onclick=leagueJoinSheet;
+  const lm=$('#lgMore'); if(lm) lm.onclick=()=>{ sfx('tap'); renderLeague(); };
+  const sb2=$('#speakBtn'); if(sb2) sb2.onclick=()=>{ sfx('tap'); startSpeak(); };
+  app.querySelectorAll('[data-story]').forEach(b4=>{ b4.onclick=()=>{ sfx('tap'); startStory(b4.dataset.story); }; });
   const sk=$('#stkBtn'); if(sk) sk.onclick=streakSheet;
   app.querySelectorAll('[data-chest]').forEach(b3=>{ b3.onclick=()=>openChest(b3.dataset.chest, b3); });
   const rb=$('#reviewBtn'); if(rb) rb.onclick=startReview;
@@ -3164,6 +4051,7 @@ function renderHome(){
   const freshNode = justId && app.querySelector('.node[data-lesson="'+CSS.escape(justId)+'"]');
   if(freshNode) freshNode.scrollIntoView({block:'center'});
   else window.scrollTo(0,0);
+  leagueSync();
 }
 
 /* ---------------- 6. LESSON RUNTIME ---------------- */
@@ -4048,6 +4936,7 @@ function renderResult(){
   const beforeBelt=beltOf(S.xp-totalXP).i;
   const wasUnder = todayXp() < (S.goal||260);
   addTodayXp(totalXP);
+  leagueBump(totalXP);
   if((G.lost|0)===0) S.perfects=(S.perfects||0)+1;
   const doneQ=[
     ...questBump('lesson',1),
