@@ -291,6 +291,11 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .opt:active{transform:translateY(2px);border-bottom-width:2px}
 .opt.sel{background:var(--ai-soft);border-color:var(--ai);color:var(--ai)}
 .opt.right{background:var(--shu-soft);border-color:var(--shu);color:var(--shu)}
+
+/* 보기를 누르면 소리와 함께 살짝 튀어 오릅니다 */
+.opt.saying{animation:optsay .42s cubic-bezier(.2,1.6,.4,1)}
+@keyframes optsay{0%{transform:scale(1)}40%{transform:scale(1.035)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){ .opt.saying{animation:none} }
 .opt.wrong{background:var(--paper-3);border-color:var(--ink-3);color:var(--ink-3);text-decoration:line-through}
 
 .answerline{
@@ -3646,6 +3651,29 @@ function pwaBind(){
   const n=$('#pwaNo'); if(n) n.onclick=()=>{ sfx('tap'); S.pwaNo=1; save(); renderHome(); };
 }
 
+/* ---- 보기 소리 ---- */
+const KANA_ITEMS = new Set(UNITS.filter(u=>u.kana).flatMap(u=>u.w||[]));
+function optSayText(e, v){
+  if(!e || e.kind!=='mcq' || !canSpeak()) return null;
+  const it = e.item || {};
+  let field = null;
+  if(e.jpOpts) field='j';
+  else if(it.k && e.answer===it.k) field='k';
+  else if(it.m && e.answer===it.m && KANA_ITEMS.has(it)) field='m';
+  if(!field) return null;
+  const hit = ALL_WORDS.find(w=>w[field]===v) || ALL_SENT.find(w=>w[field]===v);
+  if(hit){ if(field==='m' && !KANA_ITEMS.has(hit)) return null; return sayText({item:hit}); }
+  if(field==='j') return String(v).replace(/\s*\(.*?\)\s*$/, '') || null;
+  return null;
+}
+function optTap(e, b){
+  const t = optSayText(e, b.dataset.v);
+  if(t){
+    speak(t);
+    b.classList.remove('saying'); void b.offsetWidth; b.classList.add('saying');
+  } else sfx('tap');
+}
+
 const HP_MAX=5, HP_MS=25*60*1000;   /* 25분마다 하트 하나가 돌아옵니다 */
 const CHEST_XP=80;
 
@@ -5248,6 +5276,7 @@ function bindOptions(e){
     if(G.answered) return;
     app.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel'); G.sel=b.dataset.v; chk.disabled=false;
+    if(e.kind==='mcq') optTap(e, b); else sfx('tap');
   });
   chk.onclick=()=>judge(G.sel===e.answer, e.answer);
 }
