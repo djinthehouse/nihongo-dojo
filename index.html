@@ -454,6 +454,77 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   animation:sheen 2.6s linear infinite;
 }
 .node.justdone{animation:justdone .7s cubic-bezier(.2,1.5,.4,1)}
+/* ================= 듀오링고식 장치: 하트 · 말풍선 · 보물상자 ================= */
+
+/* ---- 상단 하트 ---- */
+.stat.hp{color:var(--shu);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stat.hp svg{width:18px;height:18px}
+.stat.hp.low{opacity:.8}
+.stat.hp.empty{color:var(--stone)}
+.stat.hp .rc{font-size:11px;font-weight:700;color:var(--ink-3);margin-left:5px;letter-spacing:-.02em}
+.stat.streak{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stat.streak .fz{
+  display:inline-grid;place-items:center;width:15px;height:15px;margin-left:2px;
+  border-radius:50%;background:var(--ai-soft);color:var(--ai);font-size:9px;font-weight:900;
+}
+
+/* ---- 캐릭터가 건네는 한마디 ---- */
+.hero .bubble{
+  position:relative;margin:4px auto 14px;max-width:min(300px,86vw);
+  background:var(--paper-2);color:var(--ink);border:2px solid var(--line);
+  border-radius:16px;padding:10px 15px;font-size:13.5px;font-weight:700;line-height:1.5;
+  box-shadow:0 4px 0 var(--drop);
+  animation:bubin .55s cubic-bezier(.2,1.5,.4,1) both;
+}
+.hero .bubble::before,.hero .bubble::after{
+  content:'';position:absolute;left:50%;width:0;height:0;border-style:solid;
+}
+.hero .bubble::before{top:-13px;transform:translateX(-50%);
+  border-width:0 10px 13px;border-color:transparent transparent var(--line)}
+.hero .bubble::after{top:-10px;transform:translateX(-50%);
+  border-width:0 8px 11px;border-color:transparent transparent var(--paper-2)}
+@keyframes bubin{0%{opacity:0;transform:translateY(-7px) scale(.93)}100%{opacity:1;transform:none}}
+
+/* ---- 레슨 중간에 캐릭터가 지나가며 하는 말 ---- */
+.mtoast{
+  position:fixed;left:50%;top:74px;z-index:72;transform:translate(-50%,-12px);
+  display:flex;align-items:center;gap:9px;max-width:min(330px,90vw);
+  background:var(--band);color:var(--on-band);border-radius:999px;
+  padding:7px 17px 7px 8px;font-size:13px;font-weight:800;line-height:1.3;
+  box-shadow:0 8px 24px var(--drop);opacity:0;pointer-events:none;
+  transition:opacity .28s ease, transform .28s cubic-bezier(.2,1.5,.4,1);
+}
+.mtoast.show{opacity:1;transform:translate(-50%,0)}
+.mtoast .mh{
+  width:31px;height:31px;flex:0 0 31px;border-radius:50%;overflow:hidden;
+  background:var(--paper);display:grid;place-items:center;
+}
+.mtoast .mh img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---- 단원 끝의 보물상자 ---- */
+.node.chest{
+  background:var(--gold);color:#fff;
+  box-shadow:0 5px 0 var(--drop), 0 0 0 8px var(--paper);
+  animation:chestwob 1.9s ease-in-out infinite;
+}
+.node.chest.got{
+  background:var(--paper-3);color:var(--ink-3);animation:none;
+  box-shadow:0 5px 0 var(--drop), 0 0 0 8px var(--paper);
+}
+@keyframes chestwob{
+  0%,58%,100%{transform:translateX(var(--off,0)) rotate(0)}
+  64%{transform:translateX(var(--off,0)) rotate(-7deg)}
+  72%{transform:translateX(var(--off,0)) rotate(7deg)}
+  80%{transform:translateX(var(--off,0)) rotate(-4deg)}
+}
+.chestlab{font-size:12px;font-weight:800;color:var(--gold);line-height:1.35;text-align:left;padding-left:16px}
+.chestlab.got{color:var(--ink-3);font-weight:700}
+
+@media (prefers-reduced-motion: reduce){
+  .hero .bubble,.node.chest{animation:none}
+  .mtoast{transition:opacity .2s}
+}
+
 @keyframes justdone{0%{transform:translateX(var(--off,0)) scale(1.6) rotate(-14deg)}60%{transform:translateX(var(--off,0)) scale(.95)}100%{transform:translateX(var(--off,0)) scale(1)}}
 @keyframes sheen{0%{transform:translateX(-120%)}60%,100%{transform:translateX(220%)}}
 
@@ -2152,9 +2223,142 @@ let S={xp:0, streak:0, last:null, done:{}, mistakes:[], srs:{}, seenG:{}, hideKa
        badges:{},      /* {배지id: 딴 날} */
        act:[],         /* 학습한 날들 (최근 것만 남김) */
        perfects:0      /* 하트를 하나도 안 잃고 끝낸 레슨 수 */ };
+/* 하트 · 보물상자 · 스트릭 보호막 */
+Object.assign(S,{hp:5, hpAt:0, chest:{}, freeze:0, fzGot:0, fzAt:null});
 try{ const r=localStorage.getItem(KEY); if(r) S=Object.assign(S, JSON.parse(r)); }catch(e){}
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
+
+/* ================= 듀오링고식 장치 =================
+   1) 하트가 레슨 밖에서도 남습니다 — 틀리는 데 값이 생깁니다.
+   2) 캐릭터가 말을 겁니다 — 혼자 공부하는 느낌을 덜어 줍니다.
+   3) 단원을 끝내면 보물상자가 열립니다.
+   4) 스트릭 보호막 — 하루 빠뜨려도 한 번은 막아 줍니다.
+   모두 브라우저 안에서만 계산합니다.                              */
+
+/* ---- 1. 하트 ---- */
+const HP_MAX=5, HP_MS=25*60*1000;   /* 25분마다 하트 하나가 돌아옵니다 */
+const CHEST_XP=80;
+
+function hpNow(){
+  if(S.hp==null || S.hp>HP_MAX) S.hp=HP_MAX;
+  if(S.hp>=HP_MAX){ if(S.hpAt){ S.hpAt=0; save(); } return HP_MAX; }
+  if(!S.hpAt){ S.hpAt=Date.now(); save(); }
+  const gain=Math.floor((Date.now()-S.hpAt)/HP_MS);
+  if(gain>0){
+    S.hp=Math.min(HP_MAX, S.hp+gain);
+    S.hpAt = S.hp>=HP_MAX ? 0 : S.hpAt+gain*HP_MS;
+    save();
+  }
+  return S.hp;
+}
+function hpSpend(){
+  hpNow();
+  if(S.hp>=HP_MAX) S.hpAt=Date.now();   /* 가득 찬 상태에서 처음 잃을 때부터 시간을 셉니다 */
+  S.hp=Math.max(0, S.hp-1);
+  save();
+}
+function hpGain(n){
+  hpNow();
+  S.hp=Math.min(HP_MAX, S.hp+(n|0));
+  if(S.hp>=HP_MAX) S.hpAt=0;
+  save();
+}
+/* 다음 하트까지 남은 분 */
+function hpWaitMin(){
+  if(hpNow()>=HP_MAX) return 0;
+  return Math.max(1, Math.ceil((HP_MS-(Date.now()-S.hpAt))/60000));
+}
+/* 하트를 채울 복습거리가 있는지 */
+function refillWay(){
+  if(srsDue().length) return 'srs';
+  if(S.mistakes.length) return 'mis';
+  if(Object.keys(S.srs).length>=4) return 'free';
+  return null;
+}
+function startRefill(){
+  const w=refillWay();
+  closeSheet();
+  if(w==='srs') return startSrs();
+  if(w==='mis') return startReview();
+  if(w==='free') return startFree();
+  renderHome();
+}
+function heartSheet(){
+  const hp=hpNow(), w=refillWay();
+  sfx(hp<=0?'heart':'tap');
+  const body = hp>=HP_MAX
+    ? '하트가 가득 찼어요. 레슨에서 틀리면 하나씩 줄고, '+(HP_MS/60000)+'분마다 하나씩 돌아옵니다.'
+    : '하트 '+hp+'개 남았어요. 다음 하트까지 '+hpWaitMin()+'분.'
+      + (w? ' 기다리는 대신 복습을 한 번 끝내면 하트 두 개를 바로 채워 드려요.' : '');
+  if(hp<HP_MAX && w) openSheet('하트 '+hp+' / '+HP_MAX, body, '복습으로 채우기', startRefill, '닫기', closeSheet);
+  else openSheet('하트 '+hp+' / '+HP_MAX, body, '닫기', closeSheet, '', closeSheet);
+}
+function streakSheet(){
+  sfx('tap');
+  const fz=S.freeze|0;
+  openSheet('연속 '+S.streak+'일',
+    '하루에 한 번이라도 레슨을 끝내면 이어집니다. '
+    + (fz? '보호막 '+fz+'개가 있어요 — 하루 빠뜨려도 한 번은 막아 줍니다. 7일마다 하나씩 받습니다.'
+         : '7일을 이어가면 보호막을 하나 받습니다. 하루 빠뜨려도 스트릭이 끊기지 않아요.')
+    + (S.fzAt? ' (마지막으로 막아 준 날: '+S.fzAt+')' : ''),
+    '닫기', closeSheet, '', closeSheet);
+}
+
+/* ---- 2. 캐릭터의 한마디 ---- */
+const HELLO=['오늘도 도장에 오셨네요.',
+            '한 걸음씩, 매일이 제일 강합니다.',
+            '틀린 문제가 스승입니다.',
+            '오늘 할 만큼만 하면 됩니다.'];
+function mascotLine(){
+  const t=todayXp(), goal=S.goal||260, hp=hpNow(), due=srsDue().length, L=[];
+  if(hp<=0) L.push('하트가 없어요. 복습을 한 번 하면 채워 드려요.');
+  if(t>=goal) L.push('오늘 목표 끝! 여기서 접어도 좋아요.');
+  else if(t>0) L.push('목표까지 '+(goal-t)+' XP. 거의 다 왔어요.');
+  if(S.streak>=3 && t<goal) L.push(S.streak+'일 연속이에요. 오늘도 이어가요!');
+  if(due) L.push('복습할 게 '+due+'개 있어요. 지금이 딱 좋은 때예요.');
+  if(!L.length) L.push(HELLO[Math.floor(Math.random()*HELLO.length)]);
+  return L[Math.floor(Math.random()*L.length)];
+}
+function mascotToast(txt){
+  if(RM){ toast(esc(txt)); return; }
+  document.querySelectorAll('.mtoast').forEach(e=>e.remove());
+  const el=document.createElement('div');
+  el.className='mtoast';
+  el.innerHTML='<span class="mh">'+nekoHead('happy')+'</span><span>'+esc(txt)+'</span>';
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),340); }, 2300);
+}
+/* 레슨을 절반 넘겼을 때 한 번만 */
+function midCheer(){
+  if(!G || G.midSaid) return;
+  const half=Math.floor(G.total/2);
+  if(half<2 || G.i!==half) return;
+  G.midSaid=true;
+  const L=(G.lost|0)===0
+    ? ['여기까지 하나도 안 틀렸어요!','완벽해요. 그대로 쭉!']
+    : ['절반 넘었어요. 힘내요!','반 왔어요. 조금만 더!'];
+  setTimeout(()=>mascotToast(L[Math.floor(Math.random()*L.length)]), 260);
+}
+
+/* ---- 3. 보물상자 ---- */
+function openChest(unitId, btn){
+  S.chest=S.chest||{};
+  if(S.chest[unitId]){
+    sfx('tap');
+    return openSheet('이미 연 상자예요','단원을 끝낸 보상은 한 번만 받을 수 있어요.','닫기',closeSheet,'',closeSheet);
+  }
+  S.chest[unitId]=dayKey(new Date());
+  S.xp+=CHEST_XP; addTodayXp(CHEST_XP); hpGain(1);
+  save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
+  sfx('goal');
+  if(btn){ btn.classList.add('got'); btn.textContent='✓'; }
+  burst(innerWidth*.5, innerHeight*.5, 40, 1.4);
+  cheerPop('보물상자 · +'+CHEST_XP+' XP','gold');
+  setTimeout(renderHome, 1200);
+}
+
 
 function dayKey(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
 
@@ -2203,7 +2407,9 @@ function bumpStreak(){
   if(S.act.indexOf(t)<0){ S.act.push(t); if(S.act.length>120) S.act=S.act.slice(-120); }
   if(S.last===t) return;
   const ys=dayKey(new Date(Date.now()-864e5));
-  S.streak=(S.last===ys)? S.streak+1 : 1;
+  /* 하루를 빠뜨렸어도 보호막이 있으면 한 번은 이어 줍니다 */
+  if(S.last && S.last!==ys && (S.freeze|0)>0){ S.freeze--; S.fzAt=t; S.streak=(S.streak||0)+1; }
+  else S.streak=(S.last===ys)? S.streak+1 : 1;
   S.last=t;
 }
 
@@ -2746,8 +2952,9 @@ function renderHome(){
   const doneN=Object.keys(S.done).length;
   let h=`
   <div class="topbar">
-    <div class="stat streak" title="연속 학습일">${ICON.flame}<span class="mono">${S.streak}</span></div>
+    <div class="stat streak" id="stkBtn" title="연속 학습일" role="button" tabindex="0">${ICON.flame}<span class="mono">${S.streak}</span>${(S.freeze|0)>0?`<span class="fz" aria-label="스트릭 보호막 ${S.freeze|0}개">${S.freeze|0}</span>`:''}</div>
     <div class="stat xp" title="누적 경험치">${ICON.bolt}<span class="mono">${S.xp}</span></div>
+    <div class="stat hp${hpNow()<=0?' empty':(hpNow()<HP_MAX?' low':'')}" id="hpBtn" title="하트" role="button" tabindex="0">${ICON.heart}<span class="mono">${hpNow()}</span>${hpNow()<HP_MAX?`<span class="rc">${hpWaitMin()}분</span>`:''}</div>
     <div class="spacer"></div>
     <div class="sndrow">
       <button class="iconbtn ${S.sfxOn?'':'muted'}" id="sfxBtn" aria-label="효과음 켜기/끄기">${S.sfxOn?ICON.spk:ICON.mute}</button>
@@ -2757,6 +2964,7 @@ function renderHome(){
   </div>
   <div class="hero">
     ${nekoBlock('idle','道',132)}
+    <div class="bubble">${esc(mascotLine())}</div>
     <h1 class="jp">にほんご道場</h1>
     <p class="tag mono">JLPT N5–N4 · ${doneN} / ${LESSONS.length} LESSONS</p>
   </div>
@@ -2885,6 +3093,14 @@ function renderHome(){
         ${labSide==='r'?label:'<div></div>'}
       </div>`;
     });
+    /* 단원을 다 끝내면 보물상자가 열립니다 */
+    if(u.lessons.every(l=>S.done[l.id])){
+      const got=!!(S.chest&&S.chest[u.id]);
+      h+=`<div class="node-row"><div></div>
+        <div class="nodecell"><button class="node chest${got?' got':''} jp" data-chest="${u.id}"
+          aria-label="${esc(u.title)} 보물상자">${got?'✓':'宝'}</button></div>
+        <div class="chestlab${got?' got':''}">${got?'상자를 열었어요':'단원 완주 상자 +'+CHEST_XP+' XP'}</div></div>`;
+    }
     h+=`</div>`;
   });
   h+=`</div>`;
@@ -2917,6 +3133,9 @@ function renderHome(){
     document.documentElement.setAttribute('data-theme', S.theme);
     save();
   };
+  const hb=$('#hpBtn'); if(hb) hb.onclick=heartSheet;
+  const sk=$('#stkBtn'); if(sk) sk.onclick=streakSheet;
+  app.querySelectorAll('[data-chest]').forEach(b3=>{ b3.onclick=()=>openChest(b3.dataset.chest, b3); });
   const rb=$('#reviewBtn'); if(rb) rb.onclick=startReview;
   const sb=$('#srsBtn'); if(sb) sb.onclick=startSrs;
 
@@ -2951,7 +3170,7 @@ function renderHome(){
 let G=null, JUST_DONE=null;
 Object.defineProperty(window,'G',{get:()=>G});   // 자동 테스트에서 현재 문제를 읽기 위한 통로
 function newGame(lesson, queue){
-  return {lesson, queue, i:0, total:queue.length, cleared:0, hearts:5, xp:0,
+  return {lesson, queue, i:0, total:queue.length, cleared:0, hearts:(lesson.isReview?HP_MAX:hpNow()), lost:0, xp:0,
           combo:0, best:0, wrong:[], t0:Date.now(), answered:false,
           sel:null, built:[], typed:'', ms:null};
 }
@@ -3444,6 +3663,8 @@ async function renderBackup(){
 
 function startLesson(lesson, skipGrammar){
   if(!lesson) return renderHome();
+  /* 복습은 하트가 없어도 할 수 있습니다 — 하트를 채우는 길이기 때문입니다 */
+  if(!lesson.isReview && hpNow()<=0) return heartSheet();
   const u=UNITS[lesson.unit];
   if(!skipGrammar && lesson.pos===0 && u && u.grammar && !S.seenG[u.id]){
     S.seenG[u.id]=1; save();
@@ -3562,6 +3783,7 @@ function renderExercise(){
   }
 
   app.innerHTML=shell(body, footer);
+  midCheer();
   petalsOff();
   $('#quitBtn').onclick=confirmQuit;
   app.querySelectorAll('[data-say]').forEach(b=>b.onclick=ev=>{
@@ -3743,7 +3965,8 @@ function judge(ok, correct, missCount){
     G.combo=0;
     sfx('wrong'); setTimeout(()=>sfx('heart'),160);
     shakeScreen(true); hitFlash();
-    G.hearts=Math.max(0,G.hearts-1);
+    G.hearts=Math.max(0,G.hearts-1); G.lost=(G.lost|0)+1;
+    if(!G.lesson.isReview) hpSpend();
     if(e.item){
       G.wrong.push(e.item);
       srsTouch(e.item, false);
@@ -3800,8 +4023,8 @@ function uniqWrong(){ return [...new Map(G.wrong.map(w=>[w.j,w])).values()].slic
 
 function renderResult(){
   const acc=Math.round(G.cleared/G.total*100);
-  const stars = G.hearts>=5?3 : G.hearts>=3?2 : 1;
-  const bonus = G.hearts===5?15:0;
+  const stars = (G.lost|0)===0?3 : (G.lost|0)<=2?2 : 1;
+  const bonus = (G.lost|0)===0?15:0;
   const totalXP=G.xp+bonus;
 
   S.xp+=totalXP;
@@ -3811,18 +4034,25 @@ function renderResult(){
     const asked=new Set(G.queue.map(q=>q.item&&q.item.j).filter(Boolean));
     S.mistakes=S.mistakes.filter(j=>!asked.has(j)||stillWrong.has(j));
   }
+  /* 복습은 하트를 두 개 채워 줍니다 — 기다리는 대신 공부하게 만드는 길 */
+  if(G.lesson.isReview) hpGain(2);
   if(!S.firstDay) S.firstDay=dayKey(new Date());
   bumpStreak();
+  /* 7일마다 스트릭 보호막 하나 (최대 두 개) */
+  let fzNew=false;
+  if(S.streak>0 && S.streak%7===0 && (S.fzGot|0)!==S.streak && (S.freeze|0)<2){
+    S.fzGot=S.streak; S.freeze=(S.freeze|0)+1; fzNew=true;
+  }
 
   /* ---- 오늘 기록 · 과제 · 배지 ---- */
   const beforeBelt=beltOf(S.xp-totalXP).i;
   const wasUnder = todayXp() < (S.goal||260);
   addTodayXp(totalXP);
-  if(G.hearts===5) S.perfects=(S.perfects||0)+1;
+  if((G.lost|0)===0) S.perfects=(S.perfects||0)+1;
   const doneQ=[
     ...questBump('lesson',1),
     ...questBump('xp',totalXP),
-    ...(G.hearts===5 ? questBump('perfect',1) : [])
+    ...((G.lost|0)===0 ? questBump('perfect',1) : [])
   ];
   const goalHit = wasUnder && todayXp() >= (S.goal||260);
   const newBadges = checkBadges();
@@ -3831,6 +4061,7 @@ function renderResult(){
   const fin = G.lesson.isReview ? null : newlyFinished();
   if(!G.lesson.isReview) JUST_DONE=G.lesson.id;
   sfx('complete');
+  if(fzNew) setTimeout(()=>toast('스트릭 보호막을 받았어요 · 하루 빠뜨려도 이어집니다'), 1500);
   setTimeout(()=>{ burst(innerWidth*.25, innerHeight*.45, 40, 1.3); }, 120);
   setTimeout(()=>{ burst(innerWidth*.75, innerHeight*.45, 40, 1.3); }, 330);
   setTimeout(()=>{ burst(innerWidth*.5, innerHeight*.35, 50, 1.5); }, 560);
@@ -3885,14 +4116,19 @@ function renderFail(){
   <div class="center-screen">
     ${nekoBlock('sad','再',132,true)}
     <h2>하트를 모두 잃었어요</h2>
-    <p class="sub">${G.cleared}문제를 맞혔어요. 놓친 표현을 확인하고<br>같은 레슨에 다시 도전해 보세요.</p>
+    <p class="sub">${G.cleared}문제를 맞혔어요. ${hpNow()>0
+      ? '하트 '+hpNow()+'개가 남아 있어요. 바로 다시 해도 됩니다.'
+      : '하트가 다 떨어졌어요. '+hpWaitMin()+'분 뒤에 하나가 돌아오고,<br>복습을 한 번 끝내면 두 개가 바로 채워집니다.'}</p>
     ${wl.length?`<div class="review"><h3>이번에 놓친 표현</h3><ul>${wl.map(w=>
       `<li><span class="j">${esc(w.j)}</span><span class="k">${esc(w.m)}</span></li>`).join('')}</ul></div>`:''}
-    <div style="width:100%"><button class="cta" id="retryBtn">다시 도전하기</button></div>
+    <div style="width:100%">${hpNow()<=0 && refillWay()
+      ? `<button class="cta shu" id="refillBtn">복습으로 하트 채우기</button><button class="cta ghost" id="retryBtn" style="margin-top:10px">다시 도전하기</button>`
+      : `<button class="cta" id="retryBtn">다시 도전하기</button>`}</div>
     <button class="linkbtn" id="backBtn">학습 지도로 돌아가기</button>
   </div>`;
   petalsOff();
   $('#retryBtn').onclick=replay;
+  const rf=$('#refillBtn'); if(rf) rf.onclick=()=>{ sfx('tap'); startRefill(); };
   $('#backBtn').onclick=()=>{ sfx('tap'); renderHome(); };
   window.scrollTo(0,0);
 }
