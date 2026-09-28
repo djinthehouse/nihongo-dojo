@@ -1153,6 +1153,96 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .du-inapp span{display:block;margin-top:4px;color:var(--ink-2)}
 .du-inapp-go{display:block;margin-top:10px;border:0;border-radius:12px;padding:10px 14px;background:var(--du-blue);color:#fff;
   font-weight:900;box-shadow:0 3px 0 var(--du-blue-d)}
+
+/* ================= 꾸미기 · 도감 · 챌린지 · 출석 ================= */
+.fxav{--s:64px;position:relative;display:inline-block;flex:none;width:var(--s);height:var(--s);border-radius:50%;
+  padding:calc(var(--s)*.075);background:var(--du-line);vertical-align:middle}
+.fxbg{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#DDF4FF}
+.fxbg img.neko{width:92%;height:auto;margin-top:12%;display:block}
+.fxemo{font-size:calc(var(--s)*.5);line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.fxhat{position:absolute;top:calc(var(--s)*-.16);right:calc(var(--s)*-.08);font-size:calc(var(--s)*.4);line-height:1;transform:rotate(14deg);
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;pointer-events:none}
+.f-nf{background:var(--du-line)}
+.f-sv{background:linear-gradient(135deg,#F4F6F8,#9EA7AD 45%,#E8ECEF 70%,#7D878D)}
+.f-gd{background:linear-gradient(135deg,#FFF3B0,#FFC800 40%,#E0A800 70%,#FFE680)}
+.f-fi{background:linear-gradient(135deg,#FFC800,#FF9600 40%,#FF4B4B 80%)}
+.f-rw{background:conic-gradient(#FF4B4B,#FF9600,#FFC800,#58CC02,#1CB0F6,#CE82FF,#FF4B4B)}
+.f-sk{background:linear-gradient(135deg,#FFE3F1,#FF86D0 55%,#FFB7D5)}
+.f-pf{background:linear-gradient(135deg,#A5ED6E,#58CC02 55%,#89E219)}
+.f-lg{background:linear-gradient(135deg,#CE82FF,#1CB0F6)}
+.f-ic{background:linear-gradient(135deg,#FFFFFF,#84D8FF 50%,#DDF4FF)}
+.f-mo{background:linear-gradient(135deg,var(--m1),var(--m2))}
+.b-sy{background:#DDF4FF}.b-wh{background:#FFFFFF}.b-mt{background:#D2F8E4}.b-pc{background:#FFE1CF}
+.b-ss{background:linear-gradient(180deg,#FFC67A,#FF6F91)}
+.b-oc{background:linear-gradient(180deg,#5FD3FF,#1073C4)}
+.b-ns{background:radial-gradient(circle at 25% 30%,#fff 0 1.2px,transparent 1.6px),radial-gradient(circle at 70% 20%,#fff 0 1px,transparent 1.4px),radial-gradient(circle at 60% 70%,#fff 0 1.1px,transparent 1.5px),linear-gradient(180deg,#1B2A4A,#3B3F8F)}
+.b-cd{background:linear-gradient(135deg,#FFD6F5,#C9F0FF)}
+.b-gl{background:radial-gradient(circle at 35% 30%,#FFF6C8,#FFC800 70%)}
+.tabav.fxav{--s:30px;padding:2px}
+.du-tab .tabav .fxhat{font-size:12px}
+
+.fxcard{border:2px solid var(--du-line);border-radius:16px;padding:14px;margin:0 0 14px;background:var(--paper)}
+.fxprof{display:flex;gap:14px;align-items:center;margin-top:18px}
+.fxme{position:relative;border:0;background:none;padding:6px 0 0}
+.fxpen{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:var(--du-blue);color:#fff;display:grid;place-items:center;
+  font-size:14px;border:3px solid var(--paper)}
+.fxpi{flex:1;min-width:0}
+.fxpn{font-size:19px;font-weight:900;color:var(--ink);word-break:break-all}
+.fxpt{display:inline-block;margin-top:4px;font-size:12px;font-weight:900;color:#fff;background:linear-gradient(135deg,#CE82FF,#1CB0F6);border-radius:10px;padding:3px 9px}
+.fxps{display:flex;flex-wrap:wrap;gap:4px 10px;margin:8px 0 10px;font-size:12.5px;font-weight:700;color:var(--ink-3)}
+.fxpb{display:flex;gap:8px}.fxpb .cta{padding:10px 6px;font-size:13.5px;white-space:nowrap}
+.fxch{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+.fxch b{font-size:16px;font-weight:900;color:var(--ink)}.fxch span{font-size:12.5px;color:var(--ink-3);font-weight:700;text-align:right}
+.fxdays{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.fxday{border:2px solid var(--du-line);border-radius:12px;padding:6px 0 5px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.fxday i{font-style:normal;font-size:10.5px;font-weight:800;color:var(--ink-3)}
+.fxday b{font-size:18px;line-height:1.2}
+.fxday small{font-size:9.5px;color:var(--ink-3);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding:0 2px}
+.fxday.done{background:var(--du-green-soft);border-color:var(--du-green-line)}.fxday.done b{color:var(--du-green-d)}
+.fxday.today{border-color:#FFC800;background:#FFF8D6;animation:du-bob 1.4s ease-in-out infinite}
+:root[data-theme="dark"] .fxday.today{background:#3A3316}
+.fxattgo{margin-top:12px}
+.fxmrow{display:flex;gap:12px;align-items:center}.fxmt{flex:1;min-width:0}
+.fxmt b{display:block;font-size:15.5px;font-weight:900;color:var(--ink)}.fxmt span{display:block;font-size:12.5px;color:var(--ink-3);margin:2px 0 8px;font-weight:700}
+.fxmt small{display:block;margin-top:5px;font-size:11.5px;color:var(--ink-3)}
+.fxbar{height:12px;border-radius:10px;background:var(--du-gray);overflow:hidden}.fxbar i{display:block;height:100%;background:linear-gradient(90deg,#FFC800,#FF9600);border-radius:10px}
+.fxhh{border-radius:14px;padding:11px 14px;margin:0 0 14px;font-size:13.5px;font-weight:700;color:var(--ink-2);background:var(--paper-3)}
+.fxhh.on{background:linear-gradient(135deg,#FF9600,#FF4B4B);color:#fff;box-shadow:0 3px 0 #D2362F}
+.fxhh b{font-weight:900}
+.lgav{flex:none;margin-right:8px;display:flex;align-items:center}
+.lgrow{align-items:center}
+
+.fxedit{padding:8px 16px 40px}
+.fxprev{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 0 14px}
+.fxprev .fxpn{margin-top:8px}
+.fxcats{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;-webkit-overflow-scrolling:touch}
+.fxcat{flex:none;border:2px solid var(--du-line);background:var(--paper);border-radius:12px;padding:8px 12px;font-weight:900;font-size:13.5px;color:var(--ink-3)}
+.fxcat.on{border-color:var(--du-blue-line);background:var(--du-blue-soft);color:var(--du-blue-d)}
+.fxgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.fxgrid.titles{grid-template-columns:1fr 1fr}
+.fxit{border:2px solid var(--du-line);border-radius:16px;background:var(--paper);padding:12px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  box-shadow:0 3px 0 var(--du-line);min-width:0}
+.fxit.on{border-color:var(--du-blue-line);background:var(--du-blue-soft);box-shadow:0 3px 0 var(--du-blue-line)}
+.fxit.lock .fxav,.fxit.lock .fxtl{filter:grayscale(1);opacity:.45}
+.fxn{font-size:12.5px;font-weight:900;color:var(--ink)}
+.fxhow{font-size:10.5px;font-weight:700;color:var(--ink-3);text-align:center;line-height:1.3;padding:0 4px;display:flex;align-items:center;gap:2px;word-break:keep-all}
+.fxhow svg{width:13px;height:13px}
+.fxit.on .fxhow{color:var(--du-blue-d)}
+.fxtl{font-size:14px;font-weight:900;color:#fff;background:linear-gradient(135deg,#CE82FF,#1CB0F6);border-radius:10px;padding:6px 10px;text-align:center}
+.fxnote{font-size:12.5px;color:var(--ink-3);text-align:center;margin-top:16px}
+.fxstk{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fxs{border:2px solid var(--du-line);border-radius:14px;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;min-width:0;background:var(--paper)}
+.fxs .e{font-size:30px;line-height:1.1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.fxs .n{font-size:10.5px;font-weight:800;color:var(--ink-2);line-height:1.25;word-break:keep-all}
+.fxs .h{font-size:9.5px;color:var(--ink-3)}
+.fxs.lock .e{filter:grayscale(1) brightness(0);opacity:.18}
+.fxs.lock{background:var(--paper-3)}
+.fxsheet{text-align:center}
+.fxnew{display:flex;justify-content:center;padding:14px 0 6px}
+.fxnewlist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 16px}
+.fxnewlist span{border:2px solid var(--du-line);border-radius:10px;padding:4px 9px;font-size:13px;font-weight:800;color:var(--ink-2)}
+.fxsheet .fxatt{text-align:left;border:0;padding:0}
+.shopitem .shi .fxav{--s:44px}
 </style>
 </head>
 <body>
@@ -3242,9 +3332,10 @@ async function lgPush(){
   try{
     const f=CLOUD.api.f, uid=CLOUD.user.uid;
     const id=lgCohort(g.tier, g.wk)+'__'+uid;
-    await f.setDoc(f.doc(CLOUD.api.fs, LG_COL, id), {
-      c: lgCohort(g.tier, g.wk), n: g.name, x: g.xp|0, t: g.tier|0, u: uid, at: Date.now()
-    });
+    const lgDoc={ c: lgCohort(g.tier, g.wk), n: g.name, x: g.xp|0, t: g.tier|0, u: uid, at: Date.now() };
+    if(typeof fxCode==='function' && !window.__lgNoA) lgDoc.a=fxCode();
+    try{ await f.setDoc(f.doc(CLOUD.api.fs, LG_COL, id), lgDoc); }
+    catch(e1){ if(!lgDoc.a) throw e1; window.__lgNoA=true; delete lgDoc.a; await f.setDoc(f.doc(CLOUD.api.fs, LG_COL, id), lgDoc); }
   }catch(e){}
 }
 async function lgFetch(){
@@ -3255,7 +3346,7 @@ async function lgFetch(){
     const q=f.query(f.collection(CLOUD.api.fs, LG_COL), f.where('c','==', lgCohort(g.tier, g.wk)));
     const snap=await f.getDocs(q);
     const rows=[];
-    snap.forEach(d=>{ const v=d.data(); rows.push({n:v.n, x:v.x|0, u:v.u, me: v.u===CLOUD.user.uid}); });
+    snap.forEach(d=>{ const v=d.data(); rows.push({n:v.n, x:v.x|0, u:v.u, a:v.a, me: v.u===CLOUD.user.uid}); });
     rows.sort((a,b)=> b.x-a.x || String(a.n).localeCompare(String(b.n)));
     return rows;
   }catch(e){ return null; }
@@ -6474,6 +6565,442 @@ function duAcctDeco(){
 }
 const _duRenderHome3=renderHome;
 renderHome=function(){ const r=_duRenderHome3.apply(this, arguments); try{ duAcctDeco(); }catch(_){} return r; };
+
+
+/* ================= 꾸미기 · 스티커 도감 · 월간 챌린지 · 출석 · 해피아워 =================
+   모든 보상은 학습으로만 얻습니다(보석도 학습으로 모읍니다). 돈으로 사는 것은 없습니다.  */
+const FX_UNIT_STK = {"k1":"🌸","k2":"🍡","k3":"🎐","k4":"🎏","k5":"🗾","k6":"🎌","k7":"🏯","u1":"👋","u2":"🎒","u3":"👉","u4":"⏰","u5":"👨‍👩‍👧","u6":"🍣","u7":"🗺️","u8":"📆","u9":"🔍","u10":"🛍️","u11":"🌦️","u12":"🚃","u13":"😊","u14":"🏫","u15":"🎮","u16":"🎓","n1":"🔗","n2":"⏳","n3":"🚫","n4":"💬","n5":"💪","n6":"🤔","n7":"🔀","n8":"🎁","n9":"🙇","n10":"🧳","n11":"✨","n12":"🏆"};
+const FX_STORY_STK = ['💬','🎒','⏰','🍜','🛒','🎬','🏖️'];
+const FX_MONTH = [null,
+  ['겨울 눈꽃','#9BD4FF','#FFFFFF'],['달콤 초콜릿','#8B5A3C','#FF9EC4'],['봄 새싹','#9BE15D','#00C9A7'],
+  ['벚꽃 비','#FFB7D5','#FF6FA8'],['초여름 숲','#56AB2F','#A8E063'],['바다 물결','#2BC0E4','#B8F1E0'],
+  ['한여름 태양','#F7971E','#FFD200'],['불꽃놀이','#8E2DE2','#FF6CAB'],['가을 하늘','#4FACFE','#00E0F0'],
+  ['단풍','#F83600','#F9D423'],['억새','#C79081','#E6C29A'],['크리스마스','#D31027','#1E9600']];
+/* 카탈로그 — cat: c 얼굴 · f 테두리 · b 배경 · h 모자·스티커 · t 칭호 */
+const FX_ITEMS = [
+  {id:'c.ch', n:'캐릭터', v:'char', free:1, how:'기본'},
+  {id:'c.dg', n:'강아지', v:'🐶', free:1, how:'기본'},
+  {id:'c.ct', n:'고양이', v:'🐱', free:1, how:'기본'},
+  {id:'c.fx', n:'여우', v:'🦊', how:'단원 2개 완주'},
+  {id:'c.pd', n:'판다', v:'🐼', how:'이야기 1개 끝내기'},
+  {id:'c.tg', n:'호랑이', v:'🐯', how:'주간 리그 참가'},
+  {id:'c.rb', n:'토끼', v:'🐰', how:'출석 5일째 보상'},
+  {id:'c.ow', n:'부엉이', v:'🦉', how:'밤 12시~4시에 학습'},
+  {id:'c.pg', n:'펭귄', v:'🐧', price:50, how:'상점 · 보석 50'},
+  {id:'c.un', n:'유니콘', v:'🦄', rare:1, how:'보물상자에서 가끔'},
+  {id:'c.dr', n:'용', v:'🐲', how:'월간 챌린지 2번 달성'},
+  {id:'f.nf', n:'기본', v:'', free:1, how:'기본'},
+  {id:'f.sv', n:'은테', how:'단원 3개 완주'},
+  {id:'f.gd', n:'금테', how:'단원 10개 완주'},
+  {id:'f.fi', n:'불꽃', how:'7일 연속 학습'},
+  {id:'f.rw', n:'무지개', how:'30일 연속 학습'},
+  {id:'f.sk', n:'벚꽃', how:'이야기 3개 끝내기'},
+  {id:'f.pf', n:'무결점', how:'하트를 지킨 레슨 10번'},
+  {id:'f.lg', n:'승급', how:'주간 리그 승급'},
+  {id:'f.ic', n:'얼음', price:80, how:'상점 · 보석 80'},
+  ...FX_MONTH.slice(1).map((m,i)=>({id:'f.m'+(i+1), n:(i+1)+'월 · '+m[0], month:i+1, how:(i+1)+'월 챌린지 달성 (그 달에만)'})),
+  {id:'b.sy', n:'하늘', free:1, how:'기본'},
+  {id:'b.wh', n:'하양', free:1, how:'기본'},
+  {id:'b.mt', n:'민트', price:40, how:'상점 · 보석 40'},
+  {id:'b.pc', n:'복숭아', price:40, how:'상점 · 보석 40'},
+  {id:'b.ss', n:'노을', how:'퀘스트 누적 10개'},
+  {id:'b.oc', n:'바다', how:'단원 5개 완주'},
+  {id:'b.ns', n:'별밤', how:'출석 7일째 보상'},
+  {id:'b.cd', n:'캔디', rare:1, how:'보물상자에서 가끔'},
+  {id:'b.gl', n:'황금', how:'트랙 하나 완주'},
+  {id:'h.nh', n:'없음', v:'', free:1, how:'기본'},
+  {id:'h.cp', n:'캡모자', v:'🧢', how:'첫 레슨 끝내기'},
+  {id:'h.fl', n:'꽃', v:'🌸', how:'출석 3일째 보상'},
+  {id:'h.rb', n:'리본', v:'🎀', price:30, how:'상점 · 보석 30'},
+  {id:'h.st', n:'별', v:'⭐', how:'하트를 지킨 레슨 5번'},
+  {id:'h.fr', n:'불꽃', v:'🔥', how:'14일 연속 학습'},
+  {id:'h.hp', n:'헤드폰', v:'🎧', how:'말하기 연습 3번'},
+  {id:'h.gs', n:'선글라스', v:'🕶️', price:60, how:'상점 · 보석 60'},
+  {id:'h.gr', n:'학사모', v:'🎓', how:'트랙 하나 완주'},
+  {id:'h.pt', n:'축하', v:'🎉', how:'월간 챌린지 첫 달성'},
+  {id:'h.cr', n:'왕관', v:'👑', how:'주간 리그 1위'},
+  {id:'h.rk', n:'로켓', v:'🚀', rare:1, how:'보물상자에서 가끔'},
+  {id:'t.rk', n:'새내기', free:1, how:'기본'},
+  {id:'t.nt', n:'(칭호 없음)', free:1, how:'기본'},
+  {id:'t.sd', n:'꾸준한 학습자', how:'7일 연속 학습'},
+  {id:'t.pf', n:'완벽주의자', how:'하트를 지킨 레슨 10번'},
+  {id:'t.sy', n:'이야기꾼', how:'이야기 5개 끝내기'},
+  {id:'t.sp', n:'말하기 달인', how:'말하기 연습 5번'},
+  {id:'t.cl', n:'스티커 수집가', how:'스티커 10장 모으기'},
+  {id:'t.ms', n:'트랙 마스터', how:'트랙 하나 완주'},
+  {id:'t.mo', n:'이달의 도전자', how:'월간 챌린지 달성'},
+  {id:'t.ch', n:'리그 챔피언', how:'주간 리그 1위'},
+  {id:'t.ow', n:'올빼미', how:'밤 12시~4시에 학습'},
+  {id:'t.ea', n:'아침형 인간', how:'아침 5시~7시에 학습'}
+];
+const FXI = id => FX_ITEMS.find(x=>x.id===id);
+const FX_CATS = [['c','얼굴'],['f','테두리'],['b','배경'],['h','모자·스티커'],['t','칭호']];
+const FX_ATT = [{gem:10},{gem:15},{item:'h.fl'},{gem:20},{item:'c.rb'},{gem:30},{item:'b.ns', gem:50}];
+const FX_MONTH_GOAL = 30;
+const FX_CHEST_RATE = 0.35;
+
+function fxS(){
+  if(!S.fx || typeof S.fx!=='object') S.fx={};
+  const x=S.fx;
+  x.own=x.own||{}; x.eq=Object.assign({c:'ch', f:'nf', b:'sy', h:'nh', t:'rk'}, x.eq||{});
+  x.stk=x.stk||{}; x.q=x.q||{}; x.att=Object.assign({n:0, last:'', cyc:0}, x.att||{});
+  x.mon=x.mon||{}; x.spk=x.spk|0; x.newi=x.newi||[]; x.maxSt=x.maxSt|0; x.ask=x.ask||'';
+  return x;
+}
+function fxOwn(id){ const it=FXI(id); return !!(it && (it.free || fxS().own[id])); }
+function fxEq(){ return fxS().eq; }
+/* 리그에 올리는 짧은 코드 — 목록에 있는 것만 받아들입니다 */
+function fxCode(eq){ eq=eq||fxEq(); return [eq.c,eq.f,eq.b,eq.h].join('.'); }
+function fxDecode(code){
+  const p=String(code||'').split('.'); if(p.length!==4) return null;
+  const eq={c:p[0], f:p[1], b:p[2], h:p[3]};
+  for(const k of ['c','f','b','h']) if(!FXI(k+'.'+eq[k])) return null;
+  return eq;
+}
+function fxAv(eq, px, cls){
+  eq=eq||fxEq(); px=px||64;
+  const face=FXI('c.'+eq.c)||FXI('c.ch'), hat=FXI('h.'+eq.h);
+  const inner = face.v==='char' ? nekoHead('happy') : `<span class="fxemo">${face.v}</span>`;
+  const mo=/^m(\d+)$/.exec(eq.f||'');
+  const fstyle = mo && FX_MONTH[+mo[1]] ? `;--m1:${FX_MONTH[+mo[1]][1]};--m2:${FX_MONTH[+mo[1]][2]}` : '';
+  return `<span class="fxav f-${mo?'mo':esc(eq.f)}${cls?' '+cls:''}" style="--s:${px}px${fstyle}" aria-hidden="true">`
+    + `<span class="fxbg b-${esc(eq.b)}">${inner}</span>`
+    + (hat && hat.v ? `<span class="fxhat">${hat.v}</span>` : '') + `</span>`;
+}
+function fxTitle(eq){ const t=FXI('t.'+((eq||fxEq()).t)); return t && t.id!=='t.nt' ? t.n : ''; }
+function fxName(){
+  try{ if(typeof CLOUD!=='undefined' && CLOUD.user) return CLOUD.nameOf(); }catch(_){}
+  return (S.lg && S.lg.name) || '나의 프로필';
+}
+
+/* ---- 보상 주기 ---- */
+function fxGrant(id, silent){
+  const x=fxS(); const it=FXI(id);
+  if(!it || fxOwn(id)) return false;
+  x.own[id]=dayKey(new Date());
+  if(!silent) x.newi.push(id);
+  return true;
+}
+function fxMonthKey(d){ d=d||new Date(); return d.getFullYear()+'-'+(d.getMonth()+1); }
+function fxMonthQuests(){
+  const x=fxS(), mk=fxMonthKey(); let n=0;
+  for(const d in x.q){ const p=d.split('-'); if(p[0]+'-'+p[1]===mk) n+=x.q[d]|0; }
+  return n;
+}
+function fxUnitsDone(){ return UNITS.filter(u=>u.lessons && u.lessons.length && u.lessons.every(l=>S.done[l.id])); }
+function fxCheck(quiet){
+  const x=fxS(), t=dayKey(new Date()), out=[];
+  if(S.quests && S.quests.d===t) x.q[t]=S.quests.list.filter(q=>q.got).length;
+  x.maxSt=Math.max(x.maxSt|0, S.streak|0);
+  /* 스티커 */
+  const ud=fxUnitsDone();
+  ud.forEach(u=>{ if(!x.stk[u.id]){ x.stk[u.id]=t; out.push({stk:u.id}); } });
+  if(typeof STORIES!=='undefined') STORIES.forEach(s=>{ if(S.story && S.story[s.id] && !x.stk['s:'+s.id]){ x.stk['s:'+s.id]=t; out.push({stk:'s:'+s.id}); } });
+  /* 조건 */
+  const nU=ud.length, nS=Object.keys(S.story||{}).length, pf=S.perfects|0, st=x.maxSt, nL=Object.keys(S.done||{}).length;
+  const qT=Object.values(x.q).reduce((a,b)=>a+(b|0),0);
+  const trackAny=Object.keys(TRACKS).some(k=>(TRACKS[k]||[]).length && TRACKS[k].every(l=>S.done[l.id]));
+  const nStk=Object.keys(x.stk).length, bd=S.badges||{}, lg=S.lg||{};
+  const champ = !!(lg.lastWk && (lg.lastRank|0)===1);
+  const R=[['c.fx',nU>=2],['c.pd',nS>=1],['c.tg',!!lg.on],['c.ow',!!bd.owl],
+    ['f.sv',nU>=3],['f.gd',nU>=10],['f.fi',st>=7],['f.rw',st>=30],['f.sk',nS>=3],['f.pf',pf>=10],['f.lg',lg.lastMove==='up'],
+    ['b.ss',qT>=10],['b.oc',nU>=5],['b.gl',trackAny],
+    ['h.cp',nL>=1],['h.st',pf>=5],['h.fr',st>=14],['h.hp',x.spk>=3],['h.gr',trackAny],['h.cr',champ],
+    ['t.sd',st>=7],['t.pf',pf>=10],['t.sy',nS>=5],['t.sp',x.spk>=5],['t.cl',nStk>=10],['t.ms',trackAny],['t.ch',champ],['t.ow',!!bd.owl],['t.ea',!!bd.lark]];
+  R.forEach(([id,ok])=>{ if(ok && fxGrant(id)) out.push({item:id}); });
+  /* 월간 챌린지 */
+  const mk=fxMonthKey();
+  if(!x.mon[mk] && fxMonthQuests()>=FX_MONTH_GOAL){
+    x.mon[mk]=t; S.gem=(S.gem|0)+100;
+    const m=new Date().getMonth()+1;
+    ['f.m'+m,'t.mo'].forEach(id=>{ if(fxGrant(id)) out.push({item:id}); });
+    const nm=Object.keys(x.mon).length;
+    if(nm>=1 && fxGrant('h.pt')) out.push({item:'h.pt'});
+    if(nm>=2 && fxGrant('c.dr')) out.push({item:'c.dr'});
+    out.push({month:mk});
+  }
+  if(out.length){ save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue(); }
+  out.filter(o=>o.stk).slice(0,2).forEach(o=>{ const s=fxStk(o.stk); if(s) toast('스티커 획득 · '+s.e+' '+esc(s.n)); });
+  const ni=out.filter(o=>o.item).length; if(ni && !quiet) setTimeout(()=>toast('새 꾸미기 아이템 '+ni+'개 · 프로필에서 확인'), 900);
+  return out;
+}
+
+/* ---- 스티커 ---- */
+function fxStkList(){
+  const L=[];
+  UNITS.forEach(u=>{ if(u.lessons && u.lessons.length) L.push({id:u.id, e:FX_UNIT_STK[u.id]||'⭐', n:u.title, how:'단원 완주', track:u.track}); });
+  if(typeof STORIES!=='undefined') STORIES.forEach((s,i)=>L.push({id:'s:'+s.id, e:FX_STORY_STK[i%FX_STORY_STK.length], n:s.title, how:'이야기 끝내기', track:'story'}));
+  return L;
+}
+function fxStk(id){ return fxStkList().find(s=>s.id===id); }
+
+/* ---- 해피아워: 매일 저녁 8~9시, 주말은 오전 10~11시도 ---- */
+function fxHH(now){
+  const d=new Date(now||Date.now()), h=d.getHours(), wk=d.getDay()===0||d.getDay()===6;
+  const end=(hh)=>{ const e=new Date(d); e.setHours(hh+1,0,0,0); return e.getTime(); };
+  if(h===20) return end(20);
+  if(wk && h===10) return end(10);
+  return 0;
+}
+function fxHHNext(){
+  const d=new Date(), h=d.getHours(), wk=d.getDay()===0||d.getDay()===6;
+  if(wk && h<10) return '오늘 오전 10시';
+  if(h<20) return '오늘 저녁 8시';
+  return '내일 '+(((d.getDay()+1)%7===0||(d.getDay()+1)%7===6)?'오전 10시':'저녁 8시');
+}
+const _fxBoostOn=boostOn, _fxBoostMin=boostMin;
+boostOn=function(){ return _fxBoostOn() || fxHH()>0; };
+boostMin=function(){ return Math.max(_fxBoostMin(), fxHH() ? Math.ceil((fxHH()-Date.now())/60000) : 0); };
+
+/* ---- 출석 ---- */
+function fxAttAvail(){ return fxS().att.last!==dayKey(new Date()); }
+function fxAttClaim(){
+  const x=fxS(), t=dayKey(new Date());
+  if(x.att.last===t) return null;
+  let n=(x.att.n|0); if(n>=7){ n=0; x.att.cyc=(x.att.cyc|0)+1; }
+  n++; const r=FX_ATT[n-1]; let gem=r.gem|0, got=null;
+  if(r.item){ if(fxGrant(r.item, true)) got=r.item; else gem+=20; }
+  S.gem=(S.gem|0)+gem; x.att.n=n; x.att.last=t;
+  save(); if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue();
+  sfx('quest');
+  return {n, gem, item:got};
+}
+function fxAttHTML(){
+  const x=fxS(), av=fxAttAvail(); let n=x.att.n|0; const base = (av && n>=7) ? 0 : n;
+  return `<div class="fxcard fxatt"><div class="fxch"><b>출석 보상</b><span>${av?'오늘 보상을 받을 수 있어요':'내일 또 와요 · '+(base>=7?'한 바퀴 완주!':base+'일째')}</span></div>
+    <div class="fxdays">${FX_ATT.map((r,i)=>{ const done=i<base, today=av && i===base;
+      const lab = r.item ? (FXI(r.item).v || '🎁') : '💎';
+      return `<div class="fxday${done?' done':''}${today?' today':''}"><i>${i+1}일</i><b>${done?'✓':lab}</b><small>${r.item?esc(FXI(r.item).n):'+'+r.gem}</small></div>`; }).join('')}</div>
+    ${av?'<button class="cta fxattgo" type="button">오늘 보상 받기</button>':''}</div>`;
+}
+function fxAttBind(root){
+  const b=(root||app).querySelector('.fxattgo'); if(!b) return;
+  b.onclick=()=>{ const r=fxAttClaim(); if(!r) return;
+    burst(innerWidth/2, innerHeight*.45, 30, 1.1);
+    toast(r.n+'일째 출석 · '+(r.gem?'+'+r.gem+' 보석':'')+(r.item?' · '+FXI(r.item).n+' 획득':''));
+    if(r.item){ fxS().newi.push(r.item); save(); }
+    renderHome(); };
+}
+function fxMonthHTML(){
+  const n=fxMonthQuests(), mk=fxMonthKey(), done=!!fxS().mon[mk], m=new Date().getMonth()+1;
+  const last=new Date(new Date().getFullYear(), m, 0).getDate(), left=last-new Date().getDate();
+  const pct=Math.min(100, Math.round(n/FX_MONTH_GOAL*100));
+  const prev={c:fxEq().c, f:'m'+m, b:fxEq().b, h:fxEq().h};
+  return `<div class="fxcard fxmon"><div class="fxmrow">${fxAv(prev, 58)}
+    <div class="fxmt"><b>${m}월 챌린지 · ${esc(FX_MONTH[m][0])}</b>
+      <span>${done?'달성했어요! 이 달의 테두리를 얻었어요':'이번 달 퀘스트 '+FX_MONTH_GOAL+'개 끝내기 · '+left+'일 남음'}</span>
+      <div class="fxbar"><i style="width:${pct}%"></i></div><small>${Math.min(n,FX_MONTH_GOAL)} / ${FX_MONTH_GOAL} · 보상: 한정 테두리 + 보석 100 + 칭호</small></div></div></div>`;
+}
+function fxHHHTML(){
+  const e=fxHH();
+  return e ? `<div class="fxhh on">🔥 <b>해피아워!</b> 지금 레슨 XP 2배 · ${Math.ceil((e-Date.now())/60000)}분 남음</div>`
+           : `<div class="fxhh">⏰ 다음 XP 2배 해피아워: <b>${fxHHNext()}</b> (1시간)</div>`;
+}
+
+/* ---- 새 아이템 알림 ---- */
+function fxCloseAll(){ document.querySelectorAll('.sheet, .sheet-bg').forEach(e=>e.remove()); }
+function fxSheet(html, bind){
+  fxCloseAll();
+  const bg=document.createElement('div'); bg.className='sheet-bg'; bg.id='sheetBg';
+  const sh=document.createElement('div'); sh.className='sheet fxsheet'; sh.id='sheet';
+  sh.innerHTML=html; document.body.append(bg, sh);
+  requestAnimationFrame(()=>sh.classList.add('show'));
+  bg.onclick=fxCloseAll; if(bind) bind(sh);
+}
+function fxNewSheet(){
+  const x=fxS(); const ids=x.newi.filter(id=>FXI(id)); if(!ids.length) return false;
+  const eq=Object.assign({}, x.eq); ids.forEach(id=>{ const [c,code]=id.split('.'); if(c!=='t') eq[c]=code; });
+  sfx('goal');
+  fxSheet(`<div class="fxnew">${fxAv(eq, 112)}</div>
+    <h3>새 꾸미기 아이템을 얻었어요!</h3>
+    <div class="fxnewlist">${ids.slice(0,6).map(id=>{ const it=FXI(id); return `<span>${it.v&&it.v!=='char'?it.v+' ':''}${esc(it.n)}</span>`; }).join('')}${ids.length>6?`<span>외 ${ids.length-6}개</span>`:''}</div>
+    <button class="cta" id="fxWear" type="button">바로 착용하기</button>
+    <button class="linkbtn" id="fxLater" type="button" style="width:100%">나중에</button>`, sh=>{
+      sh.querySelector('#fxWear').onclick=()=>{ ids.forEach(id=>{ const [c,code]=id.split('.'); x.eq[c]=code; }); x.newi=[]; save(); fxCloseAll(); sfx('pair'); renderHome(); };
+      sh.querySelector('#fxLater').onclick=()=>{ x.newi=[]; save(); fxCloseAll(); renderHome(); };
+    });
+  setTimeout(()=>burst(innerWidth/2, innerHeight*.55, 40, 1.2), 250);
+  return true;
+}
+
+/* ---- 꾸미기 화면 ---- */
+let FX_CAT='c';
+function renderFxEdit(){
+  fxCloseAll();
+  const x=fxS(), eq=x.eq;
+  const items=FX_ITEMS.filter(it=>it.id[0]===FX_CAT && (!it.month || fxOwn(it.id) || it.month===new Date().getMonth()+1));
+  app.innerHTML=`
+  <div class="topbar"><button class="iconbtn" id="fxBack" aria-label="돌아가기">${ICON.x}</button><div class="spacer"></div>
+    <div class="stat gem">${GEM_SVG}<span class="mono">${S.gem|0}</span></div></div>
+  <div class="fxedit">
+    <div class="fxprev">${fxAv(eq, 132)}<div class="fxpn">${esc(fxName())}</div>${fxTitle(eq)?`<div class="fxpt">${esc(fxTitle(eq))}</div>`:''}</div>
+    <div class="fxcats">${FX_CATS.map(([k,l])=>`<button type="button" class="fxcat${k===FX_CAT?' on':''}" data-cat="${k}">${l}</button>`).join('')}</div>
+    <div class="fxgrid${FX_CAT==='t'?' titles':''}">${items.map(it=>{
+      const code=it.id.slice(2), own=fxOwn(it.id), on=eq[FX_CAT]===code;
+      const pv = FX_CAT==='t' ? `<span class="fxtl">${esc(it.n)}</span>`
+        : fxAv(Object.assign({}, eq, {[FX_CAT]:code}), 56);
+      return `<button type="button" class="fxit${own?'':' lock'}${on?' on':''}" data-id="${it.id}">${pv}
+        ${FX_CAT==='t'?'':`<span class="fxn">${esc(it.n)}</span>`}
+        <span class="fxhow">${own?(on?'착용 중':'착용하기'):(it.price?GEM_SVG+it.price:'🔒 '+esc(it.how))}</span></button>`; }).join('')}</div>
+    <p class="fxnote">잠긴 아이템은 학습으로 얻어요. 보석은 레슨·퀘스트·보물상자에서 모입니다.</p>
+  </div>`;
+  $('#fxBack').onclick=()=>{ sfx('tap'); DU_TAB='profile'; renderHome(); };
+  app.querySelectorAll('.fxcat').forEach(b=>b.onclick=()=>{ sfx('tap'); FX_CAT=b.dataset.cat; renderFxEdit(); });
+  app.querySelectorAll('.fxit').forEach(b=>b.onclick=()=>{
+    const it=FXI(b.dataset.id), code=it.id.slice(2);
+    if(fxOwn(it.id)){ x.eq[FX_CAT]=code; save(); sfx('pair'); if(typeof lgPushSoon==='function' && S.lg && S.lg.on) lgPushSoon(); renderFxEdit(); return; }
+    if(it.price){
+      if((S.gem|0)<it.price){ sfx('wrong'); toast('보석이 '+(it.price-(S.gem|0))+'개 모자라요'); return; }
+      fxSheet(`<div class="fxnew">${fxAv(Object.assign({}, eq, {[FX_CAT]:code}), 96)}</div><h3>${esc(it.n)} — 보석 ${it.price}개</h3>
+        <p>사면 바로 착용해요.</p><button class="cta" id="fxBuy" type="button">사기</button>
+        <button class="linkbtn" id="fxNo" type="button" style="width:100%">취소</button>`, sh=>{
+        sh.querySelector('#fxNo').onclick=fxCloseAll;
+        sh.querySelector('#fxBuy').onclick=()=>{ S.gem=(S.gem|0)-it.price; fxGrant(it.id, true); x.eq[FX_CAT]=code; save();
+          if(typeof CLOUD!=='undefined' && CLOUD.queue) CLOUD.queue(); fxCloseAll(); sfx('quest'); renderFxEdit(); };
+      });
+      return;
+    }
+    sfx('tap'); toast('🔒 '+it.how);
+  });
+  window.scrollTo(0,0);
+}
+
+/* ---- 스티커 도감 ---- */
+function renderStickers(){
+  fxCloseAll();
+  const x=fxS(), L=fxStkList(), got=L.filter(s=>x.stk[s.id]).length;
+  const groups={}; L.forEach(s=>{ (groups[s.track]=groups[s.track]||[]).push(s); });
+  const secName=k=>{ if(k==='story') return '이야기'; const th=[...new Set(UNITS.map(u=>u.track))].indexOf(k); return '섹션 '+(th+1); };
+  app.innerHTML=`
+  <div class="topbar"><button class="iconbtn" id="skBack" aria-label="돌아가기">${ICON.x}</button><div class="spacer"></div>
+    <div class="stat"><b class="mono">${got} / ${L.length}</b></div></div>
+  <div class="fxedit"><h2 class="shoph">스티커 도감</h2>
+    <p class="shops">단원을 끝낼 때마다, 이야기를 끝낼 때마다 한 장씩 모여요.</p>
+    ${Object.keys(groups).map(k=>`<h3 class="du-h3">${esc(secName(k))}</h3><div class="fxstk">${groups[k].map(s=>{ const g=!!x.stk[s.id];
+      return `<div class="fxs${g?'':' lock'}" title="${esc(s.n)}"><span class="e">${s.e}</span><span class="n">${g?esc(s.n):'???'}</span>${g?'':`<span class="h">${esc(s.how)}</span>`}</div>`; }).join('')}</div>`).join('')}
+  </div>`;
+  $('#skBack').onclick=()=>{ sfx('tap'); DU_TAB='profile'; renderHome(); };
+  window.scrollTo(0,0);
+}
+
+/* ---- 홈 화면에 붙이기 ---- */
+function fxHome(){
+  const x=fxS();
+  const pr=app.querySelector('.du-profile');
+  if(pr && !pr.querySelector('.fxprof')){
+    const L=fxStkList(), got=L.filter(s=>x.stk[s.id]).length;
+    const ownN=FX_ITEMS.filter(it=>fxOwn(it.id)).length;
+    pr.insertAdjacentHTML('afterbegin', `<div class="fxcard fxprof">
+      <button type="button" class="fxme" id="fxEdit">${fxAv(x.eq, 92)}<span class="fxpen">✎</span></button>
+      <div class="fxpi"><div class="fxpn">${esc(fxName())}</div>${fxTitle()?`<div class="fxpt">${esc(fxTitle())}</div>`:''}
+        <div class="fxps"><span>🎨 아이템 ${ownN}/${FX_ITEMS.length}</span><span>📒 스티커 ${got}/${L.length}</span></div>
+        <div class="fxpb"><button type="button" class="cta" id="fxEdit2">꾸미기</button><button type="button" class="cta ghost" id="fxStk">스티커 도감</button></div></div></div>`);
+    [pr.querySelector('#fxEdit'), pr.querySelector('#fxEdit2')].forEach(b=>b&&(b.onclick=()=>{ sfx('tap'); renderFxEdit(); }));
+    pr.querySelector('#fxStk').onclick=()=>{ sfx('tap'); renderStickers(); };
+  }
+  const qp=app.querySelector('.du-quest');
+  if(qp && !qp.querySelector('.fxatt')){
+    const h=qp.querySelector('.du-ph');
+    const html=fxHHHTML()+fxAttHTML()+fxMonthHTML();
+    if(h) h.insertAdjacentHTML('afterend', html); else qp.insertAdjacentHTML('afterbegin', html);
+    fxAttBind(qp);
+  }
+  const lp=app.querySelector('.du-learn');
+  if(lp && fxHH() && !lp.querySelector('.fxhh')) lp.insertAdjacentHTML('afterbegin', `<div style="padding:10px 16px 0">${fxHHHTML()}</div>`);
+  /* 새 아이템·출석 — 하루 한 번, 첫 화면에서 */
+  const t=dayKey(new Date());
+  if(!document.querySelector('.sheet.show') && !(typeof needOnboard==='function' && needOnboard())){
+    if(x.newi.length) setTimeout(()=>{ if(app.querySelector('.du-pane') && !document.querySelector('.sheet.show')) fxNewSheet(); }, 500);
+    else if(fxAttAvail() && x.ask!==t && Object.keys(S.done||{}).length){
+      x.ask=t; save();
+      setTimeout(()=>{ if(!app.querySelector('.du-pane') || document.querySelector('.sheet.show')) return;
+        fxSheet(`<h3>오늘의 출석 보상</h3>${fxAttHTML()}<button class="linkbtn" id="fxAttNo" type="button" style="width:100%">나중에</button>`, sh=>{
+          sh.querySelector('#fxAttNo').onclick=fxCloseAll;
+          const b=sh.querySelector('.fxattgo'); if(b) b.onclick=()=>{ const r=fxAttClaim(); fxCloseAll(); if(!r) return;
+            burst(innerWidth/2, innerHeight*.5, 36, 1.2);
+            toast(r.n+'일째 출석 · +'+r.gem+' 보석'+(r.item?' · '+FXI(r.item).n+' 획득':''));
+            if(r.item){ fxS().newi.push(r.item); save(); }
+            renderHome(); };
+        }); }, 650);
+    }
+  }
+}
+
+/* ---- 덧씌우기 ---- */
+const _fxRenderHome=renderHome;
+renderHome=function(){ try{ fxCheck(true); }catch(e){ console.error(e); } const r=_fxRenderHome.apply(this, arguments); try{ fxHome(); }catch(e){ console.error(e); } return r; };
+const _fxTabs=duTabsHTML;
+duTabsHTML=function(active){
+  let h=_fxTabs(active);
+  const i=h.indexOf(DU_ICON.profile);
+  if(i>=0) h=h.slice(0,i)+fxAv(null, 30, 'tabav')+h.slice(i+DU_ICON.profile.length);
+  if(fxS().newi.length && active!=='profile') h=h.replace(/(data-tab="profile"[^>]*>)/, '$1<i class="dot"></i>');
+  return h;
+};
+const _fxResult=renderResult;
+renderResult=function(){ const r=_fxResult.apply(this, arguments); try{ if(!(G&&G.lesson&&(G.lesson.place||G.lesson.jump))) fxCheck(); }catch(_){} return r; };
+const _fxStoryRes=renderStoryResult;
+renderStoryResult=function(){ const r=_fxStoryRes.apply(this, arguments); try{ fxCheck(); }catch(_){} return r; };
+const _fxSpeakRes=renderSpeakResult;
+renderSpeakResult=function(){ fxS().spk=(fxS().spk|0)+1; save(); return _fxSpeakRes.apply(this, arguments); };
+const _fxChest=openChest;
+openChest=function(unitId, btn){
+  const fresh=!(S.chest && S.chest[unitId]);
+  const r=_fxChest.apply(this, arguments);
+  if(fresh && Math.random()<FX_CHEST_RATE){
+    const pool=FX_ITEMS.filter(it=>it.rare && !fxOwn(it.id));
+    if(pool.length){ const it=pool[Math.floor(Math.random()*pool.length)]; fxGrant(it.id); save();
+      setTimeout(()=>cheerPop('희귀 아이템! '+(it.v||'✨')+' '+it.n,'gold'), 700); }
+  }
+  return r;
+};
+/* 상점: 꾸미기 아이템 칸 */
+const _fxShop=renderShop;
+renderShop=function(){
+  const r=_fxShop.apply(this, arguments);
+  try{
+    const w=app.querySelector('.shopwrap');
+    if(w && !w.querySelector('.fxshop')){
+      const items=FX_ITEMS.filter(it=>it.price);
+      w.insertAdjacentHTML('beforeend', `<h3 class="du-h3 fxshop">꾸미기</h3>${items.map(it=>{ const own=fxOwn(it.id), c=it.id[0], code=it.id.slice(2);
+        return `<div class="shopitem"><span class="shi">${fxAv(Object.assign({}, fxEq(), c==='t'?{}:{[c]:code}), 44)}</span>
+          <div class="sb"><div class="st">${esc(it.n)}</div><div class="ss">${esc(FX_CATS.find(k=>k[0]===c)[1])}</div></div>
+          <button class="shbuy${own||(S.gem|0)<it.price?' off':''}" data-fxbuy="${it.id}">${own?'보유':GEM_SVG+it.price}</button></div>`; }).join('')}`);
+      w.querySelectorAll('[data-fxbuy]').forEach(b=>b.onclick=()=>{ const it=FXI(b.dataset.fxbuy); FX_CAT=it.id[0]; renderFxEdit(); });
+    }
+  }catch(e){ console.error(e); }
+  return r;
+};
+/* 리그 순위표에 꾸민 아이콘 */
+const _fxRow=lgRowHTML;
+lgRowHTML=function(r, rank){
+  const h=_fxRow(r, rank);
+  const eq = r && r.me ? fxEq() : (fxDecode(r && r.a) || {c:'ch', f:'nf', b:'sy', h:'nh'});
+  return h.replace('<div class="lgn">', `<div class="lgav">${fxAv(eq, 30)}</div><div class="lgn">`);
+};
+
+/* 동기화: 꾸미기·스티커·챌린지 기록도 서버 진도와 함께 */
+const _fxSnap=snapshotOf, _fxApply=applyProgress, _fxMerge=mergeProgress;
+function fxPack(x){ x=x||{}; return {own:x.own||{}, eq:x.eq||null, stk:x.stk||{}, q:x.q||{}, att:x.att||null, mon:x.mon||{}, spk:x.spk|0, maxSt:x.maxSt|0}; }
+snapshotOf=function(s){ const o=_fxSnap.apply(this, arguments); o.fx=fxPack(s.fx); return o; };
+mergeProgress=function(a, b){
+  const o=_fxMerge.apply(this, arguments); if(!o) return o;
+  const A=(a&&a.fx)||{}, B=(b&&b.fx)||{};
+  const un=(p,q)=>{ const r=Object.assign({}, q||{}); for(const k in (p||{})) if(!r[k] || p[k]<r[k]) r[k]=p[k]; return r; };
+  const q={}; for(const k of new Set([...Object.keys(A.q||{}), ...Object.keys(B.q||{})])) q[k]=Math.max((A.q||{})[k]|0, (B.q||{})[k]|0);
+  const aa=A.att||{}, ba=B.att||{}; const sc=v=>((v.cyc|0)*10+(v.n|0));
+  o.fx={own:un(A.own,B.own), stk:un(A.stk,B.stk), mon:un(A.mon,B.mon), q,
+        att: sc(ba)>sc(aa) ? ba : aa, spk:Math.max(A.spk|0,B.spk|0), maxSt:Math.max(A.maxSt|0,B.maxSt|0),
+        eq: A.eq || B.eq || null};
+  return o;
+};
+applyProgress=function(p){ const r=_fxApply.apply(this, arguments);
+  if(p && p.fx){ const x=fxS(); const f=p.fx; Object.assign(x.own, f.own||{}); Object.assign(x.stk, f.stk||{}); Object.assign(x.mon, f.mon||{});
+    for(const k in (f.q||{})) x.q[k]=Math.max(x.q[k]|0, f.q[k]|0);
+    if(f.att && ((f.att.cyc|0)*10+(f.att.n|0)) > ((x.att.cyc|0)*10+(x.att.n|0))) x.att=Object.assign({}, f.att);
+    x.spk=Math.max(x.spk|0, f.spk|0); x.maxSt=Math.max(x.maxSt|0, f.maxSt|0);
+    if(f.eq) x.eq=Object.assign(x.eq, f.eq); save(); }
+  return r; };
 
 /* ---------------- 10. START ---------------- */
 CLOUD.on(()=>{ if(document.querySelector('.path')) renderHome(); });
